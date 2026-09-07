@@ -1,0 +1,34 @@
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci
+      - run: npm run typecheck
+      - run: npm test
+
+  no-signer:
+    # novamp is read only. This job fails the build if a write path appears.
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: refuse signing primitives
+        run: |
+          set -e
+          if grep -rnE 'privateKeyToAccount|sendTransaction|writeContract|signMessage|signTypedData|new Wallet\(|PRIVATE_KEY|MNEMONIC' \
+              --include='*.ts' --include='*.js' src bin scripts; then
+            echo "::error::a signing or write primitive reached the source tree"
+            exit 1
+          fi
+          echo "clean: no signer, no write path"
