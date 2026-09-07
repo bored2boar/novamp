@@ -1,0 +1,1005 @@
+{
+  "origin": "synthetic",
+  "note": "A clean first born and five copies, two of them separated from the original only by a lookalike character. Shaped by hand, not captured from the chain.",
+  "launches": [
+    {
+      "token": "0xa0c54ffbe2ea6f151468fd40d4281d807fc2f6b5",
+      "curve": "0xc08041174d71478bfa5e761d2a1568a42fdec587",
+      "deployer": "0xd00cf9a237b8eb450b60de37392e2d8b9f2bb9c3",
+      "name": "Peanut the Squirrel",
+      "symbol": "PEANUT",
+      "block": 41882000,
+      "txIndex": 2,
+      "logIndex": 1,
+      "launchedAt": 1788617520,
+      "pairToken": "0x0000000000000000000000000000000000000000",
+      "pairSymbol": "ETH",
+      "phase": 0,
+      "creatorTaxBps": 100,
+      "creatorFeeRecipient": "0xd00cf9a237b8eb450b60de37392e2d8b9f2bb9c3",
+      "devSharePct": 3.1,
+      "exemptWallets": 0,
+      "socials": {
+        "twitter": "https://x.com/peanut_eth",
+        "website": "https://peanut.fun",
+        "telegram": "https://t.me/peanut"
+      },
+      "quoteReserveWei": "3276000000000000000",
+      "curveProgress": 0.78,
+      "uniqueEarlyBuyers": 12,
+      "deployerRecord": {
+        "priorLaunches": 1,
+        "graduated": 0
+      },
+      "buyers": [
+        {
+          "wallet": "0x4f2a91Cc0d1B7ae3aF66E0cB2211d0a9f3E5b7C1",
+          "entryLagSec": 7,
+          "quoteInWei": "210000000000000000",
+          "taxPaidBps": 53
+        },
+        {
+          "wallet": "0x1fc2988ed8a7f3b0fa8e1c03e7b6def40d74f918",
+          "entryLagSec": 10,
+          "quoteInWei": "40000000000000000",
+          "taxPaidBps": 261
+        },
+        {
+          "wallet": "0x1ace80f98993234aa8447e80a72236f80af45aef",
+          "entryLagSec": 12,
+          "quoteInWei": "120000000000000000",
+          "taxPaidBps": 75
+        },
+        {
+          "wallet": "0x24c56827a78ca91115caaad2074e86061666a543",
+          "entryLagSec": 13,
+          "quoteInWei": "100000000000000000",
+          "taxPaidBps": 191
+        },
+        {
+          "wallet": "0x8b31DdA5390fF4c1e2A70bE13aC9d84c6F2019Ea",
+          "entryLagSec": 19,
+          "quoteInWei": "360000000000000000",
+          "taxPaidBps": 59
+        },
+        {
+          "wallet": "0x1ec5cb80d2de715ca790afe1214eba97ea835b8d",
+          "entryLagSec": 21,
+          "quoteInWei": "50000000000000000",
+          "taxPaidBps": 84
+        },
+        {
+          "wallet": "0xC0FFEE2a9B1d4E7f83aa5C6d0B1e93F4a7D2c518",
+          "entryLagSec": 31,
+          "quoteInWei": "110000000000000000",
+          "taxPaidBps": 41
+        },
+        {
+          "wallet": "0x23c96e1dcdddd873430d335821110ffa65b11612",
+          "entryLagSec": 38,
+          "quoteInWei": "120000000000000000",
+          "taxPaidBps": 184
+        },
+        {
+          "wallet": "0x26cb058877783794a797d5b49bd81a6295c67af4",
+          "entryLagSec": 39,
+          "quoteInWei": "170000000000000000",
+          "taxPaidBps": 316
+        },
+        {
+          "wallet": "0x19Ab77E4d2c0F5138a6B9cE04dA71f8b3C6e2905",
+          "entryLagSec": 44,
+          "quoteInWei": "290000000000000000",
+          "taxPaidBps": 45
+        },
+        {
+          "wallet": "0x15c60fdbf767d280e9ec6fb3f9419549f54c4a24",
+          "entryLagSec": 58,
+          "quoteInWei": "160000000000000000",
+          "taxPaidBps": 336
+        },
+        {
+          "wallet": "0x2cc2914ee4b454d807fe695d3be5f895662600f7",
+          "entryLagSec": 59,
+          "quoteInWei": "110000000000000000",
+          "taxPaidBps": 93
+        },
+        {
+          "wallet": "0x13cdc3559ffe6ef74937b70c40810696e948efac",
+          "entryLagSec": 62,
+          "quoteInWei": "150000000000000000",
+          "taxPaidBps": 38
+        },
+        {
+          "wallet": "0x25c92ecc5962b7c057d7a4c1b31977b769c1604a",
+          "entryLagSec": 62,
+          "quoteInWei": "190000000000000000",
+          "taxPaidBps": 293
+        },
+        {
+          "wallet": "0x2acb1a8282442857182d0743d7b9aae8a7ffc10e",
+          "entryLagSec": 64,
+          "quoteInWei": "60000000000000000",
+          "taxPaidBps": 373
+        },
+        {
+          "wallet": "0x12cc962ec7d03785b38b45d36272ecbcb683db7b",
+          "entryLagSec": 65,
+          "quoteInWei": "130000000000000000",
+          "taxPaidBps": 168
+        },
+        {
+          "wallet": "0x29cbcfee1d9c99d5e72f1085d64be336aa438316",
+          "entryLagSec": 66,
+          "quoteInWei": "30000000000000000",
+          "taxPaidBps": 353
+        },
+        {
+          "wallet": "0x2dc06223e764fa7d3ee8ea999aff86ec98cfe685",
+          "entryLagSec": 66,
+          "quoteInWei": "150000000000000000",
+          "taxPaidBps": 308
+        },
+        {
+          "wallet": "0x17c6836ec5ee627f3e3086e61c8904eca96449ac",
+          "entryLagSec": 69,
+          "quoteInWei": "170000000000000000",
+          "taxPaidBps": 262
+        },
+        {
+          "wallet": "0x19c95a5727f7d1956e848078af3c8b68bac4c0b8",
+          "entryLagSec": 69,
+          "quoteInWei": "30000000000000000",
+          "taxPaidBps": 244
+        },
+        {
+          "wallet": "0x21cc52c912a2797cd9d07d1628dcb161ab58a3df",
+          "entryLagSec": 71,
+          "quoteInWei": "160000000000000000",
+          "taxPaidBps": 345
+        },
+        {
+          "wallet": "0x1cc1a267cde03dea892404b60ba067f3750347b4",
+          "entryLagSec": 75,
+          "quoteInWei": "40000000000000000",
+          "taxPaidBps": 359
+        },
+        {
+          "wallet": "0x11c26ce6f130423ae8139c0e9d201c1ad2f1fa3b",
+          "entryLagSec": 76,
+          "quoteInWei": "100000000000000000",
+          "taxPaidBps": 64
+        },
+        {
+          "wallet": "0x2eca66ca7de13843af48a279cb2849978621a7c1",
+          "entryLagSec": 81,
+          "quoteInWei": "40000000000000000",
+          "taxPaidBps": 268
+        },
+        {
+          "wallet": "0x28cd7fa6cd67713f22abdb82b0bfcfd43b40bd54",
+          "entryLagSec": 83,
+          "quoteInWei": "190000000000000000",
+          "taxPaidBps": 332
+        },
+        {
+          "wallet": "0x1bcb1f6d72974b4078218a785e25c15b5d2d0fde",
+          "entryLagSec": 86,
+          "quoteInWei": "120000000000000000",
+          "taxPaidBps": 2
+        },
+        {
+          "wallet": "0x1dc5a9200a0cbb2f042d9e95dbaeb2042e40e658",
+          "entryLagSec": 103,
+          "quoteInWei": "50000000000000000",
+          "taxPaidBps": 95
+        },
+        {
+          "wallet": "0x2bc43a665b94ea4ae201e4c5f580f94682c82091",
+          "entryLagSec": 103,
+          "quoteInWei": "160000000000000000",
+          "taxPaidBps": 156
+        },
+        {
+          "wallet": "0x10c0394134aa780b3bed3ab10ba76a7ca554ff6d",
+          "entryLagSec": 107,
+          "quoteInWei": "70000000000000000",
+          "taxPaidBps": 211
+        },
+        {
+          "wallet": "0x16c653143c31d16ceb1cc35dfd929855f9e59cf6",
+          "entryLagSec": 108,
+          "quoteInWei": "80000000000000000",
+          "taxPaidBps": 297
+        },
+        {
+          "wallet": "0x18c5278732a1693c02e1f649cbec50e32822c14e",
+          "entryLagSec": 108,
+          "quoteInWei": "80000000000000000",
+          "taxPaidBps": 218
+        },
+        {
+          "wallet": "0x22cd9a1be2a64b4f09c4172a3196736581696593",
+          "entryLagSec": 108,
+          "quoteInWei": "170000000000000000",
+          "taxPaidBps": 171
+        },
+        {
+          "wallet": "0x14c7d5be0520418787200cdb629d842d361d8232",
+          "entryLagSec": 112,
+          "quoteInWei": "70000000000000000",
+          "taxPaidBps": 398
+        },
+        {
+          "wallet": "0x27c024365e1663a5cd6c8f997f9878525220205d",
+          "entryLagSec": 113,
+          "quoteInWei": "130000000000000000",
+          "taxPaidBps": 252
+        },
+        {
+          "wallet": "0x20c6f2be86f5913edea01a88ab58d6d11e644c0f",
+          "entryLagSec": 115,
+          "quoteInWei": "50000000000000000",
+          "taxPaidBps": 217
+        }
+      ],
+      "holders": {
+        "top": [
+          {
+            "wallet": "0xc08041174d71478bfa5e761d2a1568a42fdec587",
+            "pct": 61.4,
+            "label": "curve"
+          },
+          {
+            "wallet": "0xd00cf9a237b8eb450b60de37392e2d8b9f2bb9c3",
+            "pct": 3.1,
+            "label": "deployer"
+          },
+          {
+            "wallet": "0x20hfb90d3319ec7f31e3b12e46cfb3e3eb68c0f1",
+            "pct": 1.19
+          },
+          {
+            "wallet": "0x21h159cffd171a438e58199425a081b05e94a4d3",
+            "pct": 1.19
+          },
+          {
+            "wallet": "0x22hb200b809af33f979184bd1cb54b9169f58b7d",
+            "pct": 1.19
+          },
+          {
+            "wallet": "0x23hc2e1e162beb618f190d47aa7159f78ad20841",
+            "pct": 1.19
+          },
+          {
+            "wallet": "0x24h8c8d9dab6ff69e141d47c9fa9b3b0af88fdcb",
+            "pct": 1.19
+          },
+          {
+            "wallet": "0x25h367a648800697d9e88ec5c25d9ff665b42a82",
+            "pct": 1.19
+          },
+          {
+            "wallet": "0x26h49be02f9354116538615fe0473957909690c5",
+            "pct": 1.19
+          },
+          {
+            "wallet": "0x27h8313dafc56ae15e75eb0180e0d35f18f55c6d",
+            "pct": 1.19
+          },
+          {
+            "wallet": "0x28h4f13a061e0f31ac94d2a0f1c89309345ee5c5",
+            "pct": 1.19
+          }
+        ],
+        "top10Pct": 13.8,
+        "deployerPct": 3.1,
+        "holderCount": 254,
+        "complete": true
+      }
+    },
+    {
+      "token": "0xa1fd99f10b25e8a9a2f5ee1b6cc16ccc7ab42253",
+      "curve": "0xc1798dec21356781042afc3be6a7f91c872ad906",
+      "deployer": "0xd138c628a3f49f543a1e2a79e47820e1a5894953",
+      "name": "Peanut the Squirrel",
+      "symbol": "PEANUТ",
+      "block": 41882410,
+      "txIndex": 5,
+      "logIndex": 3,
+      "launchedAt": 1788617561,
+      "pairToken": "0x0000000000000000000000000000000000000000",
+      "pairSymbol": "ETH",
+      "phase": 0,
+      "creatorTaxBps": 600,
+      "creatorFeeRecipient": "0xfee8e4a59b1273be1129362db2d00126424804b1",
+      "devSharePct": 12.4,
+      "exemptWallets": 6,
+      "socials": {},
+      "quoteReserveWei": "168000000000000000",
+      "curveProgress": 0.04,
+      "uniqueEarlyBuyers": 2,
+      "deployerRecord": {
+        "priorLaunches": 9,
+        "graduated": 0,
+        "fundedBy": "0x9f10Ba3c2e7D4805aC61bE39f0d27C4a8e5B106f"
+      },
+      "buyers": [
+        {
+          "wallet": "0xdeadBEEF11223344556677889900aAbBcCdDeEfF",
+          "entryLagSec": 28,
+          "quoteInWei": "40000000000000000",
+          "taxPaidBps": 45
+        },
+        {
+          "wallet": "0x11c26ce6f130423ae8139c0e9d201c1ad2f1fa3b",
+          "entryLagSec": 54,
+          "quoteInWei": "40000000000000000",
+          "taxPaidBps": 228
+        },
+        {
+          "wallet": "0x14c7d5be0520418787200cdb629d842d361d8232",
+          "entryLagSec": 69,
+          "quoteInWei": "190000000000000000",
+          "taxPaidBps": 321
+        },
+        {
+          "wallet": "0x13cdc3559ffe6ef74937b70c40810696e948efac",
+          "entryLagSec": 88,
+          "quoteInWei": "80000000000000000",
+          "taxPaidBps": 44
+        },
+        {
+          "wallet": "0x10c0394134aa780b3bed3ab10ba76a7ca554ff6d",
+          "entryLagSec": 104,
+          "quoteInWei": "90000000000000000",
+          "taxPaidBps": 234
+        },
+        {
+          "wallet": "0x12cc962ec7d03785b38b45d36272ecbcb683db7b",
+          "entryLagSec": 108,
+          "quoteInWei": "140000000000000000",
+          "taxPaidBps": 335
+        }
+      ],
+      "holders": {
+        "top": [
+          {
+            "wallet": "0xc1798dec21356781042afc3be6a7f91c872ad906",
+            "pct": 61.4,
+            "label": "curve"
+          },
+          {
+            "wallet": "0xd138c628a3f49f543a1e2a79e47820e1a5894953",
+            "pct": 12.4,
+            "label": "deployer"
+          },
+          {
+            "wallet": "0x20h2826f5b10cb353af6ed38d7715d820773afd5",
+            "pct": 3.2
+          },
+          {
+            "wallet": "0x21ha5c57e6686677efe21145d1c551eb0d022a19",
+            "pct": 3.2
+          },
+          {
+            "wallet": "0x22hda9ebd446ebe25698c5c6498e6f415f444e82",
+            "pct": 3.2
+          },
+          {
+            "wallet": "0x23h68cdfb7fd93b8fdd9ad9259a610b0370ad7de",
+            "pct": 3.2
+          },
+          {
+            "wallet": "0x24h04a6adf3a9d08516c0d14e5a27c9ff72127ae",
+            "pct": 3.2
+          },
+          {
+            "wallet": "0x25h6ae5f7fada10dede8ff4196aabba25e39be9a",
+            "pct": 3.2
+          },
+          {
+            "wallet": "0x26ha2c2cd55cbd032eacee3f2e99a18d8017b711",
+            "pct": 3.2
+          },
+          {
+            "wallet": "0x27hc35aeb055348293bd30e28d65d7c3869e8a43",
+            "pct": 3.2
+          },
+          {
+            "wallet": "0x28h7a7e3b0ad1ba6587298e4d89d0386ae8e713b",
+            "pct": 3.2
+          }
+        ],
+        "top10Pct": 41.2,
+        "deployerPct": 12.4,
+        "holderCount": 366,
+        "complete": true
+      }
+    },
+    {
+      "token": "0xa253b9e28a1b49f14d823c5f6c1a3dcf4583736a",
+      "curve": "0xc2f4cd9e3cb19bb76e5cf3349d81a36b9d8e1973",
+      "deployer": "0xd2912c63602c6b19504dabb5c9f5361cedd42fb4",
+      "name": "Peanut",
+      "symbol": "PEAN0T",
+      "block": 41882960,
+      "txIndex": 3,
+      "logIndex": 1,
+      "launchedAt": 1788617616,
+      "pairToken": "0x0000000000000000000000000000000000000000",
+      "pairSymbol": "ETH",
+      "phase": 0,
+      "creatorTaxBps": 300,
+      "creatorFeeRecipient": "0xd2912c63602c6b19504dabb5c9f5361cedd42fb4",
+      "devSharePct": 8.8,
+      "exemptWallets": 3,
+      "socials": {},
+      "quoteReserveWei": "84000000000000000",
+      "curveProgress": 0.02,
+      "uniqueEarlyBuyers": 2,
+      "deployerRecord": {
+        "priorLaunches": 14,
+        "graduated": 0,
+        "fundedBy": "0x9f10Ba3c2e7D4805aC61bE39f0d27C4a8e5B106f"
+      },
+      "buyers": [
+        {
+          "wallet": "0x11c26ce6f130423ae8139c0e9d201c1ad2f1fa3b",
+          "entryLagSec": 56,
+          "quoteInWei": "130000000000000000",
+          "taxPaidBps": 9900
+        },
+        {
+          "wallet": "0x10c0394134aa780b3bed3ab10ba76a7ca554ff6d",
+          "entryLagSec": 58,
+          "quoteInWei": "90000000000000000",
+          "taxPaidBps": 9900
+        },
+        {
+          "wallet": "0x12cc962ec7d03785b38b45d36272ecbcb683db7b",
+          "entryLagSec": 114,
+          "quoteInWei": "180000000000000000",
+          "taxPaidBps": 9900
+        }
+      ],
+      "holders": {
+        "top": [
+          {
+            "wallet": "0xc2f4cd9e3cb19bb76e5cf3349d81a36b9d8e1973",
+            "pct": 61.4,
+            "label": "curve"
+          },
+          {
+            "wallet": "0xd2912c63602c6b19504dabb5c9f5361cedd42fb4",
+            "pct": 8.8,
+            "label": "deployer"
+          },
+          {
+            "wallet": "0x20h9d5fee801943804e66a8e72b1763fc7b7f141",
+            "pct": 2.79
+          },
+          {
+            "wallet": "0x21h111e684227802589d5e914c841e2154172bca",
+            "pct": 2.79
+          },
+          {
+            "wallet": "0x22hce182f8fec27c65597279e47c480796173d11",
+            "pct": 2.79
+          },
+          {
+            "wallet": "0x23h81e126515d11c8bed4faed7ea861d02a79f48",
+            "pct": 2.79
+          },
+          {
+            "wallet": "0x24hf79296afd936fd0f4505e571b17a65ae35da3",
+            "pct": 2.79
+          },
+          {
+            "wallet": "0x25h2609138cda30e779a704cd38df86811779683",
+            "pct": 2.79
+          },
+          {
+            "wallet": "0x26h2bc6ecd2f26263735e9cccb0b114d6c7a884f",
+            "pct": 2.79
+          },
+          {
+            "wallet": "0x27hcadef987e4b17a2510dfbebdcc8a63d98faee",
+            "pct": 2.79
+          },
+          {
+            "wallet": "0x28h2a6f0cb782911a24db7f55daa0674d5455e06",
+            "pct": 2.79
+          }
+        ],
+        "top10Pct": 33.9,
+        "deployerPct": 8.8,
+        "holderCount": 266,
+        "complete": true
+      }
+    },
+    {
+      "token": "0xa3177c297f59f7e2722812a2b8ad76f377be5565",
+      "curve": "0xc38fbe5070a6f09135684bfbb5878f9c59aa6b17",
+      "deployer": "0xd3af9d3386cd386731ae40ee59b5bc618f41774e",
+      "name": "Peanut Coin",
+      "symbol": "PEANUTCOIN",
+      "block": 41883870,
+      "txIndex": 4,
+      "logIndex": 3,
+      "launchedAt": 1788617707,
+      "pairToken": "0x0000000000000000000000000000000000000000",
+      "pairSymbol": "ETH",
+      "phase": 0,
+      "creatorTaxBps": 200,
+      "creatorFeeRecipient": "0xd3af9d3386cd386731ae40ee59b5bc618f41774e",
+      "devSharePct": 2.2,
+      "exemptWallets": 0,
+      "socials": {
+        "twitter": "https://x.com/peanutcoin_eth",
+        "website": "https://peanutcoin.fun",
+        "telegram": "https://t.me/peanutcoin"
+      },
+      "quoteReserveWei": "462000000000000000",
+      "curveProgress": 0.11,
+      "uniqueEarlyBuyers": 3,
+      "deployerRecord": {
+        "priorLaunches": 2,
+        "graduated": 0
+      },
+      "buyers": [
+        {
+          "wallet": "0x6D4e0aC17bF3928d5a0Bc1E6f4903aA82b7dC331",
+          "entryLagSec": 4,
+          "quoteInWei": "60000000000000000",
+          "taxPaidBps": 72
+        },
+        {
+          "wallet": "0x18c5278732a1693c02e1f649cbec50e32822c14e",
+          "entryLagSec": 31,
+          "quoteInWei": "200000000000000000",
+          "taxPaidBps": 248
+        },
+        {
+          "wallet": "0x17c6836ec5ee627f3e3086e61c8904eca96449ac",
+          "entryLagSec": 34,
+          "quoteInWei": "200000000000000000",
+          "taxPaidBps": 235
+        },
+        {
+          "wallet": "0x14c7d5be0520418787200cdb629d842d361d8232",
+          "entryLagSec": 76,
+          "quoteInWei": "170000000000000000",
+          "taxPaidBps": 61
+        },
+        {
+          "wallet": "0x15c60fdbf767d280e9ec6fb3f9419549f54c4a24",
+          "entryLagSec": 76,
+          "quoteInWei": "10000000000000000",
+          "taxPaidBps": 15
+        },
+        {
+          "wallet": "0x10c0394134aa780b3bed3ab10ba76a7ca554ff6d",
+          "entryLagSec": 84,
+          "quoteInWei": "140000000000000000",
+          "taxPaidBps": 365
+        },
+        {
+          "wallet": "0x12cc962ec7d03785b38b45d36272ecbcb683db7b",
+          "entryLagSec": 88,
+          "quoteInWei": "90000000000000000",
+          "taxPaidBps": 113
+        },
+        {
+          "wallet": "0x16c653143c31d16ceb1cc35dfd929855f9e59cf6",
+          "entryLagSec": 91,
+          "quoteInWei": "170000000000000000",
+          "taxPaidBps": 268
+        },
+        {
+          "wallet": "0x11c26ce6f130423ae8139c0e9d201c1ad2f1fa3b",
+          "entryLagSec": 104,
+          "quoteInWei": "70000000000000000",
+          "taxPaidBps": 379
+        },
+        {
+          "wallet": "0x13cdc3559ffe6ef74937b70c40810696e948efac",
+          "entryLagSec": 111,
+          "quoteInWei": "150000000000000000",
+          "taxPaidBps": 23
+        }
+      ],
+      "holders": {
+        "top": [
+          {
+            "wallet": "0xc38fbe5070a6f09135684bfbb5878f9c59aa6b17",
+            "pct": 61.4,
+            "label": "curve"
+          },
+          {
+            "wallet": "0xd3af9d3386cd386731ae40ee59b5bc618f41774e",
+            "pct": 2.2,
+            "label": "deployer"
+          },
+          {
+            "wallet": "0x20hec1000c4739641a0936517230c8a0cb4efe82",
+            "pct": 1.82
+          },
+          {
+            "wallet": "0x21hf17c580324b15da15de97ee11b356d97f70ec",
+            "pct": 1.82
+          },
+          {
+            "wallet": "0x22h26cd902c86dcaa68f8dd9cc8e7808f576db79",
+            "pct": 1.82
+          },
+          {
+            "wallet": "0x23h7495f2f235ae47dcb739f1f56e5403b8102e3",
+            "pct": 1.82
+          },
+          {
+            "wallet": "0x24h2fb4d9d2d1ceb1fbf9e3f5aa56c9eb2dea7b8",
+            "pct": 1.82
+          },
+          {
+            "wallet": "0x25h0238f7f838f2507098e903d2cc3ba418fefa3",
+            "pct": 1.82
+          },
+          {
+            "wallet": "0x26h0de66ac93f330d40c4eac728d0438d0defdc1",
+            "pct": 1.82
+          },
+          {
+            "wallet": "0x27h718b8f70e27ce62a6b981ae3a04b305bd8291",
+            "pct": 1.82
+          },
+          {
+            "wallet": "0x28h0badc9cf7aa5118de136c15d26ed95a4a4e54",
+            "pct": 1.82
+          }
+        ],
+        "top10Pct": 18.6,
+        "deployerPct": 2.2,
+        "holderCount": 124,
+        "complete": true
+      }
+    },
+    {
+      "token": "0xa4a4024a4fcbcfe3f61bd1c30a7d79d78a51d3c1",
+      "curve": "0xc420f33c9808517ef8ab666596dc429fa5ffaabe",
+      "deployer": "0xd4aee2d8619e7c9ae03b6f1ac22af4061b523493",
+      "name": "PEANUT",
+      "symbol": "РEANUT",
+      "block": 41885420,
+      "txIndex": 6,
+      "logIndex": 1,
+      "launchedAt": 1788617862,
+      "pairToken": "0x0000000000000000000000000000000000000000",
+      "pairSymbol": "ETH",
+      "phase": 0,
+      "creatorTaxBps": 0,
+      "creatorFeeRecipient": "0xd4aee2d8619e7c9ae03b6f1ac22af4061b523493",
+      "devSharePct": 0,
+      "exemptWallets": 0,
+      "socials": {},
+      "quoteReserveWei": "0",
+      "curveProgress": 0,
+      "uniqueEarlyBuyers": 0,
+      "deployerRecord": {
+        "priorLaunches": 31,
+        "graduated": 0
+      },
+      "buyers": [],
+      "holders": {
+        "top": [
+          {
+            "wallet": "0xc420f33c9808517ef8ab666596dc429fa5ffaabe",
+            "pct": 61.4,
+            "label": "curve"
+          },
+          {
+            "wallet": "0x20h548fd0a7dec291eff1930b8b1243ed207315d",
+            "pct": 0.46
+          },
+          {
+            "wallet": "0x21h3e58e790a24346f9ea8530a35008189f8188b",
+            "pct": 0.46
+          },
+          {
+            "wallet": "0x22h5dbcdab928117b5af8637ded777740f92d580",
+            "pct": 0.46
+          },
+          {
+            "wallet": "0x23h094aaf751a2538768328526cdff0ce3cf90ff",
+            "pct": 0.46
+          },
+          {
+            "wallet": "0x24h2207a605d75ac988db40b7039ddb062f92c9b",
+            "pct": 0.46
+          },
+          {
+            "wallet": "0x25h86ee1094163e9ec8090da20ba7de8197aa2b9",
+            "pct": 0.46
+          },
+          {
+            "wallet": "0x26hcf1944a4158af76733ca6d53f7329c4d14e96",
+            "pct": 0.46
+          },
+          {
+            "wallet": "0x27h71fe0e90158b3208c12b49c9b1f161426ee75",
+            "pct": 0.46
+          },
+          {
+            "wallet": "0x28h162bd7072177120303a3ab0e89f9b18a29897",
+            "pct": 0.46
+          },
+          {
+            "wallet": "0xd4aee2d8619e7c9ae03b6f1ac22af4061b523493",
+            "pct": 0,
+            "label": "deployer"
+          }
+        ],
+        "top10Pct": 4.1,
+        "deployerPct": 0,
+        "holderCount": 344,
+        "complete": true
+      }
+    },
+    {
+      "token": "0xa5818e18f10a187ef1dd7393b82982d3047ba365",
+      "curve": "0xc52b5d4f6b4c80c6d515cc62969cd87772ecc42e",
+      "deployer": "0xd56fece9d49f964f2dc777c65ba10e985f24a8a6",
+      "name": "Peanut the Squirrel",
+      "symbol": "PNUT",
+      "block": 41886210,
+      "txIndex": 3,
+      "logIndex": 0,
+      "launchedAt": 1788617941,
+      "pairToken": "0x0000000000000000000000000000000000000000",
+      "pairSymbol": "ETH",
+      "phase": 0,
+      "creatorTaxBps": 400,
+      "creatorFeeRecipient": "0xd56fece9d49f964f2dc777c65ba10e985f24a8a6",
+      "devSharePct": 9.6,
+      "exemptWallets": 2,
+      "socials": {
+        "twitter": "https://x.com/pnut_eth",
+        "website": "https://pnut.fun",
+        "telegram": "https://t.me/pnut"
+      },
+      "quoteReserveWei": "336000000000000000",
+      "curveProgress": 0.08,
+      "uniqueEarlyBuyers": 3,
+      "deployerRecord": {
+        "priorLaunches": 6,
+        "graduated": 0
+      },
+      "buyers": [
+        {
+          "wallet": "0x15c60fdbf767d280e9ec6fb3f9419549f54c4a24",
+          "entryLagSec": 29,
+          "quoteInWei": "200000000000000000",
+          "taxPaidBps": 170
+        },
+        {
+          "wallet": "0x13cdc3559ffe6ef74937b70c40810696e948efac",
+          "entryLagSec": 35,
+          "quoteInWei": "80000000000000000",
+          "taxPaidBps": 64
+        },
+        {
+          "wallet": "0xdeadBEEF11223344556677889900aAbBcCdDeEfF",
+          "entryLagSec": 36,
+          "quoteInWei": "90000000000000000",
+          "taxPaidBps": 96
+        },
+        {
+          "wallet": "0x12cc962ec7d03785b38b45d36272ecbcb683db7b",
+          "entryLagSec": 77,
+          "quoteInWei": "20000000000000000",
+          "taxPaidBps": 310
+        },
+        {
+          "wallet": "0x14c7d5be0520418787200cdb629d842d361d8232",
+          "entryLagSec": 80,
+          "quoteInWei": "20000000000000000",
+          "taxPaidBps": 368
+        },
+        {
+          "wallet": "0x10c0394134aa780b3bed3ab10ba76a7ca554ff6d",
+          "entryLagSec": 92,
+          "quoteInWei": "170000000000000000",
+          "taxPaidBps": 266
+        },
+        {
+          "wallet": "0x16c653143c31d16ceb1cc35dfd929855f9e59cf6",
+          "entryLagSec": 94,
+          "quoteInWei": "120000000000000000",
+          "taxPaidBps": 8
+        },
+        {
+          "wallet": "0x11c26ce6f130423ae8139c0e9d201c1ad2f1fa3b",
+          "entryLagSec": 101,
+          "quoteInWei": "190000000000000000",
+          "taxPaidBps": 37
+        }
+      ],
+      "holders": {
+        "top": [
+          {
+            "wallet": "0xc52b5d4f6b4c80c6d515cc62969cd87772ecc42e",
+            "pct": 61.4,
+            "label": "curve"
+          },
+          {
+            "wallet": "0xd56fece9d49f964f2dc777c65ba10e985f24a8a6",
+            "pct": 9.6,
+            "label": "deployer"
+          },
+          {
+            "wallet": "0x20hc7704f69152f3895b4eeb528ca70b8d23d996",
+            "pct": 2.2
+          },
+          {
+            "wallet": "0x21h33a71c14bfcd06e3d7d0a718c6800926b6983",
+            "pct": 2.2
+          },
+          {
+            "wallet": "0x22h6d8990da4a278dc479e9b95e3f690efdefb3f",
+            "pct": 2.2
+          },
+          {
+            "wallet": "0x23h62e1f0b310d3d0e600a7bbb6d7b811c568fc1",
+            "pct": 2.2
+          },
+          {
+            "wallet": "0x24h3000c6448a297fab43a50b8d384b849ae2fb6",
+            "pct": 2.2
+          },
+          {
+            "wallet": "0x25hcf57d97d9681222b4ec0d235bfd389d3a633b",
+            "pct": 2.2
+          },
+          {
+            "wallet": "0x26h6cce84ed09cb48f261c59342dfba54a760b52",
+            "pct": 2.2
+          },
+          {
+            "wallet": "0x27h897cc6637bf783a8beb43a18af43fac959866",
+            "pct": 2.2
+          },
+          {
+            "wallet": "0x28h43f26cf2c6e0f3f7c147bab54892847fd07da",
+            "pct": 2.2
+          }
+        ],
+        "top10Pct": 29.4,
+        "deployerPct": 9.6,
+        "holderCount": 279,
+        "complete": true
+      }
+    },
+    {
+      "token": "0xa64a3d6e18740ccfe073c0edc81b099f57fed4ad",
+      "curve": "0xc6eedf8ee2dd7f33dd8ae7a5ddcc90b8cbe4b773",
+      "deployer": "0xd6416b5f23cf07edca8aa4a66b2b6139427ba6ee",
+      "name": "peanuts",
+      "symbol": "PEANUTS",
+      "block": 41888100,
+      "txIndex": 2,
+      "logIndex": 2,
+      "launchedAt": 1788618130,
+      "pairToken": "0x0000000000000000000000000000000000000000",
+      "pairSymbol": "ETH",
+      "phase": 0,
+      "creatorTaxBps": 150,
+      "creatorFeeRecipient": "0xd6416b5f23cf07edca8aa4a66b2b6139427ba6ee",
+      "devSharePct": 4.4,
+      "exemptWallets": 1,
+      "socials": {
+        "twitter": "https://x.com/peanuts_eth",
+        "website": "https://peanuts.fun",
+        "telegram": "https://t.me/peanuts"
+      },
+      "quoteReserveWei": "252000000000000000",
+      "curveProgress": 0.06,
+      "uniqueEarlyBuyers": 2,
+      "deployerRecord": {
+        "priorLaunches": 3,
+        "graduated": 1
+      },
+      "buyers": [
+        {
+          "wallet": "0x14c7d5be0520418787200cdb629d842d361d8232",
+          "entryLagSec": 23,
+          "quoteInWei": "190000000000000000",
+          "taxPaidBps": 297
+        },
+        {
+          "wallet": "0x11c26ce6f130423ae8139c0e9d201c1ad2f1fa3b",
+          "entryLagSec": 57,
+          "quoteInWei": "80000000000000000",
+          "taxPaidBps": 247
+        },
+        {
+          "wallet": "0x15c60fdbf767d280e9ec6fb3f9419549f54c4a24",
+          "entryLagSec": 63,
+          "quoteInWei": "70000000000000000",
+          "taxPaidBps": 118
+        },
+        {
+          "wallet": "0x13cdc3559ffe6ef74937b70c40810696e948efac",
+          "entryLagSec": 81,
+          "quoteInWei": "150000000000000000",
+          "taxPaidBps": 259
+        },
+        {
+          "wallet": "0x12cc962ec7d03785b38b45d36272ecbcb683db7b",
+          "entryLagSec": 88,
+          "quoteInWei": "20000000000000000",
+          "taxPaidBps": 234
+        },
+        {
+          "wallet": "0x10c0394134aa780b3bed3ab10ba76a7ca554ff6d",
+          "entryLagSec": 89,
+          "quoteInWei": "110000000000000000",
+          "taxPaidBps": 151
+        }
+      ],
+      "holders": {
+        "top": [
+          {
+            "wallet": "0xc6eedf8ee2dd7f33dd8ae7a5ddcc90b8cbe4b773",
+            "pct": 61.4,
+            "label": "curve"
+          },
+          {
+            "wallet": "0xd6416b5f23cf07edca8aa4a66b2b6139427ba6ee",
+            "pct": 4.4,
+            "label": "deployer"
+          },
+          {
+            "wallet": "0x20hc6f961af391be1a17292765fbb614ffd0e199",
+            "pct": 1.92
+          },
+          {
+            "wallet": "0x21h2cbe3a611d02a2ecadb2e41fe6d4b36858d21",
+            "pct": 1.92
+          },
+          {
+            "wallet": "0x22h757e5e287841cfd9fa77fb7aa83781a36ec70",
+            "pct": 1.92
+          },
+          {
+            "wallet": "0x23hc2855922c6111b64151f3a3038b5e8ef49fef",
+            "pct": 1.92
+          },
+          {
+            "wallet": "0x24hb3f0db5e2d40bf642f0f3b32ab45f0efa5cbb",
+            "pct": 1.92
+          },
+          {
+            "wallet": "0x25hf4fe21f1dc6f05e97ecfca68199882ab691df",
+            "pct": 1.92
+          },
+          {
+            "wallet": "0x26h2c0b2eaa8b0441c1e765aca93c2818384fe66",
+            "pct": 1.92
+          },
+          {
+            "wallet": "0x27hbeaee1769140cc96091fca0593153f1d95daf",
+            "pct": 1.92
+          },
+          {
+            "wallet": "0x28hf93f7083909bd7262b1d869f69100d96f2a12",
+            "pct": 1.92
+          }
+        ],
+        "top10Pct": 21.7,
+        "deployerPct": 4.4,
+        "holderCount": 325,
+        "complete": true
+      }
+    }
+  ]
+}

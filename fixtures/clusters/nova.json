@@ -1,0 +1,486 @@
+{
+  "origin": "synthetic",
+  "note": "The case that costs money: the first born is the operator's own bait, and the launch with the flow is number three. Shaped by hand, not captured from the chain.",
+  "launches": [
+    {
+      "token": "0x23c8efa88f21362520688d45a0e15a0bb2331dc9",
+      "curve": "0x23e8056f755e32edf185274e5051670e4f8465a0",
+      "deployer": "0x23f8fde50590e5f21f75be8fc7dacf818201676b",
+      "name": "Nova",
+      "symbol": "NOVA",
+      "block": 41891000,
+      "txIndex": 2,
+      "logIndex": 3,
+      "launchedAt": 1788618420,
+      "pairToken": "0x0000000000000000000000000000000000000000",
+      "pairSymbol": "ETH",
+      "phase": 0,
+      "creatorTaxBps": 700,
+      "creatorFeeRecipient": "0xfeef8f6e25c8db7be23946ca45f727110cbd79f5",
+      "devSharePct": 14.9,
+      "exemptWallets": 7,
+      "socials": {},
+      "quoteReserveWei": "378000000000000000",
+      "curveProgress": 0.09,
+      "uniqueEarlyBuyers": 4,
+      "deployerRecord": {
+        "priorLaunches": 22,
+        "graduated": 0,
+        "fundedBy": "0x2C88fA107b4e59d0aE31Bc7f6d02593aE84c1b7D"
+      },
+      "buyers": [
+        {
+          "wallet": "0x10c0394134aa780b3bed3ab10ba76a7ca554ff6d",
+          "entryLagSec": 17,
+          "quoteInWei": "140000000000000000",
+          "taxPaidBps": 266
+        },
+        {
+          "wallet": "0xdeadBEEF11223344556677889900aAbBcCdDeEfF",
+          "entryLagSec": 29,
+          "quoteInWei": "140000000000000000",
+          "taxPaidBps": 81
+        },
+        {
+          "wallet": "0x11c26ce6f130423ae8139c0e9d201c1ad2f1fa3b",
+          "entryLagSec": 43,
+          "quoteInWei": "190000000000000000",
+          "taxPaidBps": 93
+        },
+        {
+          "wallet": "0x13cdc3559ffe6ef74937b70c40810696e948efac",
+          "entryLagSec": 50,
+          "quoteInWei": "110000000000000000",
+          "taxPaidBps": 259
+        },
+        {
+          "wallet": "0x12cc962ec7d03785b38b45d36272ecbcb683db7b",
+          "entryLagSec": 75,
+          "quoteInWei": "180000000000000000",
+          "taxPaidBps": 103
+        }
+      ],
+      "holders": {
+        "top": [
+          {
+            "wallet": "0x23e8056f755e32edf185274e5051670e4f8465a0",
+            "pct": 61.4,
+            "label": "curve"
+          },
+          {
+            "wallet": "0x23f8fde50590e5f21f75be8fc7dacf818201676b",
+            "pct": 14.9,
+            "label": "deployer"
+          },
+          {
+            "wallet": "0x20hbae18460ae21ab254c21194d8a73d9d3786fb",
+            "pct": 3.62
+          },
+          {
+            "wallet": "0x21h15c64152ec1b12d9f2d4f17575f7b3302264a",
+            "pct": 3.62
+          },
+          {
+            "wallet": "0x22he8872febfcadb4edb16e58ad966763d7613fb",
+            "pct": 3.62
+          },
+          {
+            "wallet": "0x23h20bfa84c1589d00c2ffaeca86f38966992a2e",
+            "pct": 3.62
+          },
+          {
+            "wallet": "0x24h73c5f5aaf3fc1bcc54b4f92dc1b84deb040e8",
+            "pct": 3.62
+          },
+          {
+            "wallet": "0x25hc3a6378d4ed6dce832dccaa3e3ea29c126352",
+            "pct": 3.62
+          },
+          {
+            "wallet": "0x26h0298876688ce7b5512a491405b425e65cdeea",
+            "pct": 3.62
+          },
+          {
+            "wallet": "0x27hdc152270f22fa5e18a4c90636c8f113cd6b7d",
+            "pct": 3.62
+          },
+          {
+            "wallet": "0x28h7dd18d75c321de42885c6b514200f0e801d07",
+            "pct": 3.62
+          }
+        ],
+        "top10Pct": 47.5,
+        "deployerPct": 14.9,
+        "holderCount": 252,
+        "complete": true
+      }
+    },
+    {
+      "token": "0x23c91946d81a0286e1b6b3accb985382fb7fa740",
+      "curve": "0x23e9b495c23e1ce3294d4c496cf545c517e6d4c6",
+      "deployer": "0x23f95dee45c328e8f06631bcc546b634d663fca7",
+      "name": "Nova",
+      "symbol": "N0VA",
+      "block": 41891630,
+      "txIndex": 2,
+      "logIndex": 3,
+      "launchedAt": 1788618483,
+      "pairToken": "0x0000000000000000000000000000000000000000",
+      "pairSymbol": "ETH",
+      "phase": 0,
+      "creatorTaxBps": 500,
+      "creatorFeeRecipient": "0x23f95dee45c328e8f06631bcc546b634d663fca7",
+      "devSharePct": 11.2,
+      "exemptWallets": 5,
+      "socials": {},
+      "quoteReserveWei": "42000000000000000",
+      "curveProgress": 0.01,
+      "uniqueEarlyBuyers": 0,
+      "deployerRecord": {
+        "priorLaunches": 18,
+        "graduated": 0,
+        "fundedBy": "0x2C88fA107b4e59d0aE31Bc7f6d02593aE84c1b7D"
+      },
+      "buyers": [
+        {
+          "wallet": "0x10c0394134aa780b3bed3ab10ba76a7ca554ff6d",
+          "entryLagSec": 71,
+          "quoteInWei": "120000000000000000",
+          "taxPaidBps": 9900
+        },
+        {
+          "wallet": "0x11c26ce6f130423ae8139c0e9d201c1ad2f1fa3b",
+          "entryLagSec": 93,
+          "quoteInWei": "160000000000000000",
+          "taxPaidBps": 9900
+        }
+      ],
+      "holders": {
+        "top": [
+          {
+            "wallet": "0x23e9b495c23e1ce3294d4c496cf545c517e6d4c6",
+            "pct": 61.4,
+            "label": "curve"
+          },
+          {
+            "wallet": "0x23f95dee45c328e8f06631bcc546b634d663fca7",
+            "pct": 11.2,
+            "label": "deployer"
+          },
+          {
+            "wallet": "0x20h6dfc5efe9e86862a31c20ff78b76f99160e1a",
+            "pct": 3.07
+          },
+          {
+            "wallet": "0x21hf6fef839010dd3a9a365d12193d84edf41037",
+            "pct": 3.07
+          },
+          {
+            "wallet": "0x22hdf42bcc06c107010d073a52196357a719c015",
+            "pct": 3.07
+          },
+          {
+            "wallet": "0x23habdd3be2b2b1b1295ba10467914e1e59b2fd2",
+            "pct": 3.07
+          },
+          {
+            "wallet": "0x24hb98d742f95005b2a4a24cdc9ae4a8afa989a1",
+            "pct": 3.07
+          },
+          {
+            "wallet": "0x25h26b524d49ed8205c96180a82c77cc26c03424",
+            "pct": 3.07
+          },
+          {
+            "wallet": "0x26hcf631e699294faa30d5d0d26b377ffaa6dc0d",
+            "pct": 3.07
+          },
+          {
+            "wallet": "0x27hd69f33f8796290ce161968326093612f53b2d",
+            "pct": 3.07
+          },
+          {
+            "wallet": "0x28he9509de255ddb8efc1152c8112bea3b6749f9",
+            "pct": 3.07
+          }
+        ],
+        "top10Pct": 38.8,
+        "deployerPct": 11.2,
+        "holderCount": 159,
+        "complete": true
+      }
+    },
+    {
+      "token": "0x23ca88180b036e5f5d62db45c8a242e372208e12",
+      "curve": "0x23ea5fc4b5dc50001a368168f5d9297d920af540",
+      "deployer": "0x23fa432a87b07a3db212d32cea52b76cba2326ba",
+      "name": "Nova Protocol",
+      "symbol": "NOVA",
+      "block": 41892480,
+      "txIndex": 4,
+      "logIndex": 1,
+      "launchedAt": 1788618568,
+      "pairToken": "0x0000000000000000000000000000000000000000",
+      "pairSymbol": "ETH",
+      "phase": 2,
+      "creatorTaxBps": 100,
+      "creatorFeeRecipient": "0x23fa432a87b07a3db212d32cea52b76cba2326ba",
+      "devSharePct": 2.8,
+      "exemptWallets": 0,
+      "socials": {
+        "twitter": "https://x.com/nova_eth",
+        "website": "https://nova.fun",
+        "telegram": "https://t.me/nova"
+      },
+      "quoteReserveWei": "4200000000000000000",
+      "curveProgress": 1,
+      "uniqueEarlyBuyers": 18,
+      "deployerRecord": {
+        "priorLaunches": 4,
+        "graduated": 2
+      },
+      "buyers": [
+        {
+          "wallet": "0x29cbcfee1d9c99d5e72f1085d64be336aa438316",
+          "entryLagSec": 7,
+          "quoteInWei": "150000000000000000",
+          "taxPaidBps": 85
+        },
+        {
+          "wallet": "0x12cc962ec7d03785b38b45d36272ecbcb683db7b",
+          "entryLagSec": 9,
+          "quoteInWei": "50000000000000000",
+          "taxPaidBps": 15
+        },
+        {
+          "wallet": "0x16c653143c31d16ceb1cc35dfd929855f9e59cf6",
+          "entryLagSec": 10,
+          "quoteInWei": "150000000000000000",
+          "taxPaidBps": 90
+        },
+        {
+          "wallet": "0x4f2a91Cc0d1B7ae3aF66E0cB2211d0a9f3E5b7C1",
+          "entryLagSec": 11,
+          "quoteInWei": "210000000000000000",
+          "taxPaidBps": 55
+        },
+        {
+          "wallet": "0x26cb058877783794a797d5b49bd81a6295c67af4",
+          "entryLagSec": 13,
+          "quoteInWei": "60000000000000000",
+          "taxPaidBps": 383
+        },
+        {
+          "wallet": "0x2acb1a8282442857182d0743d7b9aae8a7ffc10e",
+          "entryLagSec": 20,
+          "quoteInWei": "70000000000000000",
+          "taxPaidBps": 315
+        },
+        {
+          "wallet": "0x21cc52c912a2797cd9d07d1628dcb161ab58a3df",
+          "entryLagSec": 21,
+          "quoteInWei": "50000000000000000",
+          "taxPaidBps": 84
+        },
+        {
+          "wallet": "0x15c60fdbf767d280e9ec6fb3f9419549f54c4a24",
+          "entryLagSec": 24,
+          "quoteInWei": "200000000000000000",
+          "taxPaidBps": 64
+        },
+        {
+          "wallet": "0xC0FFEE2a9B1d4E7f83aa5C6d0B1e93F4a7D2c518",
+          "entryLagSec": 26,
+          "quoteInWei": "390000000000000000",
+          "taxPaidBps": 27
+        },
+        {
+          "wallet": "0x1bcb1f6d72974b4078218a785e25c15b5d2d0fde",
+          "entryLagSec": 30,
+          "quoteInWei": "170000000000000000",
+          "taxPaidBps": 67
+        },
+        {
+          "wallet": "0x14c7d5be0520418787200cdb629d842d361d8232",
+          "entryLagSec": 32,
+          "quoteInWei": "120000000000000000",
+          "taxPaidBps": 257
+        },
+        {
+          "wallet": "0x25c92ecc5962b7c057d7a4c1b31977b769c1604a",
+          "entryLagSec": 32,
+          "quoteInWei": "120000000000000000",
+          "taxPaidBps": 329
+        },
+        {
+          "wallet": "0x19Ab77E4d2c0F5138a6B9cE04dA71f8b3C6e2905",
+          "entryLagSec": 38,
+          "quoteInWei": "120000000000000000",
+          "taxPaidBps": 69
+        },
+        {
+          "wallet": "0x1ace80f98993234aa8447e80a72236f80af45aef",
+          "entryLagSec": 38,
+          "quoteInWei": "190000000000000000",
+          "taxPaidBps": 67
+        },
+        {
+          "wallet": "0x28cd7fa6cd67713f22abdb82b0bfcfd43b40bd54",
+          "entryLagSec": 42,
+          "quoteInWei": "170000000000000000",
+          "taxPaidBps": 204
+        },
+        {
+          "wallet": "0x1dc5a9200a0cbb2f042d9e95dbaeb2042e40e658",
+          "entryLagSec": 49,
+          "quoteInWei": "150000000000000000",
+          "taxPaidBps": 203
+        },
+        {
+          "wallet": "0xAe51b3C08D9f26a4E7c105B2fd83a690C41e7B2d",
+          "entryLagSec": 52,
+          "quoteInWei": "240000000000000000",
+          "taxPaidBps": 47
+        },
+        {
+          "wallet": "0x1ec5cb80d2de715ca790afe1214eba97ea835b8d",
+          "entryLagSec": 55,
+          "quoteInWei": "180000000000000000",
+          "taxPaidBps": 251
+        },
+        {
+          "wallet": "0x11c26ce6f130423ae8139c0e9d201c1ad2f1fa3b",
+          "entryLagSec": 65,
+          "quoteInWei": "140000000000000000",
+          "taxPaidBps": 317
+        },
+        {
+          "wallet": "0x18c5278732a1693c02e1f649cbec50e32822c14e",
+          "entryLagSec": 66,
+          "quoteInWei": "80000000000000000",
+          "taxPaidBps": 249
+        },
+        {
+          "wallet": "0x20c6f2be86f5913edea01a88ab58d6d11e644c0f",
+          "entryLagSec": 67,
+          "quoteInWei": "180000000000000000",
+          "taxPaidBps": 331
+        },
+        {
+          "wallet": "0x22cd9a1be2a64b4f09c4172a3196736581696593",
+          "entryLagSec": 72,
+          "quoteInWei": "200000000000000000",
+          "taxPaidBps": 157
+        },
+        {
+          "wallet": "0x19c95a5727f7d1956e848078af3c8b68bac4c0b8",
+          "entryLagSec": 74,
+          "quoteInWei": "10000000000000000",
+          "taxPaidBps": 396
+        },
+        {
+          "wallet": "0x1fc2988ed8a7f3b0fa8e1c03e7b6def40d74f918",
+          "entryLagSec": 75,
+          "quoteInWei": "40000000000000000",
+          "taxPaidBps": 318
+        },
+        {
+          "wallet": "0x27c024365e1663a5cd6c8f997f9878525220205d",
+          "entryLagSec": 77,
+          "quoteInWei": "170000000000000000",
+          "taxPaidBps": 327
+        },
+        {
+          "wallet": "0x10c0394134aa780b3bed3ab10ba76a7ca554ff6d",
+          "entryLagSec": 78,
+          "quoteInWei": "180000000000000000",
+          "taxPaidBps": 11
+        },
+        {
+          "wallet": "0x23c96e1dcdddd873430d335821110ffa65b11612",
+          "entryLagSec": 84,
+          "quoteInWei": "120000000000000000",
+          "taxPaidBps": 38
+        },
+        {
+          "wallet": "0x13cdc3559ffe6ef74937b70c40810696e948efac",
+          "entryLagSec": 87,
+          "quoteInWei": "70000000000000000",
+          "taxPaidBps": 294
+        },
+        {
+          "wallet": "0x17c6836ec5ee627f3e3086e61c8904eca96449ac",
+          "entryLagSec": 94,
+          "quoteInWei": "30000000000000000",
+          "taxPaidBps": 7
+        },
+        {
+          "wallet": "0x24c56827a78ca91115caaad2074e86061666a543",
+          "entryLagSec": 104,
+          "quoteInWei": "40000000000000000",
+          "taxPaidBps": 226
+        },
+        {
+          "wallet": "0x1cc1a267cde03dea892404b60ba067f3750347b4",
+          "entryLagSec": 108,
+          "quoteInWei": "60000000000000000",
+          "taxPaidBps": 100
+        }
+      ],
+      "holders": {
+        "top": [
+          {
+            "wallet": "0x23ea5fc4b5dc50001a368168f5d9297d920af540",
+            "pct": 61.4,
+            "label": "curve"
+          },
+          {
+            "wallet": "0x23fa432a87b07a3db212d32cea52b76cba2326ba",
+            "pct": 2.8,
+            "label": "deployer"
+          },
+          {
+            "wallet": "0x20hd86ad8e18f042c09fcf421de185b089115222",
+            "pct": 1.01
+          },
+          {
+            "wallet": "0x21h7511972e2d5252625ba379da22f0a166da38a",
+            "pct": 1.01
+          },
+          {
+            "wallet": "0x22h1058f6911697f7f1e89a2872d113aca0c6e6f",
+            "pct": 1.01
+          },
+          {
+            "wallet": "0x23h0d6af4b5a23a7d4032514f268cfec89e748b2",
+            "pct": 1.01
+          },
+          {
+            "wallet": "0x24h58a2e1b6d11cb847b5227059d9a52304a309d",
+            "pct": 1.01
+          },
+          {
+            "wallet": "0x25hf7dd8418ae7365b9e5005c4833363c3a99477",
+            "pct": 1.01
+          },
+          {
+            "wallet": "0x26h30c9795f907cb4c48f3e01be5d8e51065b7d5",
+            "pct": 1.01
+          },
+          {
+            "wallet": "0x27h61ac99ca757d70729fc71016845a69bdf73e8",
+            "pct": 1.01
+          },
+          {
+            "wallet": "0x28hfac5c46b7e096301d8fabde8c45ba547a12e6",
+            "pct": 1.01
+          }
+        ],
+        "top10Pct": 11.9,
+        "deployerPct": 2.8,
+        "holderCount": 471,
+        "complete": true
+      }
+    }
+  ]
+}

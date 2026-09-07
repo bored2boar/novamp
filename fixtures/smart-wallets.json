@@ -1,0 +1,61 @@
+{
+  "source": "SYNTHETIC fixture registry, not built from chain history",
+  "builtAt": "2026-09-05T14:12:00.000Z",
+  "windowBlocks": 400000,
+  "wallets": [
+    {
+      "address": "0x4f2a91Cc0d1B7ae3aF66E0cB2211d0a9f3E5b7C1",
+      "entries": 22,
+      "graduated": 4,
+      "hitRate": 0.1818,
+      "medianLagSec": 9,
+      "topEntryShare": 0.21,
+      "note": "synthetic fixture wallet"
+    },
+    {
+      "address": "0x8b31DdA5390fF4c1e2A70bE13aC9d84c6F2019Ea",
+      "entries": 25,
+      "graduated": 5,
+      "hitRate": 0.2,
+      "medianLagSec": 13,
+      "topEntryShare": 0.26,
+      "note": "synthetic fixture wallet"
+    },
+    {
+      "address": "0xC0FFEE2a9B1d4E7f83aa5C6d0B1e93F4a7D2c518",
+      "entries": 28,
+      "graduated": 6,
+      "hitRate": 0.2143,
+      "medianLagSec": 17,
+      "topEntryShare": 0.31,
+      "note": "synthetic fixture wallet"
+    },
+    {
+      "address": "0x19Ab77E4d2c0F5138a6B9cE04dA71f8b3C6e2905",
+      "entries": 31,
+      "graduated": 4,
+      "hitRate": 0.129,
+      "medianLagSec": 21,
+      "topEntryShare": 0.36,
+      "note": "synthetic fixture wallet"
+    },
+    {
+      "address": "0x6D4e0aC17bF3928d5a0Bc1E6f4903aA82b7dC331",
+      "entries": 34,
+      "graduated": 5,
+      "hitRate": 0.1471,
+      "medianLagSec": 25,
+      "topEntryShare": 0.41,
+      "note": "synthetic fixture wallet"
+    },
+    {
+      "address": "0xAe51b3C08D9f26a4E7c105B2fd83a690C41e7B2d",
+      "entries": 37,
+      "graduated": 6,
+      "hitRate": 0.1622,
+      "medianLagSec": 29,
+      "topEntryShare": 0.46,
+      "note": "synthetic fixture wallet"
+    }
+  ]
+}

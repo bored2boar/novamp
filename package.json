@@ -1,0 +1,64 @@
+{
+  "name": "novamp",
+  "version": "0.2.0",
+  "description": "Read-only clone resolver for pons v2 launches on Robinhood Chain. Finds every token vamping a name, works out which one is the original, and flags the ones you should not touch.",
+  "license": "MIT",
+  "type": "module",
+  "bin": {
+    "novamp": "./bin/novamp.js"
+  },
+  "main": "./dist/cli.js",
+  "engines": {
+    "node": ">=20"
+  },
+  "files": [
+    "bin",
+    "dist",
+    "src",
+    "fixtures",
+    "README.md",
+    "LICENSE",
+    ".env.example"
+  ],
+  "scripts": {
+    "start": "tsx src/cli.ts",
+    "novamp": "tsx src/cli.ts",
+    "doctor": "tsx src/cli.ts doctor",
+    "demo": "tsx src/cli.ts vamp NOVA --demo",
+    "board": "tsx src/cli.ts board --demo",
+    "build": "tsc -p tsconfig.json",
+    "prepare": "npm run build",
+    "test": "node --import tsx --test test/*.test.ts",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "capture": "tsx scripts/capture-fixtures.ts"
+  },
+  "dependencies": {
+    "commander": "^12.1.0",
+    "viem": "^2.21.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.14.0",
+    "tsx": "^4.19.0",
+    "typescript": "^5.6.0"
+  },
+  "keywords": [
+    "robinhood-chain",
+    "pons",
+    "memecoin",
+    "clone-detection",
+    "copy-trading",
+    "wallet-analysis",
+    "vamp",
+    "read-only",
+    "homoglyph",
+    "rug-detection"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bored2boar/novamp.git"
+  },
+  "bugs": {
+    "url": "https://github.com/bored2boar/novamp/issues"
+  },
+  "homepage": "https://github.com/bored2boar/novamp#readme"
+}

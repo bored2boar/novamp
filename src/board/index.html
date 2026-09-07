@@ -1,0 +1,255 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>novamp</title>
+<style>
+  :root {
+    --bg: #0b0e13;
+    --panel: #11151d;
+    --line: #1e2430;
+    --ink: #e6e9ef;
+    --dim: #7b8698;
+    --green: #7fe08a;
+    --amber: #f2c14e;
+    --red: #ff6b5e;
+    --cyan: #5ad4e6;
+    --violet: #b48cff;
+    --mono: ui-monospace, "SF Mono", "JetBrains Mono", Menlo, Consolas, monospace;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--bg); color: var(--ink);
+    font: 14px/1.5 var(--mono);
+    -webkit-font-smoothing: antialiased;
+  }
+  header {
+    display: flex; align-items: baseline; gap: 14px; flex-wrap: wrap;
+    padding: 18px 22px; border-bottom: 1px solid var(--line);
+    position: sticky; top: 0; background: var(--bg); z-index: 5;
+  }
+  h1 { font-size: 17px; margin: 0; letter-spacing: .12em; text-transform: uppercase; }
+  h1 span { color: var(--violet); }
+  .meta { color: var(--dim); font-size: 12px; }
+  .badge {
+    font-size: 11px; padding: 2px 7px; border: 1px solid var(--line);
+    border-radius: 3px; color: var(--dim); text-transform: uppercase; letter-spacing: .08em;
+  }
+  .badge.demo { color: var(--amber); border-color: color-mix(in srgb, var(--amber) 40%, transparent); }
+  .badge.live { color: var(--green); border-color: color-mix(in srgb, var(--green) 40%, transparent); }
+  main { padding: 20px 22px 60px; max-width: 1400px; }
+  .strip { display: flex; gap: 26px; flex-wrap: wrap; padding: 0 0 22px; }
+  .stat .n { font-size: 22px; }
+  .stat .k { color: var(--dim); font-size: 11px; text-transform: uppercase; letter-spacing: .09em; }
+  .controls { display: flex; gap: 10px; align-items: center; margin: 0 0 18px; flex-wrap: wrap; }
+  input, select {
+    background: var(--panel); border: 1px solid var(--line); color: var(--ink);
+    font: inherit; padding: 7px 10px; border-radius: 4px;
+  }
+  input:focus, select:focus { outline: 1px solid var(--violet); }
+  .cluster {
+    border: 1px solid var(--line); border-radius: 6px; margin: 0 0 16px;
+    background: var(--panel); overflow: hidden;
+  }
+  .cluster > summary {
+    cursor: pointer; padding: 12px 16px; display: flex; gap: 12px;
+    align-items: baseline; flex-wrap: wrap; list-style: none;
+  }
+  .cluster > summary::-webkit-details-marker { display: none; }
+  .cluster > summary:hover { background: #141a24; }
+  .name { font-size: 15px; font-weight: 600; }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  th {
+    text-align: left; color: var(--dim); font-weight: 400; font-size: 11px;
+    letter-spacing: .08em; text-transform: uppercase;
+    padding: 8px 12px; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line);
+  }
+  td { padding: 8px 12px; border-bottom: 1px solid #171c26; white-space: nowrap; }
+  tr:last-child td { border-bottom: none; }
+  td.num, th.num { text-align: right; }
+  .v { font-size: 11px; letter-spacing: .06em; padding: 2px 6px; border-radius: 3px; }
+  .v-ORIGINAL { color: var(--green); background: color-mix(in srgb, var(--green) 12%, transparent); }
+  .v-CONTESTED { color: var(--amber); background: color-mix(in srgb, var(--amber) 12%, transparent); }
+  .v-TAINTED { color: var(--violet); background: color-mix(in srgb, var(--violet) 12%, transparent); }
+  .v-VAMP { color: var(--red); background: color-mix(in srgb, var(--red) 12%, transparent); }
+  .v-DEAD, .v-SOLO { color: var(--dim); background: #161b24; }
+  .v-FARM { color: var(--red); background: color-mix(in srgb, var(--red) 14%, transparent); }
+  .v-CLEAN { color: var(--green); background: color-mix(in srgb, var(--green) 12%, transparent); }
+  .r-GREEN { color: var(--green); } .r-AMBER { color: var(--amber); }
+  .r-RED { color: var(--red); } .r-UNKNOWN { color: var(--dim); }
+  .notes { padding: 10px 16px; border-top: 1px solid var(--line); color: var(--cyan); font-size: 12px; }
+  .notes div { padding: 2px 0; }
+  .why { padding: 10px 16px 14px; border-top: 1px solid var(--line); font-size: 12px; color: var(--dim); }
+  .why b { color: var(--ink); font-weight: 500; }
+  .why .pos { color: var(--green); } .why .neg { color: var(--red); }
+  .addr { color: var(--dim); font-size: 12px; }
+  .empty { color: var(--dim); padding: 40px 0; }
+  footer { color: var(--dim); font-size: 12px; padding: 0 22px 40px; max-width: 1400px; }
+  @media (prefers-color-scheme: light) {
+    :root { --bg:#fbfbfa; --panel:#fff; --line:#e4e4e0; --ink:#191917; --dim:#767671;
+            --green:#2f7d3a; --amber:#96690a; --red:#b3382c; --cyan:#136b7a; --violet:#5f3dc4; }
+  }
+</style>
+</head>
+<body>
+<header>
+  <h1>no<span>vamp</span></h1>
+  <span id="src" class="badge">loading</span>
+  <span class="meta" id="describe"></span>
+  <span class="meta" id="stamp" style="margin-left:auto"></span>
+</header>
+
+<main>
+  <div class="strip" id="strip"></div>
+
+  <div class="controls">
+    <input id="q" placeholder="filter by name or ticker" size="26" autofocus>
+    <select id="only">
+      <option value="fights">fights only</option>
+      <option value="all">everything</option>
+      <option value="contested">contested and farms</option>
+    </select>
+    <select id="sort">
+      <option value="size">most copies first</option>
+      <option value="recent">newest first</option>
+      <option value="lag">fastest copy first</option>
+    </select>
+    <span class="meta" id="count"></span>
+  </div>
+
+  <div id="out"><div class="empty">reading…</div></div>
+</main>
+
+<footer>
+  Read only. novamp holds no key and has no transaction path. Served on 127.0.0.1 for this
+  machine only. Every number here traces to a line in <code>src/vamp/</code>.
+</footer>
+
+<script>
+const $ = (id) => document.getElementById(id);
+let DATA = null;
+
+const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const short = (a) => a ? a.slice(0, 8) + '…' + a.slice(-4) : '';
+const dur = (s) => {
+  s = Math.max(0, Math.round(s));
+  if (s < 60) return s + 's';
+  if (s < 3600) return Math.floor(s / 60) + 'm ' + (s % 60) + 's';
+  return Math.floor(s / 3600) + 'h ' + Math.round((s % 3600) / 60) + 'm';
+};
+
+function stats(d) {
+  const s = d.stats;
+  return [
+    ['launches', s.launches],
+    ['names', s.names],
+    ['copies', s.copies],
+    ['vamp ratio', s.vampRatio.toFixed(2)],
+    ['median vamp lag', s.medianVampLagSec === null ? '—' : dur(s.medianVampLagSec)],
+  ].map(([k, n]) => `<div class="stat"><div class="n">${esc(n)}</div><div class="k">${esc(k)}</div></div>`).join('');
+}
+
+function row(m, size) {
+  const r = m.record;
+  const top10 = r.holders && r.holders.complete ? r.holders.top10Pct.toFixed(1) + '%' : '—';
+  const smart = m.smartWallets ? m.smartWallets + (m.converged ? ' ★' : '') : '0';
+  return `<tr>
+    <td class="num">${m.rank}</td>
+    <td><b>${esc(r.symbol)}</b></td>
+    <td class="addr">${esc(r.name)}</td>
+    <td><span class="v v-${m.verdict}">${m.verdict}</span></td>
+    <td class="num">${m.potential}</td>
+    <td class="r-${m.risk}">${m.risk === 'UNKNOWN' ? '?' : m.risk}</td>
+    <td class="num">${m.rank === 1 ? 'first' : '+' + dur(m.lagSec)}</td>
+    <td class="num">${top10}</td>
+    <td class="num">${r.devSharePct.toFixed(1)}%</td>
+    <td class="num">${r.exemptWallets || '—'}</td>
+    <td class="num">${smart}</td>
+    <td class="num">${r.uniqueEarlyBuyers ?? '—'}</td>
+    <td class="addr">${short(r.token)}</td>
+  </tr>`;
+}
+
+function cluster(c) {
+  const ordered = [...c.members].sort((a, b) => {
+    const w = (x) => x.verdict === 'ORIGINAL' ? 3 : x.verdict === 'CONTESTED' ? 2 : x.verdict === 'TAINTED' ? 1 : 0;
+    return w(b) - w(a) || b.potential - a.potential || a.rank - b.rank;
+  });
+  const head = ordered[0];
+  const why = head.reasons.filter((r) => r.points !== 0).map((r) =>
+    `<span class="${r.points > 0 ? 'pos' : 'neg'}">${r.points > 0 ? '+' : ''}${r.points}</span> ${esc(r.text)}`
+  ).join(' &nbsp;·&nbsp; ');
+
+  return `<details class="cluster" ${c.members.length > 1 ? 'open' : ''}>
+    <summary>
+      <span class="name">${esc(c.label)}</span>
+      <span class="v v-${c.verdict}">${c.verdict}</span>
+      <span class="meta">${c.members.length} launch(es) · ${c.members.length - 1} cop${c.members.length === 2 ? 'y' : 'ies'}${
+        c.vampLagSec === null ? '' : ' · first copy ' + dur(c.vampLagSec) + ' after the original'}</span>
+    </summary>
+    <table>
+      <thead><tr>
+        <th class="num">#</th><th>symbol</th><th>name</th><th>verdict</th>
+        <th class="num">score</th><th>risk</th><th class="num">lag</th>
+        <th class="num">top10</th><th class="num">dev</th><th class="num">exempt</th>
+        <th class="num">smart</th><th class="num">buyers</th><th>token</th>
+      </tr></thead>
+      <tbody>${ordered.map((m) => row(m, c.members.length)).join('')}</tbody>
+    </table>
+    ${c.notes.length ? `<div class="notes">${c.notes.map((n) => '<div>→ ' + esc(n) + '</div>').join('')}</div>` : ''}
+    <div class="why"><b>why ${esc(head.record.symbol)} scores ${head.potential}:</b> ${why}</div>
+  </details>`;
+}
+
+function render() {
+  if (!DATA) return;
+  $('src').textContent = DATA.source.kind;
+  $('src').className = 'badge ' + DATA.source.kind;
+  $('describe').textContent = DATA.source.describe + ' · window ' + DATA.window;
+  $('stamp').textContent = 'read ' + new Date(DATA.generatedAt).toLocaleTimeString();
+  $('strip').innerHTML = stats(DATA);
+
+  const q = $('q').value.trim().toLowerCase();
+  const only = $('only').value;
+  const sort = $('sort').value;
+
+  let list = DATA.clusters.filter((c) => {
+    if (only === 'fights' && c.members.length < 2) return false;
+    if (only === 'contested' && c.verdict !== 'CONTESTED' && c.verdict !== 'FARM') return false;
+    if (!q) return true;
+    return c.members.some((m) =>
+      m.record.symbol.toLowerCase().includes(q) ||
+      m.record.name.toLowerCase().includes(q) ||
+      m.record.token.toLowerCase().includes(q));
+  });
+
+  list.sort((a, b) =>
+    sort === 'size' ? b.members.length - a.members.length
+    : sort === 'recent' ? b.members[0].record.launchedAt - a.members[0].record.launchedAt
+    : (a.vampLagSec ?? 1e9) - (b.vampLagSec ?? 1e9));
+
+  $('count').textContent = list.length + ' shown';
+  $('out').innerHTML = list.length
+    ? list.map(cluster).join('')
+    : '<div class="empty">nothing matches that.</div>';
+}
+
+async function load() {
+  try {
+    const res = await fetch('/api/board');
+    if (!res.ok) throw new Error('board endpoint returned ' + res.status);
+    DATA = await res.json();
+    render();
+  } catch (err) {
+    $('out').innerHTML = '<div class="empty">could not read the board: ' + esc(err.message) + '</div>';
+  }
+}
+
+for (const id of ['q', 'only', 'sort']) $(id).addEventListener('input', render);
+load();
+// The page never mutates anything; refreshing is the only write it performs.
+setInterval(load, 20000);
+</script>
+</body>
+</html>
