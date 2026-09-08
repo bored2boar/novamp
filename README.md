@@ -123,6 +123,8 @@ taken, a copy takes a different one and keeps the name, and a symbol-only
 matcher never sees the fight at all. Membership is transitive: A shares a symbol
 with B, B shares a name with C, all three are one cluster.
 
+> ![novampnovamp](insidepic.png)
+
 The lookalike-character case is real but it is the tail, not the headline. It
 shows up where a copy is trying to beat *automated* filters — scanner
 blocklists, alert bots, anything doing an exact string compare — rather than a
