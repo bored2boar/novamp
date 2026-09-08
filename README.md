@@ -12,7 +12,7 @@
   <img alt="license" src="https://img.shields.io/badge/license-MIT-FFD93B?style=flat-square&labelColor=0C0F14">
 </p>
 
-**A read-only clone resolver for pons v2 launches on Robinhood Chain.**
+**A clone resolver for pons v2 launches on Robinhood Chain.**
 
 *Vamping* is copying somebody else's launch: same name, same picture, minutes
 later, a wallet that has done it two hundred times before. On a chain sealing a
@@ -27,6 +27,8 @@ one is real, and does being first still mean anything here?**
 > **No key. No signer. No transaction path.** There is no `PRIVATE_KEY` setting in
 > this repository and no code that would use one. CI fails the build if a signing
 > primitive appears in `src/`.
+>
+> ![novampnovamp](banner.png)
 
 ---
 
