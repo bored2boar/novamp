@@ -1,5 +1,50 @@
 # Changelog
 
+## 0.3.0
+
+Every input the score read was measured before or during entry. Birth order, dev
+buy, exemptions, concentration, who bought and how fast: all of it visible in the
+first seconds, all of it arrangeable by the operator. This release adds the
+signals he cannot stage.
+
+**Added**
+
+- **The sell side.** `src/read/sells.ts` replays `CurveBuy` and `CurveSell` from
+  the launch to reconstruct the quote reserve, so every sale is measured as a
+  share of what was on the curve when it landed rather than in absolute size.
+  Three new rules: the deployer selling inside five minutes (-25, the heaviest
+  penalty in the file), a sale taking 8 %+ of the reserve inside three minutes,
+  and more quote leaving the curve than entering it.
+- **Size instead of count.** `src/vamp/flow.ts` denominates the early flow in
+  quote: total in, median ticket, and `top3Share`. Counting wallets is exactly
+  what a farm is optimised against, because wallets are free. A launch where
+  three wallets are 85 % of the money is one person with three wallets.
+- **A registry built on realized results.** `src/smart/realized.ts` matches every
+  early entry against what the wallet actually sold. A position with no sale is
+  open, not a win, and a wallet whose record is nearly all open cannot qualify.
+  New bars: 5 closed positions, 3 profitable, a realized multiple over 1.15.
+- New columns in the `vamp --csv` export for all of the above, so the scoring can
+  be re-run against somebody else's weights.
+- `scan` and `vamp --all` now print early money in, top-3 concentration, and what
+  the sell side did.
+
+**Changed**
+
+- Trimmed three weak positives to make room without inflating the top of the
+  scale: each social link 3 to 2 points (a link is free and proves nothing about
+  who is behind it), fresh deployer 3 to 2, curve 50 %+ filled 6 to 4 (the new
+  ETH-in rule already covers most of what curve fill stood in for).
+- The registry replaces `graduated` and `hitRate` with `closed`, `profitable`,
+  `realizedMultiple` and `open`. Old registry files will not load; rebuild with
+  `novamp smart build`.
+
+**Known gaps**
+
+- The new readers, like the existing ones, have not been run against mainnet by
+  the author.
+- Only a wallet's first buy on a launch is counted, so positions that were added
+  to have their money in understated. See docs/SMART-WALLETS.md.
+
 ## 0.2.0
 
 The version that answers "and then what". 0.1.0 could resolve a fight; this one

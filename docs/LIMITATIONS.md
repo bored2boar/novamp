@@ -72,11 +72,27 @@ fixtures carry real-shaped values, so the rule is exercised, but a live run
 underestimates bundles until `read/exemptions.ts` lands. It is the top item on
 the roadmap for a reason.
 
+## The reserve behind a sale is reconstructed, not read
+
+There is no historical `realQuoteReserve` on chain, so `readSells` replays
+`CurveBuy` and `CurveSell` from the launch and keeps a running balance. It
+ignores fees skimmed off the curve and anything that moved outside those two
+events, so `shareOfReserve` is an approximation. It is accurate enough to tell a
+fifth of everything from a rounding error, which is the only question asked of
+it, and it should not be quoted as an exact figure.
+
+## Only a wallet's first buy is counted
+
+The buyer list keeps one entry per wallet per launch. A wallet that added to its
+position later has its money in understated and, in the registry, its realized
+multiple overstated. The registry bars are set strict enough to survive that, but
+it is a real bias and it is not zero.
+
 ## The proven-wallet registry is only as good as its window
 
 See [SMART-WALLETS.md](SMART-WALLETS.md). Short version: a registry built from
-eleven hours of launches cannot see a wallet that trades twice a week, and
-"graduated" is a weak proxy for "made money".
+eleven hours of launches cannot see a wallet that trades twice a week, and a
+position whose sale falls outside the window looks open forever.
 
 ## Signals describe measurements, not intent
 

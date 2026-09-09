@@ -1,6 +1,6 @@
 /** Minimal launch builder, so a test says only what it is actually testing. */
 
-import type { Address, Buyer, HolderSnapshot, LaunchRecord } from "../src/types.js";
+import type { Address, Buyer, HolderSnapshot, LaunchRecord, Sell } from "../src/types.js";
 
 let counter = 0;
 
@@ -61,6 +61,28 @@ export function buyer(address: string, lagSec: number, taxBps = 20): Buyer {
     quoteInWei: "10000000000000000",
     taxPaidBps: taxBps,
   };
+}
+
+export function sell(
+  address: string,
+  atSec: number,
+  quoteOutWei: string,
+  overrides: { shareOfReserve?: number; isDeployer?: boolean } = {},
+): Sell {
+  return {
+    wallet: address as Address,
+    atSec,
+    quoteOutWei,
+    shareOfReserve: overrides.shareOfReserve ?? 0.01,
+    isDeployer: overrides.isDeployer ?? false,
+  };
+}
+
+/** One ether, as wei, for readable test amounts. */
+export const ETH = 10n ** 18n;
+
+export function wei(ether: number): string {
+  return (BigInt(Math.round(ether * 1000)) * 10n ** 15n).toString();
 }
 
 export function resetCounter(): void {

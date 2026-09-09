@@ -13,8 +13,9 @@
 
 import { mkdir, writeFile } from "node:fs/promises";
 import { resolve } from "node:path";
-import type { Address, Buyer, HolderSnapshot, LaunchRecord, Phase } from "../src/types.js";
+import type { Address, Buyer, HolderSnapshot, LaunchRecord, Phase, Sell } from "../src/types.js";
 import type { Registry, SmartWallet } from "../src/smart/registry.js";
+import { summarizeFlow, summarizeSells } from "../src/vamp/flow.js";
 
 /** Deterministic pseudo-random so regenerating the fixtures does not churn git. */
 function rng(seed: number): () => number {
@@ -69,6 +70,8 @@ interface Spec {
   botOnly?: boolean;
   /** Put the demo victim wallet in this launch's early buyers. */
   victim?: boolean;
+  /** Sales off the curve, so the sell-side rules have something to read. */
+  sells?: { atSec: number; shareOfReserve: number; quoteOutEth: number; byDeployer?: boolean }[];
   top10Pct: number;
   deployerPct: number;
   priorLaunches: number;
@@ -119,6 +122,16 @@ function buyers(spec: Spec): Buyer[] {
   return out.sort((a, b) => a.entryLagSec - b.entryLagSec);
 }
 
+function sells(spec: Spec, deployer: Address): Sell[] {
+  return (spec.sells ?? []).map((sale, i) => ({
+    wallet: sale.byDeployer ? deployer : CROWD[(i + 7) % CROWD.length]!,
+    atSec: sale.atSec,
+    quoteOutWei: (BigInt(Math.round(sale.quoteOutEth * 1000)) * 10n ** 15n).toString(),
+    shareOfReserve: sale.shareOfReserve,
+    isDeployer: Boolean(sale.byDeployer),
+  }));
+}
+
 function launch(spec: Spec, baseBlock: number, baseTime: number, index: number): LaunchRecord {
   const token = addr(`${(index + 160).toString(16)}`);
   const curve = addr(`${(index + 192).toString(16)}`);
@@ -159,6 +172,8 @@ function launch(spec: Spec, baseBlock: number, baseTime: number, index: number):
     },
     buyers: all,
     holders: holders(spec.top10Pct, spec.deployerPct, curve, deployer),
+    flow: summarizeFlow(all),
+    sellActivity: summarizeSells(sells(spec, deployer), summarizeFlow(all).quoteInWei),
   };
 }
 
@@ -171,6 +186,10 @@ const peanut: Spec[] = [
     devSharePct: 3.1, exemptWallets: 0, creatorTaxBps: 100, socials: true,
     curveProgress: 0.78, smartIndexes: [0, 1, 2, 3], smartLagSec: [7, 19, 31, 44],
     crowdBuyers: 31, top10Pct: 13.8, deployerPct: 3.1, priorLaunches: 1, graduated: 0,
+    sells: [
+      { atSec: 214, shareOfReserve: 0.03, quoteOutEth: 0.12 },
+      { atSec: 349, shareOfReserve: 0.02, quoteOutEth: 0.09 },
+    ],
   },
   {
     // Cyrillic Т at the end. Identical to the eye, a different string on chain.
@@ -179,6 +198,7 @@ const peanut: Spec[] = [
     curveProgress: 0.04, smartIndexes: [], crowdBuyers: 5, victim: true,
     top10Pct: 41.2, deployerPct: 12.4, priorLaunches: 9, graduated: 0,
     fundedBy: FARM_FUNDER, feesToThirdParty: true,
+    sells: [{ atSec: 55, shareOfReserve: 0.41, quoteOutEth: 0.31, byDeployer: true }],
   },
   {
     symbol: "PEAN0T", name: "Peanut", offsetSec: 96,
@@ -186,6 +206,7 @@ const peanut: Spec[] = [
     curveProgress: 0.02, smartIndexes: [], crowdBuyers: 3, botOnly: true,
     top10Pct: 33.9, deployerPct: 8.8, priorLaunches: 14, graduated: 0,
     fundedBy: FARM_FUNDER,
+    sells: [{ atSec: 68, shareOfReserve: 0.29, quoteOutEth: 0.07, byDeployer: true }],
   },
   {
     symbol: "PEANUTCOIN", name: "Peanut Coin", offsetSec: 187,
@@ -225,6 +246,7 @@ const nova: Spec[] = [
     curveProgress: 0.09, smartIndexes: [], crowdBuyers: 4, victim: true,
     top10Pct: 47.5, deployerPct: 14.9, priorLaunches: 22, graduated: 0,
     fundedBy: OPERATOR, feesToThirdParty: true,
+    sells: [{ atSec: 118, shareOfReserve: 0.36, quoteOutEth: 0.22, byDeployer: true }],
   },
   {
     symbol: "N0VA", name: "Nova", offsetSec: 63,
@@ -238,6 +260,10 @@ const nova: Spec[] = [
     devSharePct: 2.8, exemptWallets: 0, creatorTaxBps: 100, socials: true,
     phase: 2, curveProgress: 1, smartIndexes: [0, 2, 3, 5], smartLagSec: [11, 26, 38, 52],
     crowdBuyers: 27, top10Pct: 11.9, deployerPct: 2.8, priorLaunches: 4, graduated: 2,
+    sells: [
+      { atSec: 428, shareOfReserve: 0.04, quoteOutEth: 0.31 },
+      { atSec: 611, shareOfReserve: 0.03, quoteOutEth: 0.24 },
+    ],
   },
 ];
 
@@ -293,16 +319,25 @@ async function main() {
     1800,
   );
 
-  // A registry that matches the buyers above, so convergence has something to find.
-  const wallets: SmartWallet[] = SMART.map((address, index) => ({
-    address,
-    entries: 22 + index * 3,
-    graduated: 4 + (index % 3),
-    hitRate: Number(((4 + (index % 3)) / (22 + index * 3)).toFixed(4)),
-    medianLagSec: 9 + index * 4,
-    topEntryShare: Number((0.21 + index * 0.05).toFixed(2)),
-    note: "synthetic fixture wallet",
-  }));
+  // A registry that matches the buyers above, so convergence has something to
+  // find in demo mode. Since 0.3 a wallet is described by what it got back out,
+  // not by whether the launch later graduated. These numbers are shaped by hand.
+  const wallets: SmartWallet[] = SMART.map((address, index) => {
+    const entries = 22 + index * 3;
+    const closed = entries - (2 + (index % 3));
+    const profitable = Math.round(closed * (0.34 + index * 0.03));
+    return {
+      address,
+      entries,
+      closed,
+      profitable,
+      realizedMultiple: Number((1.22 + index * 0.11).toFixed(2)),
+      open: entries - closed,
+      medianLagSec: 9 + index * 4,
+      topEntryShare: Number((0.21 + index * 0.05).toFixed(2)),
+      note: "synthetic fixture wallet",
+    };
+  });
   const registry: Registry = {
     source: "SYNTHETIC fixture registry, not built from chain history",
     builtAt: new Date(BASE_TIME * 1000).toISOString(),

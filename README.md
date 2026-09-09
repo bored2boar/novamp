@@ -4,7 +4,7 @@
 </p>
 
 <p align="center">
-  <img alt="tests" src="https://img.shields.io/badge/tests-98%20passing-9AE66E?style=flat-square&labelColor=0C0F14">
+  <img alt="tests" src="https://img.shields.io/badge/tests-127%20passing-9AE66E?style=flat-square&labelColor=0C0F14">
   <img alt="node" src="https://img.shields.io/badge/node-%E2%89%A520-D9D9D9?style=flat-square&labelColor=0C0F14">
   <img alt="chain" src="https://img.shields.io/badge/Robinhood%20Chain-4663-FFD93B?style=flat-square&labelColor=0C0F14">
   <img alt="runtime deps" src="https://img.shields.io/badge/runtime%20deps-2-D9D9D9?style=flat-square&labelColor=0C0F14">
@@ -51,9 +51,9 @@ NOVA · key "nova"  FARM
 
 #  SYMBOL  VERDICT    SCORE  RISK       LAG  TOP10    DEV  SMART  BUYERS  TOKEN
 ─  ──────  ─────────  ─────  ─────  ───────  ─────  ─────  ─────  ──────  ─────────────
-3  NOVA    CONTESTED     81  GREEN  +2m 28s    12%   2.8%     4★      11  0x23cab7…0e80
-1  NOVA    TAINTED        0  RED      first    48%  14.9%      0       2  0x23c848…c0ed
-2  N0VA    DEAD           0  RED     +1m 3s    39%  11.2%      0       0  0x23c913…f755
+3  NOVA    CONTESTED     92  GREEN  +2m 28s    12%   2.8%     4★      18  0x23ca88…8e12
+1  NOVA    TAINTED        0  RED      first    48%  14.9%      0       4  0x23c8ef…1dc9
+2  N0VA    DEAD           0  RED     +1m 3s    39%  11.2%      0       0  0x23c919…a740
 
 → first born is suspect: dev buy 14.90%; 7 wallets exempt from the opening tax;
   deployer has 22 launches and no graduation; top 10 hold 47.5%; 1 other launch
@@ -61,14 +61,16 @@ NOVA · key "nova"  FARM
 → flow is on NOVA (rank 3), not on the first born
 → 2 launches in this cluster were funded from 0x2c88fa10…: one operator, several wallets
 
-why NOVA scores 81:
+why NOVA scores 92:
   -22  copy, 2m behind the first
   +16  4 proven wallets, converging inside 27s
-  +5   11 distinct buyers in the first minute
+  +5   18 distinct buyers in the first minute
+  +8   2.79 ETH of early buys
+  +6   early money spread out, top 3 are 30%
   +10  dev buy 2.80%, inside the 1-6% band
   +6   top 10 hold 11.9%, spread out
   +14  deployer graduated 2 of 4 launches
-  +9   3 social link(s)
+  +6   3 social link(s)
   +8   graduated to the pool
 ```
 
@@ -96,6 +98,8 @@ looking at is number three.
 | tell me when somebody copies my bag | watchlist plus Telegram, fired on a new live copy or a cluster flipping to CONTESTED | `watchlist` |
 | "your scoring is wrong" | CSV with every reason and flag, so you can re-run it against your own weights | `--csv` |
 | how far back can I actually look | a local append-only index that grows as you use the tool | `index`, `--since` |
+| "the dev is dumping" | the sell side: whether the deployer sold and how fast, whether one sale took a bite out of the reserve, whether more is leaving than arriving | `vamp`, `scan` |
+| a wall of tiny wallets faking flow | early money in quote, not in addresses, plus the share held by the three biggest buyers | `vamp`, `scan` |
 
 Full list in [docs/COMMANDS.md](docs/COMMANDS.md).
 
@@ -196,9 +200,10 @@ isn't one.
 
 **Proven.** Name folding, clustering on both the ticker and the token name, birth
 order, the taint check, the five labels, risk flags, the score, convergence, the
+size-denominated flow and sell-side rules, the realized-results registry, the
 operator ranking, the local index, the CSV export and the watchlist rules. All of it is exercised end to end
 by `--demo`, which drives exactly the same code the live path drives, and all of
-it is covered by 98 offline tests.
+it is covered by 127 offline tests.
 
 **Written, not yet proven.** The chain readers in `src/read/`. They are written
 against the documented pons v2 ABI and typecheck, but they have not been run
@@ -238,10 +243,10 @@ Every rule, with its points: [docs/RULES.md](docs/RULES.md).
 ```
 src/
 ├── chain/      constants, ABI slice, the RPC gate
-├── read/       five readers: launches, holders, buyers, funding, wallet
+├── read/       six readers: launches, holders, buyers, sells, funding, wallet
 ├── source/     live chain or fixture file, one interface
 ├── store/      the local append-only index that makes --since real
-├── vamp/       confusables → normalize → cluster → risk → potential → verdict → farms
+├── vamp/       confusables → normalize → cluster → flow → risk → potential → verdict → farms
 ├── smart/      the proven-wallet registry and convergence
 ├── narrative/  free RSS in, keywords out
 ├── alerts/     watchlist and one outbound POST to Telegram
@@ -251,7 +256,7 @@ src/
 └── commands/   thin wiring
 fixtures/       what --demo reads, with an honest origin field
 docs/           rules, limitations, architecture, commands, wallets, index, fixtures
-test/           98 offline tests over the rules
+test/           127 offline tests over the rules
 ```
 
 One rule shapes the whole tree: **nothing that makes a decision touches the

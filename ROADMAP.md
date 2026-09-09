@@ -2,6 +2,12 @@
 
 No dates. Ordered by what is actually blocking the tool from being trusted.
 
+## Shipped in 0.3
+
+The sell side, size-denominated flow, and a proven-wallet registry built on
+realized results rather than on graduations. Details in
+[CHANGELOG.md](CHANGELOG.md).
+
 ## Shipped in 0.2
 
 `novamp wallet`, the local index behind `--since`, `novamp farms`, the board on
@@ -39,10 +45,15 @@ metadata that is the same size rather than the same bytes.
 fine for a six member cluster and hopeless for a window. An explorer API where one
 is available, and a cheaper approximation where it is not.
 
-**Sell-side flow.** Everything in the score is measured before or during entry.
-When the first sells land, how big they are against the curve, and whether the
-deployer wallet moved are the things that separate a launch that keeps a bid from
-one that is finished by minute three, and none of them are in the number today.
+**Every buy, not the first one.** The buyer list keeps each wallet's first buy on
+a launch, which understates anyone who added to a position and overstates their
+realized multiple. Fixing it is a heavier read and it is what the registry needs
+next.
+
+**Flow as a delta, not a level.** The sell side landed in 0.3, but the score is
+still a snapshot: it reads the same at T+30s and T+30m. Sampling at T+60, T+120
+and T+300 and scoring the *change* is what would make it read a launch losing
+momentum rather than a launch that started badly.
 
 **Backtesting the score.** The score is a set of opinions until it is tested
 against what the chain actually did to each launch afterwards. Once `stats` has

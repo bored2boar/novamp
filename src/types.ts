@@ -41,6 +41,66 @@ export interface Buyer {
   taxPaidBps: number;
 }
 
+/**
+ * One sale off the curve.
+ *
+ * The sell side is the only place a launch tells you what it is going to do
+ * rather than what it was set up to look like. Everything on the buy side is
+ * arrangeable by the operator; the first person taking money back out is not.
+ */
+export interface Sell {
+  wallet: Address;
+  /** Seconds after the launch. */
+  atSec: number;
+  quoteOutWei: string;
+  /**
+   * This sale as a share of the curve's quote reserve just before it, 0..1.
+   * A 0.2 means one wallet took a fifth of everything that had gone in.
+   */
+  shareOfReserve: number;
+  isDeployer: boolean;
+}
+
+/**
+ * What the sell side did in the observed window.
+ *
+ * `complete: false` means the reader gave up part way, so every count here is a
+ * floor. The scoring treats an incomplete read as unread rather than as calm.
+ */
+export interface SellActivity {
+  sells: Sell[];
+  /** Seconds to the first sale over the significance threshold, or null. */
+  firstBigSellSec: number | null;
+  /** Largest single sale as a share of the reserve it hit. */
+  largestShare: number;
+  /** Quote taken out over quote put in, across the window. */
+  sellBuyRatio: number;
+  deployerSold: boolean;
+  /** Seconds to the deployer's first sale, or null. */
+  deployerSoldAtSec: number | null;
+  complete: boolean;
+}
+
+/**
+ * The size of the early flow, as opposed to the count of it.
+ *
+ * Twenty five wallets spending a dollar each and twenty five spending five
+ * hundred are the same number and not the same event. Counting wallets is
+ * exactly what a farm is optimised against, because wallets are free.
+ */
+export interface FlowStats {
+  /** Total quote spent by early buyers. */
+  quoteInWei: string;
+  /** Median ticket, which is far more honest than the mean here. */
+  medianTicketWei: string;
+  /** Share of early quote volume coming from the three biggest wallets, 0..1. */
+  top3Share: number;
+  uniqueBuyers: number;
+  /** Share of early buyers that paid the full opening tax, 0..1. */
+  racedShare: number;
+  complete: boolean;
+}
+
 export interface HolderSlice {
   wallet: Address;
   pct: number;
@@ -95,6 +155,10 @@ export interface LaunchRecord {
   deployerRecord?: DeployerRecord;
   buyers?: Buyer[];
   holders?: HolderSnapshot;
+  /** Size of the early buy flow. Derived from `buyers`, cached on the record. */
+  flow?: FlowStats;
+  /** What came back out of the curve in the observed window. */
+  sellActivity?: SellActivity;
 }
 
 export type TokenVerdict =

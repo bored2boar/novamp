@@ -17,6 +17,13 @@ import type { LaunchSource } from "./index.js";
 import { RpcGate } from "../chain/gate.js";
 import { enrichLaunch, makeClient, readLaunchEvents } from "../read/launches.js";
 import { readEarlyBuyers } from "../read/buyers.js";
+import { readSells } from "../read/sells.js";
+import {
+  DEFAULT_FLOW_OPTIONS,
+  DEFAULT_SELL_OPTIONS,
+  summarizeFlow,
+  summarizeSells,
+} from "../vamp/flow.js";
 import { readHolders } from "../read/holders.js";
 import { traceFunding } from "../read/funding.js";
 import { config } from "../util/env.js";
@@ -90,14 +97,25 @@ export function liveSource(): LiveSource {
 
     async deepen(records: LaunchRecord[], opts = {}) {
       for (const record of records) {
-        const [holders, buyers] = await Promise.all([
+        const [holders, buyers, sold] = await Promise.all([
           readHolders(client, gate, record).catch(() => undefined),
           readEarlyBuyers(client, gate, record).catch(() => undefined),
+          readSells(client, gate, record).catch(() => undefined),
         ]);
         if (holders) record.holders = holders;
         if (buyers) {
           record.buyers = buyers.buyers;
           record.uniqueEarlyBuyers = buyers.unique;
+          record.flow = summarizeFlow(buyers.buyers, {
+            ...DEFAULT_FLOW_OPTIONS,
+            complete: buyers.complete,
+          });
+        }
+        if (sold) {
+          record.sellActivity = summarizeSells(sold.sells, record.flow?.quoteInWei ?? "0", {
+            ...DEFAULT_SELL_OPTIONS,
+            complete: sold.complete,
+          });
         }
         if (opts.funding && record.deployerRecord) {
           const trace = await traceFunding(client, gate, record.deployer, record.block);

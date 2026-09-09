@@ -8,7 +8,7 @@
 
 import type { Assessment, Cluster } from "../types.js";
 import { renderPairs, renderTable, type Column } from "./table.js";
-import { bold, cyan, dim, grey, riskColor, verdictColor } from "./color.js";
+import { bold, cyan, dim, green, grey, red, riskColor, verdictColor } from "./color.js";
 import { duration, ether, iso, pct, shortAddress } from "../util/fmt.js";
 import { byUsefulness } from "../vamp/potential.js";
 
@@ -139,6 +139,29 @@ export function renderMember(assessment: Assessment): string {
           : dim("unread or incomplete"),
       ],
       ["early buyers", record.uniqueEarlyBuyers === undefined ? dim("unread") : String(record.uniqueEarlyBuyers)],
+      [
+        "early money in",
+        record.flow?.complete
+          ? `${ether(record.flow.quoteInWei)} ${record.pairSymbol || ""}`.trim() +
+            dim(`  top 3 are ${(record.flow.top3Share * 100).toFixed(0)}%`)
+          : dim("unread"),
+      ],
+      [
+        "sell side",
+        !record.sellActivity?.complete
+          ? dim("unread")
+          : record.sellActivity.sells.length === 0
+            ? green("nothing has sold yet")
+            : [
+                `${record.sellActivity.sells.length} sale(s)`,
+                record.sellActivity.deployerSold
+                  ? red(`deployer sold at ${duration(record.sellActivity.deployerSoldAtSec ?? 0)}`)
+                  : "deployer has not sold",
+                record.sellActivity.firstBigSellSec !== null
+                  ? `biggest took ${(record.sellActivity.largestShare * 100).toFixed(0)}% at ${duration(record.sellActivity.firstBigSellSec)}`
+                  : "none of them large",
+              ].join(dim(" · ")),
+      ],
       [
         "proven wallets",
         assessment.smartWallets

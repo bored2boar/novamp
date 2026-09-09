@@ -16,6 +16,7 @@
 
 import type { Assessment, LaunchRecord, Reason } from "../types.js";
 import type { ConvergenceResult } from "../smart/convergence.js";
+import { etherOf } from "./flow.js";
 
 export interface PotentialInput {
   record: LaunchRecord;
@@ -96,6 +97,52 @@ export function potentialOf(input: PotentialInput): PotentialResult {
     add(-10, "every early buy paid the opening tax: bots only, no humans yet");
   }
 
+  // --- size, not count -----------------------------------------------------
+  // Wallets are the cheapest thing in this market, so counting them is exactly
+  // what a farm is optimised against. These rules are denominated in quote.
+  const flow = record.flow;
+  if (!flow || !flow.complete) {
+    add(0, "early flow size unread");
+  } else {
+    const eth = etherOf(flow.quoteInWei);
+    if (eth >= 2) add(8, `${eth.toFixed(2)} ETH of early buys`);
+    else if (eth >= 0.5) add(4, `${eth.toFixed(2)} ETH of early buys`);
+    else if (eth <= 0.05) add(-10, `only ${eth.toFixed(3)} ETH of early buys`);
+
+    // One person with three wallets is still one person, however many other
+    // addresses walked past afterwards.
+    if (flow.top3Share >= 0.7) {
+      add(-14, `top 3 wallets are ${(flow.top3Share * 100).toFixed(0)}% of the early money`);
+    } else if (flow.top3Share <= 0.35 && flow.uniqueBuyers >= 6) {
+      add(6, `early money spread out, top 3 are ${(flow.top3Share * 100).toFixed(0)}%`);
+    }
+  }
+
+  // --- what came back out --------------------------------------------------
+  // The only signals here that describe what a launch is doing rather than how
+  // it was set up. Everything on the buy side is arrangeable by the operator.
+  const sold = record.sellActivity;
+  if (!sold || !sold.complete) {
+    add(0, "sell side unread");
+  } else {
+    if (sold.deployerSold) {
+      const at = sold.deployerSoldAtSec ?? 0;
+      if (at <= 300) add(-25, `the deployer sold ${Math.round(at)}s after launch`);
+      else add(-12, `the deployer sold after ${Math.round(at / 60)}m`);
+    }
+    if (sold.firstBigSellSec !== null && sold.firstBigSellSec <= 180) {
+      add(
+        -14,
+        `a sale took ${(sold.largestShare * 100).toFixed(0)}% of the reserve at ${Math.round(sold.firstBigSellSec)}s`,
+      );
+    }
+    if (sold.sellBuyRatio >= 0.8) {
+      add(-12, `more quote left the curve than went into it`);
+    } else if (sold.sells.length === 0 && record.curveProgress > 0.05) {
+      add(5, "money going in, nothing coming back out yet");
+    }
+  }
+
   // --- what the launcher kept ---------------------------------------------
   if (record.devSharePct === 0) {
     add(-8, "no dev buy, nothing at stake");
@@ -128,7 +175,7 @@ export function potentialOf(input: PotentialInput): PotentialResult {
   const dep = record.deployerRecord;
   if (dep) {
     if (dep.priorLaunches <= 1) {
-      add(3, "fresh deployer");
+      add(2, "fresh deployer");
     } else if (dep.graduated >= 1 && dep.graduated / dep.priorLaunches >= 0.3) {
       add(14, `deployer graduated ${dep.graduated} of ${dep.priorLaunches} launches`);
     } else if (dep.priorLaunches >= 5 && dep.graduated === 0) {
@@ -139,14 +186,19 @@ export function potentialOf(input: PotentialInput): PotentialResult {
   // --- somewhere to go -----------------------------------------------------
   const socialCount = [record.socials.twitter, record.socials.website, record.socials.telegram]
     .filter(Boolean).length;
+  // Weak evidence on purpose: a link is free and proves nothing about who is
+  // behind it. Its absence says more than its presence, so the penalty is
+  // heavier than the reward.
   if (socialCount === 0) add(-12, "no socials: a launch with nowhere to go");
-  else add(Math.min(9, socialCount * 3), `${socialCount} social link(s)`);
+  else add(Math.min(6, socialCount * 2), `${socialCount} social link(s)`);
 
   // --- is it actually trading ---------------------------------------------
   if (record.phase === 2) {
     add(8, "graduated to the pool");
   } else if (record.curveProgress >= 0.5) {
-    add(6, `curve ${(record.curveProgress * 100).toFixed(0)}% filled`);
+    // Trimmed since 0.3: the ETH-in rule above already covers most of what
+    // curve fill was standing in for, and double counting it inflated the top.
+    add(4, `curve ${(record.curveProgress * 100).toFixed(0)}% filled`);
   } else if (record.curveProgress <= 0.02) {
     add(-10, "curve has barely moved");
   }
