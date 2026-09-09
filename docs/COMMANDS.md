@@ -111,6 +111,46 @@ Free feeds only. novamp ships no API keys and asks for none.
 
 ---
 
+## `novamp swarm [--watch] [--exec path] [--json]`
+
+The moment a name goes from nothing to a fight, and which of them is real.
+
+Four steps, printed in this order every time:
+
+1. **the burst** - `--min-cluster` launches under one name inside `--window`
+   seconds from `--min-deployers` distinct deployers (5 / 600 / 3). The deployer
+   bar is what separates a crowd reacting to news from one farm spraying a
+   ticker from ten wallets.
+2. **the cause** - a headline in the last hour carrying a word those launches are
+   named after, with a timestamp, published *before* the first launch. An undated
+   item proves nothing about order and is dropped. A headline stamped after the
+   burst is kept but printed as `AFTER the first launch`.
+3. **the resolution** - the same clustering, verdict and scoring engine every
+   other command uses, ranked over the burst *and everything in the cluster that
+   launched before it*, because the launch the crowd is copying is often a few
+   minutes ahead of the burst rather than inside it.
+4. **the hand-off** - terminal, Telegram when configured, and your own program
+   when you passed `--exec`.
+
+A copy can never win, whatever it scores: anything the verdict layer called VAMP
+or DEAD is out of the running rather than ranked lower. Then absolute gates -
+`--min-score` (70), RED risk, and a pick sharing a funder with another member of
+the cluster - decide whether there is a pick at all. `NO PICK` with the reasons
+is a normal outcome and it is most of them.
+
+Headlines come from `NARRATIVE_FEEDS` (RSS/Atom) and `NEWS_CHANNELS` (public
+Telegram channels, read through the `t.me/s/` web preview: no bot token, no API
+id, nothing joined).
+
+`--exec` runs a program **you** wrote and hands it the finding as JSON on stdin.
+novamp signs nothing, holds no key, and CI fails the build if it ever does.
+Read [EXEC.md](EXEC.md) before wiring one up; `--exec-dry-run` prints the payload
+and runs nothing.
+
+Every flag and every threshold: [SWARM.md](SWARM.md).
+
+---
+
 ## `novamp smart list [--all]` / `novamp smart build`
 
 The proven-wallet registry: read it, or rebuild it from your own window.

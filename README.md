@@ -4,7 +4,7 @@
 </p>
 
 <p align="center">
-  <img alt="tests" src="https://img.shields.io/badge/tests-127%20passing-9AE66E?style=flat-square&labelColor=0C0F14">
+  <img alt="tests" src="https://img.shields.io/badge/tests-177%20passing-9AE66E?style=flat-square&labelColor=0C0F14">
   <img alt="node" src="https://img.shields.io/badge/node-%E2%89%A520-D9D9D9?style=flat-square&labelColor=0C0F14">
   <img alt="chain" src="https://img.shields.io/badge/Robinhood%20Chain-4663-FFD93B?style=flat-square&labelColor=0C0F14">
   <img alt="runtime deps" src="https://img.shields.io/badge/runtime%20deps-2-D9D9D9?style=flat-square&labelColor=0C0F14">
@@ -12,7 +12,7 @@
   <img alt="license" src="https://img.shields.io/badge/license-MIT-FFD93B?style=flat-square&labelColor=0C0F14">
 </p>
 
-**A clone resolver for pons v2 launches on Robinhood Chain.**
+**A read-only clone resolver for pons v2 launches on Robinhood Chain.**
 
 *Vamping* is copying somebody else's launch: same name, same picture, minutes
 later, a wallet that has done it two hundred times before. On a chain sealing a
@@ -28,7 +28,10 @@ one is real, and does being first still mean anything here?**
 > this repository and no code that would use one. CI fails the build if a signing
 > primitive appears in `src/`.
 >
-> ![novampnovamp](banner.png)
+> novamp decides. Execution is deliberately somebody else's process: `swarm
+> --exec` hands a finding to a program **you** wrote, holding **your** key,
+> outside this tree. The tool cannot lose your money, which is the point of
+> building it this way. See [docs/EXEC.md](docs/EXEC.md).
 
 ---
 
@@ -92,6 +95,7 @@ looking at is number three.
 | who actually knows something | wallets with a real record, and an alert when three of them land inside ninety seconds | `smart`, `vamp` |
 | how bad is it out there | vamp ratio and vamp lag for the whole window | `stats` |
 | a word is trending | which fights exist under it, from free RSS feeds | `narrative` |
+| **a name just caught fire and there are eleven of them** | catches the burst, checks whether a headline in the last hour landed *before* it, ranks the field, and names the one that is not a copy - or says no pick | `swarm` |
 | **you are already holding some of these** | balance-checks your wallet against the index and tells you which positions are copies, with the original beside each one | `wallet` |
 | who keeps producing the copies | deployers ranked by copies shipped, names touched, and how many other wallets share their funder | `farms` |
 | a terminal is the wrong shape for this | the same engine behind a page on 127.0.0.1, with filters and sorting | `board` |
@@ -127,14 +131,61 @@ taken, a copy takes a different one and keeps the name, and a symbol-only
 matcher never sees the fight at all. Membership is transitive: A shares a symbol
 with B, B shares a name with C, all three are one cluster.
 
-> ![novampnovamp](insidepic.png)
-
 The lookalike-character case is real but it is the tail, not the headline. It
 shows up where a copy is trying to beat *automated* filters — scanner
 blocklists, alert bots, anything doing an exact string compare — rather than a
 human eye. novamp folds Cyrillic, Greek, fullwidth forms, zero-width joiners,
 accents and leetspeak because it is cheap to fold them, and every join is
 labelled in the table so you can see when it happened.
+
+### When a name catches fire
+
+```
+novamp swarm --watch
+```
+
+A clone war has a signature in time. For hours a name does not exist; then in a
+few minutes eleven launches appear carrying it, from wallets that have never
+touched each other. Nobody coordinates that. It is what a crowd looks like when it
+reads the same sentence at the same moment, and it is visible long before anyone
+knows which of the eleven is going to be the one.
+
+```
+PEANUT FARM · 6 launches in 7m 1s · 6 deployers · 0.9/min
+  burst started 2026-09-05 14:12:00 · the name did not exist before this
+
+  news  Peanut the Squirrel seized by state wildlife officials, owner says
+        t.me/fastwire · 39m before the first launch · matched "Peanut" → PEANUT
+
+#  SYMBOL      VERDICT   SCORE  RISK       LAG  TOKEN
+─  ──────────  ────────  ─────  ─────  ───────  ───────────
+1  PEANUT      ORIGINAL     96  GREEN        -  0xa0c5…f6b5
+2  PEANUТ      VAMP          0  RED       +41s  0xa1fd…2253
+3  PEAN0T      VAMP          0  RED    +1m 36s  0xa253…736a
+4  PEANUTCOIN  VAMP         12  GREEN   +3m 7s  0xa317…5565
+5  РEANUT      DEAD          0  RED    +5m 42s  0xa4a4…d3c1
+6  PNUT        VAMP          0  RED     +7m 1s  0xa581…a365
+
+  PICK  PEANUT 0xa0c54ffbe2ea6f151468fd40d4281d807fc2f6b5
+        +16 4 proven wallets, converging inside 24s
+        +14 first launch under this name
+        +10 dev buy 3.10%, inside the 1-6% band
+```
+
+Three things about that headline check, because they are the parts that get
+skipped. The item must have a **timestamp** — an undated one proves nothing and
+is dropped, not assumed fresh. It must have landed **before** the first launch.
+And when it did not, novamp says `AFTER the first launch` rather than quietly
+counting it. A headline before a burst is a coincidence in time, not a cause.
+
+Headlines come from free RSS and from public Telegram channels read through their
+`t.me/s/` web preview — no bot token, no API id, nothing joined.
+
+When nothing clears the bars, the answer is `NO PICK` with the reasons and the
+near miss. That is a normal outcome and it is most of them. The full rule set,
+including why a copy can never win on points, is in
+[docs/SWARM.md](docs/SWARM.md); the `--exec` hand-off is
+[docs/EXEC.md](docs/EXEC.md).
 
 ### The one you run on yourself
 
@@ -203,9 +254,9 @@ order, the taint check, the five labels, risk flags, the score, convergence, the
 size-denominated flow and sell-side rules, the realized-results registry, the
 operator ranking, the local index, the CSV export and the watchlist rules. All of it is exercised end to end
 by `--demo`, which drives exactly the same code the live path drives, and all of
-it is covered by 127 offline tests.
+it is covered by 177 offline tests.
 
-**Written, not yet proven.** The chain readers in `src/read/`. They are written
+**Written, not yet proven.** The chain readers in `src/read/`, and the live half of `swarm` that reads news sources over the network. They are written
 against the documented pons v2 ABI and typecheck, but they have not been run
 against mainnet by the author, because the machine this was written on cannot
 reach the endpoint. If your first live run throws, that is a bug worth an issue.
@@ -227,7 +278,8 @@ minutes of flow does not tell you what a coin does in an hour.
 So the honest reading of a 90 is **"if any launch under this name goes anywhere,
 it is probably this one"**, and never "this one goes somewhere". novamp orders a
 cluster. It does not predict a price, it has no buy button, and it is not going
-to grow one.
+to grow one. `swarm --exec` does not change that: it pipes a finding to a program
+you wrote, and the score it pipes is still an ordering, not a forecast.
 
 What would make the number worth more is sell-side flow, and what would make it
 trustworthy is testing every rule against what the chain actually did to each
@@ -248,15 +300,17 @@ src/
 ├── store/      the local append-only index that makes --since real
 ├── vamp/       confusables → normalize → cluster → flow → risk → potential → verdict → farms
 ├── smart/      the proven-wallet registry and convergence
-├── narrative/  free RSS in, keywords out
+├── narrative/  free RSS and public channel previews in, keywords out
+├── swarm/      burst detection, news correlation, the selection rule
+├── exec/       the hand-off to your own executor. Nothing here signs
 ├── alerts/     watchlist and one outbound POST to Telegram
 ├── export/     CSV, written by hand rather than pulled from npm
 ├── board/      node:http on 127.0.0.1 and one HTML file
 ├── ui/         table and render
 └── commands/   thin wiring
 fixtures/       what --demo reads, with an honest origin field
-docs/           rules, limitations, architecture, commands, wallets, index, fixtures
-test/           127 offline tests over the rules
+docs/           rules, limitations, architecture, commands, wallets, index, fixtures, swarm, exec
+test/           177 offline tests over the rules
 ```
 
 One rule shapes the whole tree: **nothing that makes a decision touches the
@@ -268,7 +322,7 @@ its output. See [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md).
 
 ## Never
 
-- no signer, no key setting, no write path, not for convenience and not behind a flag
+- no signer, no key setting, no write path, not for convenience and not behind a flag. `swarm --exec` runs a program you wrote; novamp still holds nothing and signs nothing
 - no hosted service holding anything of yours
 - no paid alpha channel, because a sharper private version means the public rules are worse on purpose
 - no promise of returns, on the tool or on anything else

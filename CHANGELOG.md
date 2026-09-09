@@ -1,5 +1,47 @@
 # Changelog
 
+## 0.4.0
+
+A name catching fire is visible in the data before anyone knows which token is
+going to be the one. This release catches that moment and answers the question it
+raises, which is not "will this pump" but "eleven of these are copies, which one
+is not".
+
+**Added**
+
+- **`novamp swarm`.** A burst of launches collapsing into one cluster inside a
+  short window, from wallets that are not each other, is a crowd reacting to
+  something. `src/swarm/detect.ts` finds it; the deployer bar is what keeps a farm
+  spraying a ticker from ten wallets out of the results.
+- **News correlation with the order checked.** `src/swarm/news.ts` matches
+  headlines against every name in the burst and requires three things: the word,
+  a timestamp, and publication *before* the first launch. An undated item is
+  dropped rather than assumed fresh, and a headline stamped after the burst is
+  labelled rather than quietly counted.
+- **Public Telegram channels as a source.** `src/narrative/channel.ts` reads the
+  `https://t.me/s/<name>` web preview. No bot token, no API id, no joining, no
+  history walk. `NEWS_CHANNELS` in `.env`.
+- **The selection rule, written down in one file.** `src/swarm/rank.ts`. A copy
+  can never win on points; the gates that follow are absolute rather than
+  relative, so `NO PICK` is a real answer and is most of them.
+- **The hand-off.** `swarm --exec` runs a program you wrote and gives it the
+  finding as JSON on stdin. novamp still holds no key and signs nothing; the
+  `no-signer` CI job now scans `examples/` as well. See `docs/EXEC.md`,
+  `docs/SWARM.md` and `examples/executor-template.sh`.
+- `fixtures/news.json`, so `--demo` shows the whole flow including the headline.
+- 50 new tests: 177 total.
+
+**Fixed**
+
+- `densestWindow` preferred the later window on a tie, which cut the first born
+  out of its own swarm and turned a clean cluster into `NO PICK`. Ties now go to
+  the earlier window, and ranking runs over the burst plus everything that
+  launched before it.
+- The phrase check in the news matcher compared a tight-folded term against a
+  loose-folded headline, so a multi-word token name never matched a headline
+  containing it. One folding is now used for both.
+- `channelUrl` did not strip a bare `t.me/name` without a scheme.
+
 ## 0.3.0
 
 Every input the score read was measured before or during entry. Birth order, dev

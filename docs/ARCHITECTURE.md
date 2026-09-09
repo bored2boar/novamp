@@ -36,6 +36,20 @@ and why every rule in the thing has an offline unit test.
                      └──────────────────┘
 ```
 
+`swarm` hangs off the same spine rather than beside it. It reads the burst out of
+the same `LaunchRecord[]`, correlates it against headlines, and then calls the
+very same verdict and potential code every other command calls:
+
+```
+   LaunchRecord[] ──▶ swarm/detect ──┐
+                                     ├──▶ vamp/verdict ──▶ swarm/rank ──┬──▶ ui
+   news sources ───▶ swarm/news ─────┘     vamp/potential               ├──▶ alerts/telegram
+                                                                        └──▶ exec/handoff ──▶ your program
+```
+
+The last arrow is the only one that leaves this repository, and it carries a JSON
+object on a pipe. No key crosses it, because novamp does not have one.
+
 ## The layers
 
 ### `src/chain/`
@@ -106,11 +120,38 @@ CSV, written by hand rather than pulled from npm, because RFC 4180 quoting is
 fifteen lines and a dependency is a supply chain. The exports carry the reasons
 and flags, not only the numbers.
 
+### `src/swarm/`
+
+Three pure files behind `novamp swarm`, split because they answer three
+questions that fail in different ways. `detect.ts` finds a burst - launches
+collapsing into one cluster inside a window, from wallets that are not each
+other. `news.ts` decides whether a headline could have caused it, which is
+entirely a question about the order of two timestamps. `rank.ts` holds the
+selection rule, and it is one file precisely so that the rule cannot quietly
+differ between the terminal, the Telegram message and the `--exec` payload.
+
+None of them can reach the network, so the whole thing is testable offline
+against a list of launches and a list of headlines, which is what
+`test/swarm.test.ts`, `test/news.test.ts` and `test/rank.test.ts` do.
+
+### `src/exec/`
+
+The one place novamp starts a process. `handOff` spawns a file the operator
+named, with `shell: false`, and writes the finding to its stdin; nothing goes in
+argv, because a token name is whatever its deployer typed and argv is where a
+hostile string goes looking for a shell.
+
+This is the boundary that lets the read-only guarantee stay absolute rather than
+becoming a caveat. A resolver that can be audited by someone who will never trust
+it with money, and a program holding a private key, should not be one process.
+novamp is the first; the second is a file on your disk that this repository has
+never seen. See [EXEC.md](EXEC.md).
+
 ### `src/alerts/`
 
 The watchlist and one POST to Telegram. This is the only outbound call in novamp
-that is not a chain read, and it is one-way by construction: no webhook, no
-command handler, nothing that could ask novamp to act.
+that is not a chain read or a news read, and it is one-way by construction: no
+webhook, no command handler, nothing that could ask novamp to act.
 
 ### `src/board/`
 

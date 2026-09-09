@@ -27,6 +27,37 @@ There is no signer, no key setting, and no write path in `src/`, and CI fails th
 build if one appears. A fork can obviously add one. Read the exact commit you
 run, and check the `no-signer` job on the commit you cloned.
 
+`swarm --exec` is the one place novamp starts a process that could do anything at
+all, and it is worth being exact about what that does and does not mean. novamp
+spawns a file you named, with no shell, passing the finding on stdin and nothing
+in argv. It holds no key, has nothing to give that process, and cannot tell what
+it did. Everything about that executor - what it spends, whether it has caps,
+whether it is correct - is outside this repository and outside every guarantee
+made in it. If you run `--exec` against a script you did not write and read, the
+`no-signer` badge is telling you nothing useful about your setup. See
+[EXEC.md](EXEC.md).
+
+## A headline before a burst is a coincidence in time
+
+`swarm` checks that a headline carried the name, that it has a timestamp, and
+that it landed before the first launch. That is more than most things claiming to
+be news bots do, and it is still not causation. Two unrelated stories in an hour
+is normal; a word appearing in a headline and in a ticker at the same time is
+often just a word having a busy day.
+
+The lookback also cuts both ways. A story that broke four hours ago and only
+reached the launch farms now falls outside the window and reads as "no headline";
+a wire item republished at the top of the hour can read as fresh when the story
+is old. novamp reports what it matched and when, so the lag is visible; it does
+not try to resolve a story back to its first appearance, because it cannot.
+
+## `swarm` only sees as far back as your index
+
+A burst that started before your first run of the day is a burst novamp saw the
+tail of, and `priorMembers` will read as zero when the earlier launches simply
+are not in the index. On a fresh clone the first hour of `--watch` is the least
+reliable hour it will ever have. See [INDEX.md](INDEX.md).
+
 ## Name folding is deliberately lossy
 
 `PEANUTCOIN` folds onto `peanut`. So does a token genuinely called `PEANUT COIN`

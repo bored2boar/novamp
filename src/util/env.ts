@@ -69,6 +69,16 @@ export interface Config {
 
   narrativeFeeds: string[];
   narrativeWatchlist: string[];
+  /** Public Telegram channels read through their web preview. No token, no login. */
+  newsChannels: string[];
+
+  swarm: {
+    minMembers: number;
+    windowSec: number;
+    minDeployers: number;
+    minScore: number;
+    newsLookbackSec: number;
+  };
 
   color: boolean;
 }
@@ -108,6 +118,15 @@ export function config(): Config {
 
     narrativeFeeds: list("NARRATIVE_FEEDS"),
     narrativeWatchlist: list("NARRATIVE_WATCHLIST"),
+    newsChannels: list("NEWS_CHANNELS"),
+
+    swarm: {
+      minMembers: num("SWARM_MIN_MEMBERS", 5),
+      windowSec: num("SWARM_WINDOW_SEC", 600),
+      minDeployers: num("SWARM_MIN_DEPLOYERS", 3),
+      minScore: num("SWARM_MIN_SCORE", 70),
+      newsLookbackSec: num("SWARM_NEWS_LOOKBACK_SEC", 3600),
+    },
 
     color: !process.env["NO_COLOR"] && process.stdout.isTTY !== false,
   };
