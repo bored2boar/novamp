@@ -16,6 +16,7 @@ import { wallet } from "./commands/wallet.js";
 import { farms } from "./commands/farms.js";
 import { board } from "./commands/board.js";
 import { narrative } from "./commands/narrative.js";
+import { swarm } from "./commands/swarm.js";
 import { indexStatus } from "./commands/index-cmd.js";
 import { smartBuild, smartList } from "./commands/smart.js";
 import {
@@ -45,7 +46,7 @@ program
   .description(
     "Find every token vamping a name, work out which one is the original, and flag the ones to leave alone.",
   )
-  .version("0.3.0")
+  .version("0.4.0")
   .option("-q, --quiet", "suppress progress lines on stderr")
   .hook("preAction", (thisCommand) => {
     if (thisCommand.opts()["quiet"]) setQuiet(true);
@@ -149,6 +150,35 @@ program
   });
 
 program
+  .command("swarm")
+  .description(
+    "catch a name the moment it turns into a fight: a burst of launches, the headline behind it, and which one is real",
+  )
+  .addOption(demoOption())
+  .addOption(sinceOption())
+  .option("--watch", "keep watching instead of answering once")
+  .option("--every <seconds>", "seconds between polls when watching, minimum 30", (v) => Number(v))
+  .option("--min-cluster <n>", "launches under one name before it counts as a swarm", (v) => Number(v))
+  .option("--window <seconds>", "how tight the burst has to be", (v) => Number(v))
+  .option("--min-deployers <n>", "distinct deployers required: one hand is a farm, not news", (v) => Number(v))
+  .option("--no-news", "skip the headline check and report bursts on their own")
+  .option("--news-lookback <seconds>", "how far back a headline still counts", (v) => Number(v))
+  .option("--min-score <n>", "below this, novamp names no winner at all", (v) => Number(v))
+  .option("--allow-red", "do not refuse a pick carrying RED risk")
+  .option("--allow-farm", "do not refuse a pick from a cluster with a shared funder")
+  .option("--top <n>", "how many swarms to report per pass", (v) => Number(v))
+  .option(
+    "--exec <path>",
+    "hand the finding to your own program on stdin as JSON. novamp still signs nothing: see docs/EXEC.md",
+  )
+  .option("--exec-dry-run", "print the payload that would be sent instead of running anything")
+  .option("--exec-timeout <ms>", "how long your program gets before it is killed", (v) => Number(v))
+  .option("--json", "machine readable output")
+  .action(async (opts) => {
+    process.exitCode = await swarm(opts);
+  });
+
+program
   .command("index")
   .description("what the local index remembers, and how far back it goes")
   .option("--json", "machine readable output")
@@ -231,6 +261,7 @@ ${bold("start here")}
 ${bold("against the chain")}
   novamp doctor --probe            ${dim("is this really Robinhood Chain")}
   novamp vamp PEANUT               ${dim("same command, live")}
+  novamp swarm --watch             ${dim("catch the next name that bursts, and the headline behind it")}
   novamp wallet 0xYOURS --since 7d ${dim("how many of your positions are copies")}
   novamp farms --since 24h         ${dim("who shipped the most copies today")}
   novamp watchlist add PEANUT      ${dim("then `novamp watchlist run`")}

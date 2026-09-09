@@ -1,0 +1,46 @@
+{
+  "origin": "synthetic",
+  "note": "SYNTHETIC headlines for `novamp swarm --demo`. Nobody wrote or published any of these; they are stamped relative to the fixture launches so the ordering check has something to check. Do not quote them as news.",
+  "items": [
+    {
+      "title": "Peanut the Squirrel seized by state wildlife officials, owner says",
+      "source": "t.me/fastwire",
+      "publishedAt": 1788615180
+    },
+    {
+      "title": "Governor asked to intervene in Peanut the Squirrel case",
+      "source": "t.me/fastwire",
+      "publishedAt": 1788616340
+    },
+    {
+      "title": "Wildlife department confirms euthanasia of squirrel taken from Pine City home",
+      "source": "example-wire.test",
+      "publishedAt": 1788616880
+    },
+    {
+      "title": "Markets open flat as traders wait on Thursday inflation print",
+      "source": "example-wire.test",
+      "publishedAt": 1788612320
+    },
+    {
+      "title": "Second airline grounds fleet after software fault",
+      "source": "t.me/fastwire",
+      "publishedAt": 1788614420
+    },
+    {
+      "title": "Nova Protocol ships mainnet after eighteen month rebuild",
+      "source": "example-wire.test",
+      "publishedAt": 1788618300
+    },
+    {
+      "title": "Kettle maker recalls 400000 units over handle defect",
+      "source": "t.me/fastwire",
+      "publishedAt": 1788619020
+    },
+    {
+      "title": "Central bank holds rates, signals one more cut this year",
+      "source": "example-wire.test",
+      "publishedAt": 1788616620
+    }
+  ]
+}

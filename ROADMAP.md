@@ -71,7 +71,14 @@ Unicode TR39, filtered to what can appear in a ticker.
 
 - **No signer, ever.** No key setting, no transaction path, no "just for
   convenience" write mode. CI fails the build if a signing primitive appears in
-  `src/`.
+  `src/`, `bin/`, `scripts/` or `examples/`.
+
+  `swarm --exec` is not an exception to this and is the reason it can stay
+  absolute. novamp spawns a program **you** wrote, with no shell, and hands it
+  the finding on stdin; the key lives in your process, on your disk, outside this
+  tree. Splitting it that way is what lets the decision half be read, audited and
+  cloned by somebody who will never trust it with money. A version that signed
+  would have to be trusted before it could be checked, which is backwards.
 - **No hosted service holding anything of yours.** Nothing to sign up for.
 - **No paid alpha channel.** A sharper private version would mean the public
   rules are worse on purpose.

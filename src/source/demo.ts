@@ -62,6 +62,34 @@ export async function loadFixtures(dir = join(fixturesDir(), "clusters")): Promi
   return { launches, origins, files };
 }
 
+export interface NewsFixtureFile {
+  origin: "synthetic" | "capture";
+  note: string;
+  items: { title: string; source: string; publishedAt: number }[];
+}
+
+/**
+ * Headlines for `novamp swarm --demo`.
+ *
+ * The fixture launches are stamped at a fixed point in 2026, so the news that
+ * goes with them has to be stamped relative to the same point rather than to
+ * whenever you happen to run the demo. The matcher only ever compares a headline
+ * to the burst it is being tested against, never to the wall clock, which is why
+ * this works and why the same code path runs live without a special case.
+ *
+ * Synthetic, like everything else under fixtures/. Nobody said any of this.
+ */
+export async function loadNewsFixture(
+  path = join(fixturesDir(), "news.json"),
+): Promise<NewsFixtureFile["items"]> {
+  try {
+    const parsed = JSON.parse(await readFile(path, "utf8")) as NewsFixtureFile;
+    return Array.isArray(parsed.items) ? parsed.items : [];
+  } catch {
+    return [];
+  }
+}
+
 export async function demoSource(): Promise<LaunchSource> {
   const { launches, origins, files } = await loadFixtures();
   const origin = origins.has("capture")
