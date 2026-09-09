@@ -296,6 +296,38 @@
         "deployerPct": 3.1,
         "holderCount": 254,
         "complete": true
+      },
+      "flow": {
+        "quoteInWei": "1840000000000000000",
+        "medianTicketWei": "120000000000000000",
+        "top3Share": 0.4673,
+        "uniqueBuyers": 12,
+        "racedShare": 0,
+        "complete": true
+      },
+      "sellActivity": {
+        "sells": [
+          {
+            "wallet": "0x17c6836ec5ee627f3e3086e61c8904eca96449ac",
+            "atSec": 214,
+            "quoteOutWei": "120000000000000000",
+            "shareOfReserve": 0.03,
+            "isDeployer": false
+          },
+          {
+            "wallet": "0x18c5278732a1693c02e1f649cbec50e32822c14e",
+            "atSec": 349,
+            "quoteOutWei": "90000000000000000",
+            "shareOfReserve": 0.02,
+            "isDeployer": false
+          }
+        ],
+        "firstBigSellSec": null,
+        "largestShare": 0.03,
+        "sellBuyRatio": 0.1141,
+        "deployerSold": false,
+        "deployerSoldAtSec": null,
+        "complete": true
       }
     },
     {
@@ -415,6 +447,31 @@
         "deployerPct": 12.4,
         "holderCount": 366,
         "complete": true
+      },
+      "flow": {
+        "quoteInWei": "80000000000000000",
+        "medianTicketWei": "40000000000000000",
+        "top3Share": 1,
+        "uniqueBuyers": 2,
+        "racedShare": 0,
+        "complete": true
+      },
+      "sellActivity": {
+        "sells": [
+          {
+            "wallet": "0xd138c628a3f49f543a1e2a79e47820e1a5894953",
+            "atSec": 55,
+            "quoteOutWei": "310000000000000000",
+            "shareOfReserve": 0.41,
+            "isDeployer": true
+          }
+        ],
+        "firstBigSellSec": 55,
+        "largestShare": 0.41,
+        "sellBuyRatio": 3.875,
+        "deployerSold": true,
+        "deployerSoldAtSec": 55,
+        "complete": true
       }
     },
     {
@@ -515,6 +572,31 @@
         "top10Pct": 33.9,
         "deployerPct": 8.8,
         "holderCount": 266,
+        "complete": true
+      },
+      "flow": {
+        "quoteInWei": "220000000000000000",
+        "medianTicketWei": "90000000000000000",
+        "top3Share": 1,
+        "uniqueBuyers": 2,
+        "racedShare": 1,
+        "complete": true
+      },
+      "sellActivity": {
+        "sells": [
+          {
+            "wallet": "0xd2912c63602c6b19504dabb5c9f5361cedd42fb4",
+            "atSec": 68,
+            "quoteOutWei": "70000000000000000",
+            "shareOfReserve": 0.29,
+            "isDeployer": true
+          }
+        ],
+        "firstBigSellSec": 68,
+        "largestShare": 0.29,
+        "sellBuyRatio": 0.3181,
+        "deployerSold": true,
+        "deployerSoldAtSec": 68,
         "complete": true
       }
     },
@@ -662,6 +744,23 @@
         "deployerPct": 2.2,
         "holderCount": 124,
         "complete": true
+      },
+      "flow": {
+        "quoteInWei": "460000000000000000",
+        "medianTicketWei": "200000000000000000",
+        "top3Share": 1,
+        "uniqueBuyers": 3,
+        "racedShare": 0,
+        "complete": true
+      },
+      "sellActivity": {
+        "sells": [],
+        "firstBigSellSec": null,
+        "largestShare": 0,
+        "sellBuyRatio": 0,
+        "deployerSold": false,
+        "deployerSoldAtSec": null,
+        "complete": true
       }
     },
     {
@@ -742,6 +841,23 @@
         "top10Pct": 4.1,
         "deployerPct": 0,
         "holderCount": 344,
+        "complete": true
+      },
+      "flow": {
+        "quoteInWei": "0",
+        "medianTicketWei": "0",
+        "top3Share": 0,
+        "uniqueBuyers": 0,
+        "racedShare": 0,
+        "complete": true
+      },
+      "sellActivity": {
+        "sells": [],
+        "firstBigSellSec": null,
+        "largestShare": 0,
+        "sellBuyRatio": 0,
+        "deployerSold": false,
+        "deployerSoldAtSec": null,
         "complete": true
       }
     },
@@ -877,6 +993,23 @@
         "deployerPct": 9.6,
         "holderCount": 279,
         "complete": true
+      },
+      "flow": {
+        "quoteInWei": "370000000000000000",
+        "medianTicketWei": "90000000000000000",
+        "top3Share": 1,
+        "uniqueBuyers": 3,
+        "racedShare": 0,
+        "complete": true
+      },
+      "sellActivity": {
+        "sells": [],
+        "firstBigSellSec": null,
+        "largestShare": 0,
+        "sellBuyRatio": 0,
+        "deployerSold": false,
+        "deployerSoldAtSec": null,
+        "complete": true
       }
     },
     {
@@ -998,6 +1131,23 @@
         "top10Pct": 21.7,
         "deployerPct": 4.4,
         "holderCount": 325,
+        "complete": true
+      },
+      "flow": {
+        "quoteInWei": "270000000000000000",
+        "medianTicketWei": "80000000000000000",
+        "top3Share": 1,
+        "uniqueBuyers": 2,
+        "racedShare": 0,
+        "complete": true
+      },
+      "sellActivity": {
+        "sells": [],
+        "firstBigSellSec": null,
+        "largestShare": 0,
+        "sellBuyRatio": 0,
+        "deployerSold": false,
+        "deployerSoldAtSec": null,
         "complete": true
       }
     }

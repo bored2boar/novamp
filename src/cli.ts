@@ -45,7 +45,7 @@ program
   .description(
     "Find every token vamping a name, work out which one is the original, and flag the ones to leave alone.",
   )
-  .version("0.2.0")
+  .version("0.3.0")
   .option("-q, --quiet", "suppress progress lines on stderr")
   .hook("preAction", (thisCommand) => {
     if (thisCommand.opts()["quiet"]) setQuiet(true);

@@ -168,6 +168,16 @@ Starts at 35 and clamps to 0..100. Every point below prints next to the total.
 | 10+ distinct buyers | +5 |
 | 3 or fewer distinct buyers | -12 |
 | every early buy paid the opening tax | -10 |
+| 2 ETH or more of early buys | +8 |
+| 0.5 ETH or more of early buys | +4 |
+| under 0.05 ETH of early buys | -10 |
+| top 3 wallets are 70 %+ of the early money | -14 |
+| early money spread out, top 3 under 35 % | +6 |
+| the deployer sold inside 5 minutes | **-25** |
+| the deployer sold later | -12 |
+| a sale took 8 %+ of the reserve inside 3 minutes | -14 |
+| more quote left the curve than went into it | -12 |
+| money going in, nothing coming back out yet | +5 |
 | dev buy 1-6 % | +10 |
 | dev buy 6-10 % | -4 |
 | dev buy over 10 % | -20 |
@@ -178,16 +188,62 @@ Starts at 35 and clamps to 0..100. Every point below prints next to the total.
 | top 10 over 20 % | -8 |
 | top 10 under 12 % | +6 |
 | deployer graduated 30 %+ of launches | +14 |
-| fresh deployer | +3 |
+| fresh deployer | +2 |
 | deployer: 5+ launches, none graduated | -22 |
-| each social link, capped at 9 | +3 |
+| each social link, capped at 6 | +2 |
 | no socials | -12 |
 | graduated to the pool | +8 |
-| curve 50 %+ filled | +6 |
+| curve 50 %+ filled | +4 |
 | curve barely moved | -10 |
 
 Inputs that could not be read score **zero**, not a penalty. "Unread" and "bad"
 are different things and the reasons list says which one happened.
+
+### Size, not count
+
+`src/vamp/flow.ts`
+
+`uniqueEarlyBuyers` counts wallets, and wallets are the cheapest thing in this
+market. Twenty five addresses spending a dollar each and twenty five spending
+five hundred are the same number and a completely different event, so every rule
+in the block above is denominated in quote instead.
+
+`top3Share` is the one that does the work. A launch where three wallets are 85 %
+of the money is one person with three wallets, however many other addresses
+walked past afterwards.
+
+The median ticket is reported rather than the mean, and it is a real ticket
+somebody paid rather than the average of two: an average of wei is not a number
+anybody was ever charged.
+
+### What came back out
+
+`src/read/sells.ts`, `src/vamp/flow.ts`
+
+Everything on the buy side is arrangeable by the operator. He picks the dev buy,
+the exemptions, the socials, and he can fund twenty wallets to walk in behind
+him. What he cannot stage is somebody taking money back out.
+
+Three questions, and they are the only signals in novamp that describe what a
+launch is *doing* rather than how it was set up:
+
+- **did the deployer sell, and how fast.** Inside five minutes is the heaviest
+  single penalty in the file.
+- **did one sale take a meaningful bite.** A sale is measured as a share of the
+  quote reserve it hit, not in absolute size: half an ETH out of forty is noise,
+  half an ETH out of two is the launch ending. Over 8 % counts.
+- **is more leaving than arriving.** Quote out over quote in across the window.
+
+**How the reserve is reconstructed.** There is no historical `realQuoteReserve`
+to read, so `readSells` replays `CurveBuy` and `CurveSell` in chain order from
+the launch and keeps a running balance. It ignores fees skimmed off the curve
+and anything that moved outside those two events. It is an approximation, it is
+labelled as one in the source, and it is accurate enough for "was that a fifth of
+everything or a rounding error", which is the only question asked of it.
+
+**Intent is not inferred.** A deployer taking money out is reported, never
+interpreted. He may be paying for a marketing push and he may be leaving. The
+rule says what happened and how fast.
 
 ### What the score is not
 

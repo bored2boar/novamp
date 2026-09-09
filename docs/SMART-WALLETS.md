@@ -5,27 +5,38 @@ gets its own file, its own command, and this document arguing against itself.
 
 ## What earns a wallet a place
 
-Outcome, not follower count. A wallet is in the registry if, inside the window it
-was built from:
+Realized results. For every wallet, on every launch it entered early, how much
+quote went in and how much came back out.
 
 | Bar | Default |
 |---|---|
 | early entries | 8 or more |
-| graduations | 3 or more |
-| hit rate | 12 % or better |
-| top entry share | 60 % or less |
+| closed positions | 5 or more |
+| profitable positions | 3 or more |
+| realized multiple | 1.15 or better |
+| top win share | 60 % or less |
 
-An "early entry" is a first buy inside two minutes of a launch. A "graduation" is
-one of those launches reaching phase 2.
+An "early entry" is a first buy inside two minutes of a launch. A position is
+**closed** once the wallet has sold anything on that token, and only closed
+positions count toward the multiple. A position with no sale is **open**: its
+outcome is unknown, and it counts for nothing in either direction.
 
-`topEntryShare` is the one that does the real work. It asks what share of a
-wallet's success came from its single best launch. Over 60 % and the record is
-one lucky ticket wearing a track record's clothes, and copying that wallet copies
-a coin flip that already landed.
+`realizedMultiple` is total quote out over total quote in across closed
+positions. The 1.15 bar leaves room for the opening tax and the curve fee without
+letting break-even wallets through.
 
-The bars are deliberately strict. A registry that lets in every wallet with one
-graduation turns convergence into noise, and convergence is the only part of
-novamp that could ever be called alpha.
+`topEntryShare` asks what share of a wallet's total *gain* came from its single
+best position. Over 60 % and the record is one lucky ticket wearing a track
+record's clothes, and copying that wallet copies a coin flip that already landed.
+Losing positions do not dilute this number, because a loss is not one of the wins.
+
+### What changed in 0.3, and why
+
+Before 0.3 a wallet was credited whenever a launch it entered later reached the
+pool phase. That was a bad proxy and this document said so at the time. A wallet
+can be early to ten launches that all graduated and still have lost money on
+every one of them, because entering early and exiting well are different skills
+and only the second one pays.
 
 ## Why the method is weaker than it looks
 
@@ -34,15 +45,20 @@ hours. A wallet that trades twice a week is invisible, and eleven hours of
 launches is not enough history to separate skill from a good afternoon. Build
 from the widest window your RPC will tolerate, and rebuild often.
 
-**"Graduated" is not "made money".** A wallet that entered a launch that later
-graduated is counted as a hit whether it sold at the top, sold at the bottom, or
-is still holding. Measuring realised profit means reconstructing every sell for
-every wallet, which is a different and much heavier tool. Until that exists, the
-registry measures *being early to things that worked*, which is correlated with
-making money and is not the same as it.
+**Only the first buy is counted.** The buyer list holds each wallet's first buy
+on a launch, so a wallet that added to a position later has its money in
+understated and its multiple overstated. Fixing it means keeping every buy rather
+than the first, which is a heavier read. Until then this is a floor on the money
+in, and the bars are set strict enough to survive it.
 
-**`topEntryShare` uses a weak proxy.** Curve fill stands in for launch size,
-because it is the only size signal available for free. It is rough.
+**The window cuts positions in half.** A wallet that bought inside the window and
+sold after it looks open forever. That is why `open` is reported separately and
+why five closed positions are required: a wallet whose record is nearly all open
+cannot qualify no matter how good it looks.
+
+**Sales are matched by token, not by lot.** A wallet that bought twice and sold
+once has both buys and the one sale pooled. For a five minute memecoin position
+that is close enough; for anything held across days it is not.
 
 **A wallet can be several people, and several wallets can be one person.** Nothing
 here deduplicates an operator running twenty addresses. If those addresses all

@@ -60,6 +60,7 @@ the others down.
 | `launches.ts` | what launched in this window, and what is it called | one log sweep plus a few reads per launch |
 | `holders.ts` | who holds it, and how concentrated | heavy: a log sweep plus one balance read per address |
 | `buyers.ts` | who bought early, how fast, what tax did they pay | medium |
+| `sells.ts` | what came back out, and how big against the reserve it hit | medium |
 | `funding.ts` | where did this deployer's first ETH come from | heavy and often inconclusive |
 
 The split matters because of how the commands use it. `recent()` runs only the
@@ -80,6 +81,8 @@ The decisions, in dependency order:
 
 - `confusables.ts` - the table of characters that look like other characters
 - `normalize.ts` - name to key, plus a capped Damerau-Levenshtein
+- `flow.ts` - early money by size rather than by wallet count, and what the sell
+  side did. Pure arithmetic over event lists
 - `cluster.ts` - launches to clusters, union-find over both the ticker and the
   token name, with the join method recorded per member
 - `risk.ts` - holder concentration and the flags

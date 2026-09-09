@@ -1,6 +1,6 @@
 {
   "name": "novamp",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Read-only clone resolver for pons v2 launches on Robinhood Chain. Finds every token vamping a name, works out which one is the original, and flags the ones you should not touch.",
   "license": "MIT",
   "type": "module",

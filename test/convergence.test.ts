@@ -9,8 +9,10 @@ function wallet(address: string, overrides: Partial<SmartWallet> = {}): SmartWal
   return {
     address: address as Address,
     entries: 30,
-    graduated: 6,
-    hitRate: 0.2,
+    closed: 20,
+    profitable: 9,
+    realizedMultiple: 1.7,
+    open: 10,
     medianLagSec: 12,
     topEntryShare: 0.3,
     ...overrides,
@@ -62,8 +64,9 @@ test("a lottery ticket wallet does not qualify for the registry", () => {
   assert.equal(qualifies(wallet(A)), true);
   assert.equal(qualifies(wallet(A, { topEntryShare: 0.9 })), false);
   assert.equal(qualifies(wallet(A, { entries: 3 })), false);
-  assert.equal(qualifies(wallet(A, { graduated: 1 })), false);
-  assert.equal(qualifies(wallet(A, { hitRate: 0.05 })), false);
+  assert.equal(qualifies(wallet(A, { profitable: 1 })), false);
+  assert.equal(qualifies(wallet(A, { realizedMultiple: 0.9 })), false);
+  assert.equal(qualifies(wallet(A, { closed: 2 })), false);
 });
 
 test("the index only contains wallets that qualify", () => {

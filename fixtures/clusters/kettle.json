@@ -182,6 +182,23 @@
         "deployerPct": 5,
         "holderCount": 483,
         "complete": true
+      },
+      "flow": {
+        "quoteInWei": "910000000000000000",
+        "medianTicketWei": "90000000000000000",
+        "top3Share": 0.7912,
+        "uniqueBuyers": 6,
+        "racedShare": 0,
+        "complete": true
+      },
+      "sellActivity": {
+        "sells": [],
+        "firstBigSellSec": null,
+        "largestShare": 0,
+        "sellBuyRatio": 0,
+        "deployerSold": false,
+        "deployerSoldAtSec": null,
+        "complete": true
       }
     }
   ]

@@ -24,7 +24,7 @@ that is one line there and one assertion in `test/normalize.test.ts`.
 ```sh
 npm install
 npm run typecheck
-npm test                       # 98 offline tests, no network
+npm test                       # 127 offline tests, no network
 npx tsx src/cli.ts vamp NOVA --demo
 ```
 

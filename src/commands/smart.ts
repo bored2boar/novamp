@@ -3,17 +3,22 @@
  *
  * The registry is the only part of novamp that carries an opinion from one run
  * to the next, so it gets its own command and its own file rather than hiding
- * inside the scoring. Read it, argue with it, rebuild it from your own window.
+ * inside the scoring. Read it, argue with it, delete a wallet you think is luck.
+ *
+ * Since 0.3 a wallet earns its place on realized results: quote out against
+ * quote in, per position. Being early to something that later graduated is not
+ * a result, because entering early and exiting well are different skills and
+ * only the second one pays.
  */
 
 import { writeFile } from "node:fs/promises";
-import { clusterLaunches } from "../vamp/cluster.js";
-import { loadRegistry, qualifies, type Registry, type SmartWallet } from "../smart/registry.js";
+import { loadRegistry, qualifies, type Registry } from "../smart/registry.js";
+import { buildWallets, DEFAULT_BUILD_OPTIONS } from "../smart/realized.js";
 import { makeContext, REGISTRY_PATH } from "./context.js";
 import { renderTable } from "../ui/table.js";
-import { bold, dim, green, grey, yellow } from "../ui/color.js";
+import { bold, dim, green, grey, red, yellow } from "../ui/color.js";
 import { duration, shortAddress } from "../util/fmt.js";
-import type { Address, LaunchRecord } from "../types.js";
+import { describeWindow } from "../util/window.js";
 
 export async function smartList(opts: { all?: boolean }): Promise<number> {
   const registry = await loadRegistry(REGISTRY_PATH());
@@ -24,7 +29,7 @@ export async function smartList(opts: { all?: boolean }): Promise<number> {
     return 0;
   }
   const wallets = opts.all ? registry.wallets : registry.wallets.filter(qualifies);
-  wallets.sort((a, b) => b.hitRate - a.hitRate || b.entries - a.entries);
+  wallets.sort((a, b) => b.realizedMultiple - a.realizedMultiple || b.profitable - a.profitable);
 
   process.stdout.write(
     `\n${bold("proven wallets")} ${dim(`· ${registry.source} · built ${registry.builtAt}`)}\n\n`,
@@ -34,17 +39,23 @@ export async function smartList(opts: { all?: boolean }): Promise<number> {
       [
         { header: "wallet", width: 16 },
         { header: "entries", width: 8, align: "right" },
-        { header: "graduated", width: 10, align: "right" },
-        { header: "hit rate", width: 9, align: "right" },
+        { header: "closed", width: 7, align: "right" },
+        { header: "in profit", width: 10, align: "right" },
+        { header: "realized", width: 9, align: "right" },
+        { header: "open", width: 5, align: "right" },
         { header: "median lag", width: 11, align: "right" },
-        { header: "top entry", width: 10, align: "right" },
+        { header: "top win", width: 8, align: "right" },
         { header: "", width: 10 },
       ],
       wallets.map((w) => [
         shortAddress(w.address),
         String(w.entries),
-        String(w.graduated),
-        `${(w.hitRate * 100).toFixed(1)}%`,
+        String(w.closed),
+        String(w.profitable),
+        w.realizedMultiple >= 1
+          ? green(`${w.realizedMultiple.toFixed(2)}x`)
+          : red(`${w.realizedMultiple.toFixed(2)}x`),
+        w.open ? String(w.open) : dim("0"),
         duration(w.medianLagSec),
         `${(w.topEntryShare * 100).toFixed(0)}%`,
         qualifies(w) ? green("qualifies") : grey("filtered"),
@@ -53,20 +64,21 @@ export async function smartList(opts: { all?: boolean }): Promise<number> {
   );
   process.stdout.write(
     dim(
-      "hit rate is graduations over early entries. top entry is the share of graduations\n" +
-        "coming from this wallet's single best launch: over 60% is a lottery ticket, not a method.\n\n",
+      "realized is quote out over quote in across closed positions. open positions have\n" +
+        "no sale yet, so their outcome is unknown and they count for nothing either way.\n" +
+        "top win is the share of total gain from one position: over 60% is a lottery ticket.\n\n",
     ),
   );
   return 0;
 }
 
 /**
- * Rebuild the registry from the launch window.
+ * Rebuild the registry from the window.
  *
- * A wallet's entries are its first buys inside two minutes of a launch; its
- * graduations are the ones that reached phase 2. That is the whole method, and
- * its weakness is written down in docs/SMART-WALLETS.md: a window that only
- * covers eleven hours cannot see a wallet that trades twice a week.
+ * Slow, and honest about why: it needs the buyers *and* the sales for every
+ * launch in the window, which is two log sweeps per launch. On a public RPC
+ * this will take a while and will not finish cleanly; narrow it with `--since`
+ * and let the local index do the accumulating instead.
  */
 export async function smartBuild(opts: {
   demo?: boolean;
@@ -81,54 +93,40 @@ export async function smartBuild(opts: {
   }
 
   if (ctx.live) {
-    process.stdout.write(dim(`\nreading early buyers for ${launches.length} launches. This is slow.\n`));
+    process.stdout.write(
+      dim(`\nreading buyers and sales for ${launches.length} launches. This is slow.\n`),
+    );
     await ctx.live.deepen(launches);
   }
 
-  const byWallet = new Map<string, { entries: LaunchRecord[]; lags: number[] }>();
-  for (const launch of launches) {
-    for (const buyer of launch.buyers ?? []) {
-      if (buyer.entryLagSec > 120) continue;
-      const key = buyer.wallet.toLowerCase();
-      const bucket = byWallet.get(key) ?? { entries: [], lags: [] };
-      bucket.entries.push(launch);
-      bucket.lags.push(buyer.entryLagSec);
-      byWallet.set(key, bucket);
-    }
-  }
+  const wallets = buildWallets(launches, {
+    ...DEFAULT_BUILD_OPTIONS,
+    minEntries: opts.minEntries ?? DEFAULT_BUILD_OPTIONS.minEntries,
+  });
 
-  const wallets: SmartWallet[] = [];
-  for (const [address, bucket] of byWallet) {
-    const graduated = bucket.entries.filter((l) => l.phase === 2);
-    if (bucket.entries.length < (opts.minEntries ?? 4)) continue;
-    const sortedLags = [...bucket.lags].sort((a, b) => a - b);
-    const median = sortedLags[Math.floor(sortedLags.length / 2)] ?? 0;
-    // "Best launch" is approximated by curve fill, the only size proxy that is
-    // free here. docs/SMART-WALLETS.md explains why that is a weak proxy.
-    const best = Math.max(0, ...graduated.map((l) => l.curveProgress));
-    const totalProgress = graduated.reduce((sum, l) => sum + l.curveProgress, 0);
-    wallets.push({
-      address: address as Address,
-      entries: bucket.entries.length,
-      graduated: graduated.length,
-      hitRate: graduated.length / bucket.entries.length,
-      medianLagSec: median,
-      topEntryShare: totalProgress > 0 ? best / totalProgress : 0,
-    });
-  }
-
+  const withOutcomes = launches.filter((l) => l.sellActivity?.complete).length;
   const registry: Registry = {
-    source: ctx.source.kind === "demo" ? "built from fixtures (SYNTHETIC)" : `built from ${ctx.cfg.rpcUrl}`,
+    source:
+      ctx.source.kind === "demo"
+        ? "built from fixtures (SYNTHETIC)"
+        : `built from ${ctx.cfg.rpcUrl} over ${describeWindow(ctx.windowSec)}`,
     builtAt: new Date().toISOString(),
     windowBlocks: ctx.cfg.indexLookbackBlocks,
-    wallets: wallets.sort((a, b) => b.hitRate - a.hitRate),
+    wallets,
   };
 
   await writeFile(REGISTRY_PATH(), JSON.stringify(registry, null, 2) + "\n", "utf8");
   const good = wallets.filter(qualifies).length;
+
   process.stdout.write(
-    `\n${green("✓")} wrote ${wallets.length} wallets (${good} qualify) to ${REGISTRY_PATH()}\n` +
-      `${dim("clusters seen: " + clusterLaunches(launches).length)}\n\n`,
+    `\n${green("✓")} wrote ${wallets.length} wallets (${good} qualify) to ${REGISTRY_PATH()}\n`,
   );
+  if (withOutcomes < launches.length) {
+    process.stdout.write(
+      `${yellow("!")} the sell side read cleanly on ${withOutcomes} of ${launches.length} launches.\n` +
+        dim("  Positions on the rest count as open, not as losses. Rebuild when the index is deeper.\n"),
+    );
+  }
+  process.stdout.write("\n");
   return 0;
 }

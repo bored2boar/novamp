@@ -113,6 +113,31 @@
         "deployerPct": 14.9,
         "holderCount": 252,
         "complete": true
+      },
+      "flow": {
+        "quoteInWei": "580000000000000000",
+        "medianTicketWei": "140000000000000000",
+        "top3Share": 0.8103,
+        "uniqueBuyers": 4,
+        "racedShare": 0,
+        "complete": true
+      },
+      "sellActivity": {
+        "sells": [
+          {
+            "wallet": "0x23f8fde50590e5f21f75be8fc7dacf818201676b",
+            "atSec": 118,
+            "quoteOutWei": "220000000000000000",
+            "shareOfReserve": 0.36,
+            "isDeployer": true
+          }
+        ],
+        "firstBigSellSec": 118,
+        "largestShare": 0.36,
+        "sellBuyRatio": 0.3793,
+        "deployerSold": true,
+        "deployerSoldAtSec": 118,
+        "complete": true
       }
     },
     {
@@ -207,6 +232,23 @@
         "top10Pct": 38.8,
         "deployerPct": 11.2,
         "holderCount": 159,
+        "complete": true
+      },
+      "flow": {
+        "quoteInWei": "0",
+        "medianTicketWei": "0",
+        "top3Share": 0,
+        "uniqueBuyers": 0,
+        "racedShare": 0,
+        "complete": true
+      },
+      "sellActivity": {
+        "sells": [],
+        "firstBigSellSec": null,
+        "largestShare": 0,
+        "sellBuyRatio": 0,
+        "deployerSold": false,
+        "deployerSoldAtSec": null,
         "complete": true
       }
     },
@@ -479,6 +521,38 @@
         "top10Pct": 11.9,
         "deployerPct": 2.8,
         "holderCount": 471,
+        "complete": true
+      },
+      "flow": {
+        "quoteInWei": "2790000000000000000",
+        "medianTicketWei": "150000000000000000",
+        "top3Share": 0.301,
+        "uniqueBuyers": 18,
+        "racedShare": 0,
+        "complete": true
+      },
+      "sellActivity": {
+        "sells": [
+          {
+            "wallet": "0x17c6836ec5ee627f3e3086e61c8904eca96449ac",
+            "atSec": 428,
+            "quoteOutWei": "310000000000000000",
+            "shareOfReserve": 0.04,
+            "isDeployer": false
+          },
+          {
+            "wallet": "0x18c5278732a1693c02e1f649cbec50e32822c14e",
+            "atSec": 611,
+            "quoteOutWei": "240000000000000000",
+            "shareOfReserve": 0.03,
+            "isDeployer": false
+          }
+        ],
+        "firstBigSellSec": null,
+        "largestShare": 0.04,
+        "sellBuyRatio": 0.1971,
+        "deployerSold": false,
+        "deployerSoldAtSec": null,
         "complete": true
       }
     }

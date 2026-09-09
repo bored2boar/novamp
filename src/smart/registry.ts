@@ -18,15 +18,19 @@ export interface SmartWallet {
   address: Address;
   /** Early entries inside the window the registry was built from. */
   entries: number;
-  /** How many of those launches reached the pool phase. */
-  graduated: number;
-  /** graduated / entries, precomputed so the table does not do arithmetic. */
-  hitRate: number;
+  /** Entries where the wallet has sold something, so an outcome is known. */
+  closed: number;
+  /** Closed positions where more quote came out than went in. */
+  profitable: number;
+  /** Total quote out over total quote in, across closed positions. */
+  realizedMultiple: number;
+  /** Entries with no sale in the window. The outcome of these is unknown. */
+  open: number;
   /** Median seconds between launch and this wallet's buy. */
   medianLagSec: number;
   /**
-   * Share of this wallet's graduated entries that came from its single best
-   * launch. High means one lucky ticket wearing a track record's clothes.
+   * Share of this wallet's total realized gain that came from its single best
+   * position. High means one lucky ticket wearing a track record's clothes.
    */
   topEntryShare: number;
   note?: string;
@@ -56,8 +60,13 @@ export const EMPTY_REGISTRY: Registry = {
  */
 export function qualifies(wallet: SmartWallet): boolean {
   if (wallet.entries < 8) return false;
-  if (wallet.graduated < 3) return false;
-  if (wallet.hitRate < 0.12) return false;
+  // A record needs outcomes, not entries. A wallet that has bought forty things
+  // and sold none of them has told you nothing about whether it is any good.
+  if (wallet.closed < 5) return false;
+  if (wallet.profitable < 3) return false;
+  // Getting the quote back out is the whole bar. 1.15 leaves room for the
+  // opening tax and the curve fee without letting break-even wallets in.
+  if (wallet.realizedMultiple < 1.15) return false;
   // One trade carrying the whole record is a lottery ticket, not a method.
   if (wallet.topEntryShare > 0.6) return false;
   return true;
