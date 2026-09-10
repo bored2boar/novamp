@@ -135,11 +135,13 @@ the same CI job as the rest of the tree, so it will stay that way.
 
 Read this part twice. It is the part that costs money.
 
-**The live path has not been run against mainnet by the author.** See
-[LIMITATIONS.md](LIMITATIONS.md), first section. `--demo` is proven end to end;
-`--live` is written and typechecked. Automating on top of a reader that has never
-met the chain it reads is a bad idea until you have watched it run without
-`--exec` for long enough to believe its output.
+**`swarm` itself has not been run live yet.** The readers under it have -
+`vamp`, `scan`, `wallet`, `farms` and `stats` all return real mainnet data - but
+no burst has been detected, correlated and resolved against the live chain.
+See [LIMITATIONS.md](LIMITATIONS.md), first section, which is kept current.
+
+Automating on top of a command that has never fired for real is a bad idea.
+Watch it run without `--exec` for long enough to believe its output first.
 
 **Exempt wallets read as zero on the live path.** That signal is one of the
 strongest in the scoring and the live reader does not have it yet. Live scores are

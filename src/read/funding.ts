@@ -12,9 +12,9 @@
  * wallet's earliest blocks. That is slow and bounded, and when it comes back
  * empty the honest answer is "unknown", not "independent".
  *
- * STATUS: not yet exercised against mainnet. On a public endpoint expect this to
- * be the first thing that gets rate limited; a private RPC or an explorer API
- * makes it practical. See docs/LIMITATIONS.md.
+ * STATUS: run against mainnet. On a public endpoint expect this to be the first
+ * thing that gets rate limited; a private RPC or an explorer API makes it
+ * practical. See docs/LIMITATIONS.md.
  */
 
 import type { PublicClient } from "viem";

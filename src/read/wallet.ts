@@ -10,7 +10,7 @@
  * The command says so. "You hold 3 copies out of 7 positions" would be a lie if
  * the 7 were secretly 12.
  *
- * STATUS: not yet exercised against mainnet. See docs/LIMITATIONS.md.
+ * STATUS: run against mainnet and returning real data. See docs/LIMITATIONS.md.
  */
 
 import type { PublicClient } from "viem";

@@ -4,22 +4,31 @@ The things novamp cannot do, gets wrong, or has not proved yet. This file is
 maintained on purpose, and it is the first place to look when the tool tells you
 something that does not match what you can see with your own eyes.
 
-## The live path has not been run against mainnet by the author
+## What has been run against mainnet, and what has not
 
-This is the big one, and it is at the top because it belongs at the top.
+This is at the top because it belongs at the top, and it is kept current rather
+than left as a blanket disclaimer.
 
-The chain readers in `src/read/` are written against the documented pons v2 ABI
-and against how the public Robinhood RPC is known to behave. They typecheck, and
-the logic above them is unit tested. They have **not** been exercised against
-mainnet by the author, because the machine this was written on cannot reach the
-endpoint.
+**Run against Robinhood Chain mainnet, returning real data:**
 
-Everything above the reader is exercised end to end by `--demo`, which drives the
-same clustering, verdict, risk and scoring code the live path drives.
+- `doctor --probe` - chain id, head block, pons parameters
+- `vamp` - and with it `readLaunches`, `readHolders`, `readBuyers`, `readSells`
+  and the funding trace, which is most of `src/read/`
+- `scan`, `wallet`, `farms`, `stats`
 
-So: `--demo` is proven, and `--live` is written. If your first live run throws,
-that is a bug worth an issue rather than a design decision, and it is the first
-thing being fixed.
+**Not yet run against mainnet:**
+
+- `swarm`. It is the newest command and its live half also reaches news sources
+  over the network, which is a second thing that can fail. The detection,
+  correlation and ranking logic underneath it is pure and unit tested, and
+  `--demo` drives all of it, but no burst has been resolved live yet.
+- `watch` and `watchlist run`. Both are polling loops around `readLaunches`,
+  which has run live, but the loops themselves have not been left running.
+- `smart build`. It needs a wide window and a good endpoint; on the public RPC
+  it rate limits before it finishes.
+
+A live run that throws is a bug worth an issue rather than a design decision.
+The numbers below are the known gaps that a working live run still has.
 
 ## Read only is a property of this tree, not a sandbox
 

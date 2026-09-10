@@ -14,7 +14,7 @@
  * question being asked of it, and it is honest about being an approximation
  * rather than reading a number that does not exist historically.
  *
- * STATUS: not yet exercised against mainnet. See docs/LIMITATIONS.md.
+ * STATUS: run against mainnet and returning real data. See docs/LIMITATIONS.md.
  */
 
 import { getAddress, type PublicClient } from "viem";

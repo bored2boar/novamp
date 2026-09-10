@@ -258,10 +258,16 @@ operator ranking, the local index, the CSV export and the watchlist rules. All o
 by `--demo`, which drives exactly the same code the live path drives, and all of
 it is covered by 177 offline tests.
 
-**Written, not yet proven.** The chain readers in `src/read/`, and the live half of `swarm` that reads news sources over the network. They are written
-against the documented pons v2 ABI and typecheck, but they have not been run
-against mainnet by the author, because the machine this was written on cannot
-reach the endpoint. If your first live run throws, that is a bug worth an issue.
+**Run live.** `doctor --probe`, `vamp`, `scan`, `wallet`, `farms` and `stats`
+have been run against Robinhood Chain mainnet and returned real data, which
+covers most of `src/read/`: launches, holders, buyers, sells and the funding
+trace.
+
+**Written, not yet run live.** `swarm`, whose live half also reaches news
+sources over the network; `watch` and `watchlist run`, which are polling loops
+around a reader that has run; and `smart build`, which rate limits before it
+finishes on a public endpoint. If one of these throws on you, that is a bug
+worth an issue.
 
 **Known gaps.** Exempt wallets are not recovered from launch calldata yet, so a
 live run underestimates bundles. Funding traces are bounded and often

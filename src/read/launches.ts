@@ -7,9 +7,8 @@
  * "zero". A tool that quietly turns a rate limit into a confident empty answer
  * is worse than one that says it could not read.
  *
- * STATUS: written against the documented pons v2 ABI and the public RPC's
- * behaviour, and not yet exercised against mainnet by the author. Anything that
- * breaks on your first live run is a bug worth an issue, not a design decision.
+ * STATUS: run against mainnet, returning real launches. Anything that breaks on
+ * your live run is still a bug worth an issue rather than a design decision.
  * See docs/LIMITATIONS.md.
  */
 
