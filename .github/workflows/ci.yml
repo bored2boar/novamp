@@ -17,9 +17,15 @@ jobs:
       - run: npm ci
       - run: npm run typecheck
       - run: npm test
-
+      
   no-signer:
     # novamp is read only. This job fails the build if a write path appears.
+    #
+    # `novamp swarm --exec` hands a finding to a program you wrote, which is how
+    # execution happens without a key ever entering this repository. The examples
+    # directory is scanned along with the source for exactly that reason: the
+    # template shipped here has to stay a template. Your own executor lives on
+    # your disk, outside this tree, and this job says nothing about it.
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -27,7 +33,7 @@ jobs:
         run: |
           set -e
           if grep -rnE 'privateKeyToAccount|sendTransaction|writeContract|signMessage|signTypedData|new Wallet\(|PRIVATE_KEY|MNEMONIC' \
-              --include='*.ts' --include='*.js' src bin scripts; then
+              --include='*.ts' --include='*.js' --include='*.sh' src bin scripts examples; then
             echo "::error::a signing or write primitive reached the source tree"
             exit 1
           fi
