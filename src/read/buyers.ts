@@ -9,7 +9,7 @@
  *
  * A launch where every early buy paid the full tax has no humans in it yet.
  *
- * STATUS: not yet exercised against mainnet. See docs/LIMITATIONS.md.
+ * STATUS: run against mainnet and returning real data. See docs/LIMITATIONS.md.
  */
 
 import { getAddress, type PublicClient } from "viem";

@@ -6,7 +6,8 @@
  * that lands inside an existing cluster gets the loud one, with how far behind
  * it is and what the original is doing.
  *
- * STATUS: written, not yet exercised against mainnet. See docs/LIMITATIONS.md.
+ * STATUS: readLaunches underneath this has run against mainnet; the polling loop
+ * itself has not been left running. See docs/LIMITATIONS.md.
  */
 
 import { clusterLaunches, birthOrder } from "../vamp/cluster.js";

@@ -18,7 +18,8 @@
  * in this file or any file it imports, and the `no-signer` CI job proves it on
  * every commit. See docs/EXEC.md.
  *
- * STATUS: written, not yet exercised against mainnet. See docs/LIMITATIONS.md.
+ * STATUS: the readers under this command run against mainnet, but no burst has
+ * been detected and resolved live yet. See docs/LIMITATIONS.md.
  */
 
 import type { Assessment, Cluster } from "../types.js";

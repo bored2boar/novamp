@@ -13,7 +13,8 @@
  *   2. an incomplete scan is reported as incomplete rather than rounded down to
  *      a comfortable number.
  *
- * STATUS: not yet exercised against mainnet. See docs/LIMITATIONS.md.
+ * STATUS: run against mainnet and returning real data. The 400-read cap and the
+ * incomplete-snapshot path below are still the things to watch. See docs/LIMITATIONS.md.
  */
 
 import type { PublicClient } from "viem";
