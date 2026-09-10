@@ -12,7 +12,7 @@
   <img alt="license" src="https://img.shields.io/badge/license-MIT-FFD93B?style=flat-square&labelColor=0C0F14">
 </p>
 
-**A read-only clone resolver for pons v2 launches on Robinhood Chain.**
+**A clone resolver for pons v2 launches on Robinhood Chain.**
 
 *Vamping* is copying somebody else's launch: same name, same picture, minutes
 later, a wallet that has done it two hundred times before. On a chain sealing a
@@ -32,6 +32,8 @@ one is real, and does being first still mean anything here?**
 > --exec` hands a finding to a program **you** wrote, holding **your** key,
 > outside this tree. The tool cannot lose your money, which is the point of
 > building it this way. See [docs/EXEC.md](docs/EXEC.md).
+>
+> ![novampnovamp](banner.png)
 
 ---
 
