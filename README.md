@@ -248,7 +248,7 @@ log reads hard; a private provider makes `scan` and `stats` comfortable.
 
 ## What works today, and what does not
 
-This is v0.1. Being straight about the line is more useful than pretending there
+This is v0.4. Being straight about the line is more useful than pretending there
 isn't one.
 
 **Proven.** Name folding, clustering on both the ticker and the token name, birth
