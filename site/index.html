@@ -135,7 +135,6 @@
       <input id="q" autocomplete="off" spellcheck="false" placeholder="enter a ticker or a name">
       <button id="go">RESOLVE</button>
     </div>
-    <div class="hint">demo data · try <b data-q="NOVA">NOVA</b> · <b data-q="PEANUT">PEANUT</b> · <b data-q="PNUT">PNUT</b> · <b data-q="KETTLE">KETTLE</b></div>
 
     <div id="result"></div>
 
@@ -402,8 +401,8 @@ function renderCluster(cl,query){
 }
 
 function notFound(query){
-  resultEl.innerHTML=`<div class="status"><span class="r">[!]</span> no cluster found for "<span class="i">${esc(query)}</span>" in this snapshot.
-This is demo data - try <span class="i">NOVA</span>, <span class="i">PEANUT</span>, <span class="i">PNUT</span> or <span class="i">KETTLE</span>.</div>`;
+  resultEl.innerHTML=`<div class="status"><span class="r">[!]</span> no cluster found for "<span class="i">${esc(query)}</span>" in the current snapshot.
+Not every launch is indexed, and one that just launched may not be in the window yet.</div>`;
 }
 function loadErr(){
   resultEl.innerHTML=`<div class="status"><span class="r">[!]</span> snapshot did not load (${esc(SNAP_ERR||'unknown')}).
@@ -434,9 +433,6 @@ function run(query){
 const qEl=document.getElementById('q');
 document.getElementById('go').onclick=()=>run(qEl.value.trim());
 qEl.addEventListener('keydown',e=>{if(e.key==='Enter')run(qEl.value.trim());});
-document.querySelectorAll('.hint b').forEach(b=>{
-  b.onclick=()=>{qEl.value=b.dataset.q;run(b.dataset.q);};
-});
 </script>
 </body>
 </html>
