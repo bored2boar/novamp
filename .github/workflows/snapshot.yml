@@ -49,9 +49,9 @@ jobs:
           BITQUERY_TOKEN: ${{ secrets.BITQUERY_TOKEN }}
           BLOCKSCOUT_API_KEY: ${{ secrets.BLOCKSCOUT_API_KEY }}
           SNAPSHOT_HOURS: "24"
-          SNAPSHOT_LIMIT: "500"
+          SNAPSHOT_LIMIT: "150"
           SNAPSHOT_DEEPEN_TOP: "25"
-        run: npx tsx scripts/probe-indexer.ts
+        run: npx tsx scripts/build-snapshot.ts
 
       - name: commit it, only when it changed
         run: |
