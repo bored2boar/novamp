@@ -111,10 +111,13 @@
 
   /* ---- footer ---- */
   footer{margin-top:auto;padding-top:34px}
-  .links{display:flex;gap:22px;align-items:center}
+  .links{display:flex;gap:22px;align-items:center;flex-wrap:wrap}
   .links a{color:var(--dim);text-decoration:none;display:inline-flex}
   .links a:hover{color:var(--ink)}
   .links svg{width:22px;height:22px;fill:currentColor}
+  .links .pons{width:22px;height:22px;border-radius:5px;display:block;opacity:.9}
+  .links a:hover .pons{opacity:1}
+  .ca{font-size:11px;letter-spacing:.5px;color:var(--dim);margin-left:6px;word-break:break-all;user-select:all}
 
   @media (max-width:820px){
     #girl{opacity:.14;right:-10%;width:120vw}
@@ -148,6 +151,10 @@
         <a href="https://x.com/novampobserver" target="_blank" rel="noopener" aria-label="X">
           <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M12.6 0h2.45l-5.35 6.12L16 16h-4.93l-3.86-5.05L2.79 16H.34l5.72-6.54L0 0h5.05l3.49 4.61L12.6 0zm-.86 14.53h1.36L4.32 1.39H2.86l8.88 13.14z"/></svg>
         </a>
+        <a href="https://www.ponsfamily.com/launchpad/0xf219746e9FC4eDd81e9C377b63DF2a6446BcEC3a" target="_blank" rel="noopener" aria-label="Pons Family">
+          <img class="pons" src="data:image/png;base64,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" alt="Pons Family" width="22" height="22">
+        </a>
+        <span class="ca">CA: 0xf219746e9fc4edd81e9c377b63df2a6446bcec3a</span>
       </div>
     </footer>
   </div>
