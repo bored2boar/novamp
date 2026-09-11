@@ -1,0 +1,69 @@
+name: snapshot
+
+# Builds the JSON the website reads, on a schedule, on somebody else's machine.
+#
+# This runner is the piece that makes a serverless site possible. It has a real
+# network connection, it holds the API keys as secrets rather than shipping them
+# to a browser, and it costs nothing. The site stays static: it fetches one JSON
+# file and has no backend to fall over.
+#
+# Secrets to set in Settings -> Secrets and variables -> Actions:
+#   BITQUERY_TOKEN       required
+#   BLOCKSCOUT_API_KEY   free from dev.blockscout.com
+#
+# Nothing here can write to the chain, and nothing here holds a wallet key. The
+# `no-signer` job in ci.yml scans this tree on every commit.
+
+on:
+  schedule:
+    # Every 20 minutes. A clone fight lives for hours, so this is well inside
+    # the useful window, and it stays far under every free tier in play.
+    - cron: "*/20 * * * *"
+  workflow_dispatch:
+
+# Only one snapshot at a time. Two runs racing to commit to the same branch is
+# how a scheduled job starts failing at 3am for reasons nobody can reproduce.
+concurrency:
+  group: snapshot
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - run: npm ci
+
+      - name: build the snapshot
+        id: build
+        env:
+          BITQUERY_TOKEN: ${{ secrets.BITQUERY_TOKEN }}
+          BLOCKSCOUT_API_KEY: ${{ secrets.BLOCKSCOUT_API_KEY }}
+          SNAPSHOT_HOURS: "24"
+          SNAPSHOT_LIMIT: "500"
+          SNAPSHOT_DEEPEN_TOP: "25"
+        run: npx tsx scripts/build-snapshot.ts
+
+      - name: commit it, only when it changed
+        run: |
+          set -e
+          # The committer is the Actions bot and nobody else. A scheduled job
+          # should never carry a person's name or address into the history.
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add site/data
+          if git diff --cached --quiet; then
+            echo "snapshot unchanged, nothing to commit"
+            exit 0
+          fi
+          git commit -m "snapshot: $(date -u +'%Y-%m-%d %H:%M UTC')"
+          git push
