@@ -49,7 +49,7 @@ jobs:
           BITQUERY_TOKEN: ${{ secrets.BITQUERY_TOKEN }}
           BLOCKSCOUT_API_KEY: ${{ secrets.BLOCKSCOUT_API_KEY }}
           SNAPSHOT_HOURS: "24"
-          SNAPSHOT_LIMIT: "150"
+          SNAPSHOT_LIMIT: "500"
           SNAPSHOT_DEEPEN_TOP: "25"
         run: npx tsx scripts/build-snapshot.ts
 
