@@ -1,11 +1,11 @@
 {
-  "takenAt": "2026-09-11T06:12:11.665Z",
+  "takenAt": "2026-09-11T06:37:09.151Z",
   "window": {
     "requestedHours": 24,
-    "oldestLaunch": 1789105679,
-    "newestLaunch": 1789107091,
-    "launches": 197,
-    "unreadable": 303
+    "oldestLaunch": 1789106911,
+    "newestLaunch": 1789108568,
+    "launches": 216,
+    "unreadable": 284
   },
-  "clusters": 31
+  "clusters": 27
 }
