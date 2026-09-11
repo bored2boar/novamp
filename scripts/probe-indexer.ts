@@ -1,30 +1,38 @@
 /**
- * Check the indexer's field names against reality, before a snapshot job
- * depends on them.
+ * Probe: does Bitquery return token name/symbol on the free realtime tier?
  *
  *   BITQUERY_TOKEN=... npx tsx scripts/probe-indexer.ts
  *
- * Every GraphQL adapter is written against documentation and then meets an API
- * that names one field differently. The failure mode is quiet: the query
- * succeeds, a field comes back undefined, and the pipeline produces a snapshot
- * full of zero addresses that looks fine until somebody reads it.
- *
- * So this prints the raw shape of one event and one holder row, and then says
- * plainly which of the fields novamp needs were actually present. Run it once
- * after getting a key, and again any time the indexer is upgraded.
+ * The TokenLaunched event carries only addresses. name/symbol have to come from
+ * somewhere. Blockscout for this chain is behind a bot wall, so this checks
+ * whether Bitquery itself can supply them via a token's transfers/currency.
  */
 
-import {
-  argsToMap,
-  bitqueryFromEnv,
-  fetchLaunches,
-  LAUNCHES_QUERY,
-  PONS_FACTORY_LOWER,
-  query,
-} from "../src/indexer/bitquery.js";
-import { blockscoutFromEnv, fetchTokenMeta } from "../src/indexer/blockscout.js";
+import { bitqueryFromEnv, fetchLaunches, query } from "../src/indexer/bitquery.js";
 
-const WANTED = ["token", "curve", "deployer", "pairToken"];
+const CURRENCY_QUERY = `
+query Meta($token: String!) {
+  EVM(network: robinhood, dataset: realtime) {
+    Transfers(
+      limit: {count: 1}
+      where: {Transfer: {Currency: {SmartContract: {is: $token}}}}
+    ) {
+      Transfer {
+        Currency { Name Symbol Decimals SmartContract }
+      }
+    }
+  }
+}`;
+
+interface CurrencyResponse {
+  EVM?: {
+    Transfers?: {
+      Transfer?: {
+        Currency?: { Name?: string; Symbol?: string; Decimals?: number; SmartContract?: string };
+      };
+    }[];
+  };
+}
 
 async function main(): Promise<void> {
   const cfg = bitqueryFromEnv();
@@ -32,67 +40,43 @@ async function main(): Promise<void> {
     process.stderr.write("BITQUERY_TOKEN is not set.\n");
     process.exit(1);
   }
-  process.stdout.write(`endpoint  ${cfg.url}\ndataset   ${cfg.dataset}\n\n`);
+  process.stdout.write(`endpoint  ${cfg.url}\n\n`);
 
-  process.stdout.write("--- raw: one TokenLaunched event -----------------------------\n");
-  const raw = await query<{
-    EVM: { Events: { Arguments: { Name: string; Type?: string }[] }[] };
-  }>(cfg, LAUNCHES_QUERY, { factory: PONS_FACTORY_LOWER, limit: 1, hoursAgo: 24 });
-
-  const first = raw.EVM?.Events?.[0];
-  if (!first) {
-    process.stdout.write(
-      "no launches came back in the last 24h.\n" +
-        "Either the factory address is wrong, the dataset does not cover this chain,\n" +
-        "or the key has no access. Nothing below will be meaningful.\n",
-    );
+  process.stdout.write("--- pulling a few launches ----------------------------------\n");
+  const launches = await fetchLaunches(cfg, { hoursAgo: 24, limit: 5 });
+  if (!launches.length) {
+    process.stdout.write("no launches in window; cannot test metadata.\n");
     process.exit(4);
   }
-  process.stdout.write(JSON.stringify(first, null, 2) + "\n\n");
+  process.stdout.write(`got ${launches.length} launches. testing the first few tokens.\n\n`);
 
-  const names = (first.Arguments ?? []).map((a) => a.Name);
-  process.stdout.write("--- argument names present -----------------------------------\n");
-  process.stdout.write(names.join(", ") + "\n\n");
-
-  process.stdout.write("--- fields novamp needs --------------------------------------\n");
-  const args = argsToMap(first.Arguments as never);
-  let missing = 0;
-  for (const field of WANTED) {
-    const value = args.get(field);
-    if (value) {
-      process.stdout.write(`  ok      ${field.padEnd(12)} ${value}\n`);
-    } else {
-      missing++;
-      process.stdout.write(`  MISSING ${field}\n`);
-    }
-  }
-  const hasName = args.has("name") || args.has("symbol");
-  process.stdout.write(
-    hasName
-      ? "  ok      name/symbol are in the event, no explorer lookup needed\n"
-      : "  note    name/symbol are NOT in the event, they come from Blockscout\n",
-  );
-
-  process.stdout.write("\n--- parsed through the adapter -------------------------------\n");
-  const parsed = await fetchLaunches(cfg, { hoursAgo: 24, limit: 3 });
-  process.stdout.write(JSON.stringify(parsed, null, 2) + "\n");
-
-  if (parsed[0] && !hasName) {
-    process.stdout.write("\n--- Blockscout metadata for that token -----------------------\n");
-    const meta = await fetchTokenMeta(blockscoutFromEnv(), parsed[0].token);
-    process.stdout.write(JSON.stringify(meta, null, 2) + "\n");
-    if (!meta.ok) {
-      process.stdout.write(
-        "\nthe explorer did not answer. Check BLOCKSCOUT_API_KEY, or that the\n" +
-          "token is indexed there yet - a launch seconds old may not be.\n",
-      );
+  let anyMeta = false;
+  for (const launch of launches.slice(0, 4)) {
+    const token = launch.token;
+    process.stdout.write(`--- token ${token} -------------------------\n`);
+    try {
+      const raw = await query<CurrencyResponse>(cfg, CURRENCY_QUERY, { token });
+      const cur = raw.EVM?.Transfers?.[0]?.Transfer?.Currency;
+      if (cur && (cur.Name || cur.Symbol)) {
+        anyMeta = true;
+        process.stdout.write(`  name="${cur.Name ?? ""}"  symbol="${cur.Symbol ?? ""}"  decimals=${cur.Decimals ?? "?"}\n\n`);
+      } else {
+        process.stdout.write(`  empty (no transfers/currency for this token yet)\n`);
+        process.stdout.write(`  raw: ${JSON.stringify(raw)}\n\n`);
+      }
+    } catch (err) {
+      process.stdout.write(`  QUERY ERROR: ${(err as Error).message}\n`);
+      process.stdout.write(`  (the query shape may be off for this network; send this and it gets fixed)\n\n`);
     }
   }
 
+  process.stdout.write("--- verdict -------------------------------------------------\n");
   process.stdout.write(
-    missing
-      ? `\n${missing} required field(s) missing. Send this output and the adapter gets fixed.\n`
-      : "\nall required fields present. The snapshot job will work.\n",
+    anyMeta
+      ? "Bitquery HAS name/symbol. Option A works, I will wire it in.\n"
+      : "Bitquery returned no name/symbol for these tokens. Option A likely will not\n" +
+          "work as-is (tokens may be too fresh, or transfers/currency not on this tier).\n" +
+          "Send this output either way.\n",
   );
 }
 
