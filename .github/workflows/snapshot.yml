@@ -51,7 +51,7 @@ jobs:
           SNAPSHOT_HOURS: "24"
           SNAPSHOT_LIMIT: "500"
           SNAPSHOT_DEEPEN_TOP: "25"
-        run: npx tsx scripts/build-snapshot.ts
+        run: npx tsx scripts/probe-indexer.ts
 
       - name: commit it, only when it changed
         run: |
