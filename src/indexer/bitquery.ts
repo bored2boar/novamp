@@ -135,7 +135,7 @@ export function argsToMap(args: readonly RawArg[] | undefined): Map<string, stri
 
 export const LAUNCHES_QUERY = `
 query Launches($factory: String!, $limit: Int!, $hoursAgo: Int!) {
-  EVM(network: robinhood, dataset: combined) {
+  EVM(network: robinhood, dataset: combined) {   EVM(network: robinhood, dataset: realtime) {
     Events(
       limit: {count: $limit}
       orderBy: {descending: Block_Time}
