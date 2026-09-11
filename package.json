@@ -30,7 +30,10 @@
     "prepare": "npm run build",
     "test": "node --import tsx --test test/*.test.ts",
     "typecheck": "tsc -p tsconfig.json --noEmit",
-    "capture": "tsx scripts/capture-fixtures.ts"
+    "capture": "tsx scripts/capture-fixtures.ts",
+    "snapshot": "tsx scripts/build-snapshot.ts",
+    "snapshot:demo": "tsx scripts/snapshot-from-fixtures.ts",
+    "probe:indexer": "tsx scripts/probe-indexer.ts"
   },
   "dependencies": {
     "commander": "^12.1.0",
