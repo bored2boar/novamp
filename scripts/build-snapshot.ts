@@ -30,10 +30,11 @@ import {
   fetchHolders,
   fetchLaunches,
   toLaunchRecord,
+  query,
   IndexerError,
+  type BitqueryConfig,
   type IndexedLaunch,
 } from "../src/indexer/bitquery.js";
-import { blockscoutFromEnv, fetchTokenMetaBatch } from "../src/indexer/blockscout.js";
 import { clusterLaunches } from "../src/vamp/cluster.js";
 import { judgeCluster, DEFAULT_VERDICT_OPTIONS } from "../src/vamp/verdict.js";
 import { looseKey } from "../src/vamp/normalize.js";
@@ -46,6 +47,76 @@ const MIN_MEMBERS = Number(process.env["SNAPSHOT_MIN_MEMBERS"] || 2);
 /** How many clusters to enrich with holder data, busiest first. */
 const DEEPEN_TOP = Number(process.env["SNAPSHOT_DEEPEN_TOP"] || 25);
 const OUT = resolve(process.cwd(), process.env["SNAPSHOT_OUT"] || "site/data");
+
+/** Bitquery carries the token name and symbol in its Currency metadata. */
+const CURRENCY_QUERY = `
+query Meta($token: String!) {
+  EVM(network: robinhood, dataset: realtime) {
+    Transfers(
+      limit: {count: 1}
+      where: {Transfer: {Currency: {SmartContract: {is: $token}}}}
+    ) {
+      Transfer { Currency { Name Symbol Decimals } }
+    }
+  }
+}`;
+
+interface CurrencyMeta {
+  name: string;
+  symbol: string;
+  decimals: number;
+  holders?: number;
+}
+
+const metaSleep = (ms: number): Promise<void> => new Promise((r) => setTimeout(r, ms));
+const META_GAP_MS = Number(process.env["SNAPSHOT_META_GAP_MS"] || 300);
+
+/**
+ * Name and symbol per token, from Bitquery's Currency metadata.
+ *
+ * The TokenLaunched event carries only addresses. The chain's own explorer is
+ * behind a bot wall, so the two strings this whole tool is about come from the
+ * same indexer that gave us the launches. One request per token, paced, so a
+ * rate limited free key is not hammered. A token that cannot be named is left
+ * out of the map and lands in its own cluster - visible, not invented.
+ */
+async function fetchCurrencyMetaBatch(
+  cfg: BitqueryConfig,
+  tokens: readonly string[],
+  onProgress?: (done: number, total: number) => void,
+): Promise<Map<string, CurrencyMeta>> {
+  const out = new Map<string, CurrencyMeta>();
+  let done = 0;
+  for (const token of tokens) {
+    const key = token.toLowerCase();
+    if (!out.has(key)) {
+      try {
+        const raw = await query<{
+          EVM?: {
+            Transfers?: {
+              Transfer?: { Currency?: { Name?: string; Symbol?: string; Decimals?: number } };
+            }[];
+          };
+        }>(cfg, CURRENCY_QUERY, { token: key });
+        const cur = raw.EVM?.Transfers?.[0]?.Transfer?.Currency;
+        if (cur && (cur.Name || cur.Symbol)) {
+          out.set(key, {
+            name: cur.Name ?? "",
+            symbol: cur.Symbol ?? "",
+            decimals: Number(cur.Decimals ?? 18) || 18,
+          });
+        }
+      } catch {
+        // leave it unnamed; the loop below counts it as unreadable
+      }
+    }
+    done++;
+    if (onProgress && done % 25 === 0) onProgress(done, tokens.length);
+    if (done < tokens.length) await metaSleep(META_GAP_MS);
+  }
+  onProgress?.(done, tokens.length);
+  return out;
+}
 
 function log(line: string): void {
   process.stderr.write(`${line}\n`);
@@ -66,7 +137,6 @@ async function main(): Promise<void> {
     log("BITQUERY_TOKEN is not set. Nothing to read.");
     process.exit(1);
   }
-  const blockscout = blockscoutFromEnv();
 
   log(`reading launches, last ${HOURS}h, limit ${LIMIT}`);
   let indexed: IndexedLaunch[];
@@ -88,7 +158,7 @@ async function main(): Promise<void> {
   // Names and symbols are not in the event, so they come from the explorer.
   const needMeta = indexed.filter((l) => !l.symbol).map((l) => l.token);
   log(`reading metadata for ${needMeta.length} token(s)`);
-  const meta = await fetchTokenMetaBatch(blockscout, needMeta, (done, total) =>
+  const meta = await fetchCurrencyMetaBatch(bitquery, needMeta, (done, total) =>
     log(`  ${done}/${total}`),
   );
 
