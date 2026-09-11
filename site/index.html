@@ -380,7 +380,6 @@ function renderCluster(cl,query){
   }).join('');
 
   const notes=(cl.notes||[]).map(n=>`<div class="cl-note">${esc(n)}</div>`).join('');
-  const gaps=(SNAP.gaps||[]).map(g=>`<li>${esc(g)}</li>`).join('');
 
   resultEl.innerHTML=`
     <div class="status"><span class="g">[+]</span> scanning launch cluster for: <span class="i">${esc(query.toUpperCase())}</span>
@@ -391,13 +390,7 @@ function renderCluster(cl,query){
     <table>
       <thead><tr><th>#</th><th>SYMBOL / WHY</th><th>VERDICT</th><th>SCORE</th><th>RISK</th><th>LAG</th><th>TOKEN</th></tr></thead>
       <tbody>${rows}</tbody>
-    </table>
-    <div class="meta">snapshot \u00b7 ${esc(SNAP.source||'')} \u00b7 taken ${fmtTaken(SNAP.takenAt)}
-      \u00b7 <span class="gaps-toggle" id="gt">what this snapshot can't see</span>
-      <ul class="gaps" id="gaps">${gaps||'<li>none listed</li>'}</ul>
-    </div>`;
-  const gt=document.getElementById('gt'),gapsEl=document.getElementById('gaps');
-  if(gt)gt.onclick=()=>gapsEl.classList.toggle('open');
+    </table>`;
 }
 
 function notFound(query){
