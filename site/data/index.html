@@ -1,0 +1,429 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>novamp · which token is real</title>
+<meta name="description" content="A read-only clone resolver for pons v2 launches on Robinhood Chain. Of every token fighting over a name, which one is real?">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#050505; --ink:#d9d9d9; --dim:#5a5f66;
+    --grn:#9AE66E; --yl:#FFD93B; --rd:#FF6B5E; --wht:#ededed;
+    --red5:#ff5a4d; --red4:#c8291c; --line:#1b1b1b;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html,body{min-height:100%;background:#000;color:var(--ink);
+    font-family:'JetBrains Mono',ui-monospace,monospace}
+  body{position:relative;overflow-x:hidden;background:var(--bg)}
+
+  /* ---- animated art layer: the girl, reused from the banner engine ---- */
+  #girl{position:fixed;right:0;top:50%;transform:translateY(-50%);
+    width:min(46vw,760px);height:auto;z-index:1;pointer-events:none;opacity:.85}
+  #fx{position:fixed;inset:0;z-index:2;pointer-events:none}
+
+  /* ---- fx overlays, lifted straight from the mockup ---- */
+  #scan{position:fixed;inset:0;pointer-events:none;z-index:4;
+    background:repeating-linear-gradient(0deg,rgba(0,0,0,.22) 0 1px,transparent 1px 3px)}
+  #vig{position:fixed;inset:0;pointer-events:none;z-index:4;
+    background:radial-gradient(130% 130% at 60% 46%,transparent 55%,rgba(0,0,0,.55) 100%)}
+  #grain{position:fixed;inset:0;pointer-events:none;z-index:5;opacity:.05;mix-blend-mode:overlay;
+    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='120'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+    animation:g .4s steps(2) infinite}
+  @keyframes g{0%{transform:translate(0,0)}50%{transform:translate(-3px,2px)}100%{transform:translate(2px,-2px)}}
+
+  /* ---- content column ---- */
+  #wrap{position:relative;z-index:3;width:min(680px,50vw);margin:0;
+    padding:6vh 0 40px 5vw;min-height:100vh;display:flex;flex-direction:column}
+  .prompt{color:var(--dim);font-size:13px;letter-spacing:1px;margin-bottom:14px}
+  .prompt b{color:var(--ink);font-weight:500}
+  h1{font-weight:700;line-height:.95;letter-spacing:2px;
+    font-size:clamp(52px,12vw,120px);margin:2px 0 14px}
+  h1 .no{color:var(--wht)}
+  h1 .vamp{color:var(--red5);text-shadow:0 0 22px rgba(255,90,77,.25)}
+  .tag{font-size:13px;letter-spacing:1.5px;color:var(--dim);margin-bottom:2px}
+  .tag .hot{color:var(--rd);font-weight:700}
+  .sub{font-size:12px;letter-spacing:1px;color:var(--dim);margin-bottom:28px}
+
+  /* ---- search ---- */
+  .search{display:flex;gap:0;border:1px solid #2a2a2a;background:rgba(8,8,8,.72);
+    max-width:560px;backdrop-filter:blur(2px)}
+  .search .caret{color:var(--red5);padding:0 10px;align-self:center;font-weight:700}
+  #q{flex:1;background:transparent;border:0;outline:0;color:var(--ink);
+    font:400 16px 'JetBrains Mono',monospace;padding:14px 4px;letter-spacing:1px}
+  #q::placeholder{color:#4a4f56}
+  #go{background:transparent;border:0;border-left:1px solid #2a2a2a;color:var(--red5);
+    font:700 13px 'JetBrains Mono',monospace;letter-spacing:2px;padding:0 20px;cursor:pointer}
+  #go:hover{background:rgba(255,90,77,.1)}
+  .hint{font-size:11px;color:var(--dim);letter-spacing:1px;margin-top:10px}
+  .hint b{color:#8a9299;font-weight:500;cursor:pointer}
+  .hint b:hover{color:var(--ink)}
+
+  /* ---- result ---- */
+  #result{margin-top:30px;min-height:10px}
+  .status{font-size:13px;color:var(--dim);letter-spacing:.5px;white-space:pre-wrap;line-height:1.7}
+  .status .g{color:var(--grn)} .status .r{color:var(--rd)} .status .i{color:var(--ink)}
+
+  .cl-head{margin:18px 0 10px;font-size:13px;letter-spacing:1px}
+  .cl-head .lbl{color:var(--wht);font-weight:700;font-size:16px}
+  .badge{display:inline-block;padding:1px 8px;margin-left:8px;border:1px solid;font-size:11px;
+    letter-spacing:1px;vertical-align:2px}
+  .b-FARM,.b-CONTESTED{color:var(--rd);border-color:var(--rd)}
+  .b-CLEAN{color:var(--grn);border-color:var(--grn)}
+  .b-SOLO{color:var(--dim);border-color:var(--dim)}
+  .cl-note{color:var(--dim);font-size:12px;letter-spacing:.5px;margin:4px 0 0;line-height:1.6}
+
+  table{width:100%;border-collapse:collapse;margin-top:10px;font-size:12px}
+  thead th{color:var(--dim);font-weight:500;text-align:left;letter-spacing:.5px;
+    padding:6px 7px;border-bottom:1px solid var(--line);font-size:10px}
+  tbody td{padding:8px 7px;border-bottom:1px solid #101010;vertical-align:top}
+  tr.orig{background:linear-gradient(90deg,rgba(154,230,110,.08),transparent 70%)}
+  tr.orig td:first-child{box-shadow:inset 3px 0 0 var(--grn)}
+  .sym{color:var(--ink);font-weight:500}
+  .v-ORIGINAL{color:var(--grn);font-weight:700}
+  .v-CONTESTED{color:var(--yl);font-weight:700}
+  .v-VAMP,.v-DEAD,.v-TAINTED{color:var(--rd);font-weight:700}
+  .risk-GREEN{color:var(--grn)} .risk-AMBER{color:var(--yl)} .risk-RED{color:var(--rd)}
+  .addr{color:var(--dim);font-size:12px}
+  .why{color:var(--dim);font-size:11.5px;letter-spacing:.3px;margin-top:4px;line-height:1.5}
+  .num{color:var(--ink)}
+
+  .meta{margin-top:16px;font-size:11px;color:var(--dim);letter-spacing:.5px}
+  .meta .gaps-toggle{cursor:pointer;color:#8a9299;text-decoration:underline dotted}
+  .gaps{margin-top:6px;padding-left:14px;border-left:1px solid var(--line);display:none}
+  .gaps.open{display:block}
+  .gaps li{list-style:none;margin:3px 0;color:#6b7178}
+
+  /* ---- footer ---- */
+  footer{margin-top:auto;padding-top:34px}
+  .links{display:flex;gap:22px;align-items:center}
+  .links a{color:var(--dim);text-decoration:none;display:inline-flex}
+  .links a:hover{color:var(--ink)}
+  .links svg{width:22px;height:22px;fill:currentColor}
+
+  @media (max-width:820px){
+    #girl{opacity:.14;right:-10%;width:120vw}
+    #wrap{width:auto;max-width:none;padding:5vh 20px 40px}
+  }
+</style>
+</head>
+<body>
+  <canvas id="girl"></canvas>
+  <canvas id="fx"></canvas>
+  <div id="scan"></div><div id="vig"></div><div id="grain"></div>
+
+  <div id="wrap">
+    <div class="prompt"><b>[root@novamp ~]#</b> novamp resolve</div>
+    <h1><span class="no">NO</span> <span class="vamp">VAMP</span></h1>
+    <div class="tag">SAME NAME. MULTIPLE LAUNCHES. <span class="hot">FIND THE REAL ONE.</span></div>
+
+    <div class="search">
+      <span class="caret">&gt;</span>
+      <input id="q" autocomplete="off" spellcheck="false" placeholder="enter a ticker or a name">
+      <button id="go">RESOLVE</button>
+    </div>
+    <div class="hint">demo data · try <b data-q="NOVA">NOVA</b> · <b data-q="PEANUT">PEANUT</b> · <b data-q="PNUT">PNUT</b> · <b data-q="KETTLE">KETTLE</b></div>
+
+    <div id="result"></div>
+
+    <footer>
+      <div class="links">
+        <a href="https://github.com/bored2boar/novamp" target="_blank" rel="noopener" aria-label="GitHub">
+          <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg>
+        </a>
+        <a href="https://x.com/bored2boar" target="_blank" rel="noopener" aria-label="X">
+          <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M12.6 0h2.45l-5.35 6.12L16 16h-4.93l-3.86-5.05L2.79 16H.34l5.72-6.54L0 0h5.05l3.49 4.61L12.6 0zm-.86 14.53h1.36L4.32 1.39H2.86l8.88 13.14z"/></svg>
+        </a>
+      </div>
+    </footer>
+  </div>
+
+<script>
+"use strict";
+/* ============================================================
+   ART ENGINE - ported from novamp_live_banner.html
+   The girl is her exact glyph matrix, with the same breathing,
+   shimmer, gaze and flash. Bats reused for the resolve scan.
+   ============================================================ */
+const GIRL=[
+"0000000000000000000000000000000110000000000000000000000000000000000000000000000000000000000000000000",
+"0000000000000000000000000000011000000000000000000000000000000000000000000000000000000000000000000000",
+"0000000000000000000000000000010000000000000000000000000000000000000000000000000000000000000000000000",
+"0000000000000000000000100000010000000000000000000000000000000000000000000000000110000000000000000000",
+"0000000000000000000110000000100000000000000000000000000000000000000000000000000111000000000000000000",
+"0000000000000000011000000000100000000000000000000000100000000000000000000000000010110000000000000000",
+"0000000000000002100000010000100000000000010000001000000000000000000000000000000100011000000000000000",
+"0000000000000110000000100000000000000000000000100000000000000000100000000000000101000100000000000000",
+"0000000000001000000000000000010000011000000010000010000000000000001000000000001000000010000000000000",
+"0000000000110000000010000000001000000000001101101000000000000000000110000000010000100002000000000000",
+"0000000001100000000000000000000011000000011111111000000000000000000001000000100000100000200000000000",
+"0000000010001111000100000000000010000001111110110000000001000000000000100000000000100000010000000000",
+"0000000100100000000000000000000000000001110000100000000110000000000000010000000000000000001000000000",
+"0000001110000000011100000000000000000011110000000000012310000000000000001000000000000000000100000000",
+"0000011000000000011000000000000000000011000000000000233200000000000000000100000000000000000110000000",
+"0000110000000000010000000000010000000110000000000011011100000000000000000010000000100000000010000000",
+"0001100000000000000000000000000000000110000000122233210001000000000000000010000010000111000011000000",
+"0010000000000000000000000000000000000100000001322222220100000000010010000001000001001100110001100000",
+"0000000000000000000000000000000000000100000000000001211211000001100220000000000001010000001000100000",
+"0000000000000000000000100000000010001100000010000000001222110021001110000000100000100000000100100000",
+"0000000000000000000000000000000010000100000022011121201233212211111000000000100000000000000010010000",
+"0000000000000000000000000000000010000100000133222222233333333222222210000001000000000000000001010000",
+"0000000000000000000010000000000000000000000033333333333333332221001121000000000000000000000000110000",
+"0000000000000000000000000111222200000000010023333333333333333200000001000010010000000000000000010000",
+"0000000000000000000000222111100110000000121023333333333333333311112000000000010000000000000000010000",
+"0000000000000000000000012323200100000000133102333333333333333113211000000001010000000000000000000000",
+"0000000000000000000000000123211000000000233322333333333222332233321200000001010000000000000000000000",
+"0000000000000000010000000001232100000000123333333332222111112333332200000001000000000000000000000000",
+"0000000000000000000000000000001100000000233333333333112000111233333100000001000000000000000000000000",
+"0000000000000000000000000000000000000000233333333333222210002333332000000000000000000000000000000000",
+"0000000000000001000000000000000010000000133333333333323322023333320000001001000000000000000000000000",
+"0000000000000000000000000000000000000000012333233333322222333333200000001000000000000000000000000000",
+"0000000000000000000000000000000000000000210013333332333333333321000000011000100000000000000000000000",
+"0000000000000000000000000000000000000000122100112333333333322100000000010000100000000000000000000000",
+"0000000000000100000000100000000000000012023321000122333333100000000000110000010000000000000000000000",
+"0000000000000000000000100000000000000013103333100000011100000000000001000010001000000000000000000000",
+"0000000000000000000000000000000000000023323333310000000000000000000010000011001000000000000000000000",
+"0000000000000000000000000000001000000013323333332000001000000000000000000001000010000000000000000000",
+"0000000000000000000000000000000000000013223333333210001000000000000000000000100000000000000000000000",
+"0000000000010000000010000000001000000013323333221000000000000122222210000000000001000000000000000000",
+"0000000000100000000000000000001000000003322210000000000000012333333332100000000000110000000000000000",
+"0000000001000000000000000000001000000001001000000000000000333323333333310000000000001000000000000000",
+"0000000010000000000010000000000000000100000100000000000013333333222232331000000000000100000000000000",
+"0000000100000000000100000000000000000011100100000000000033333333333333332000000000000000000000000000",
+"0000000000000000000000000000000000000000100111000000000233333323332232333200000000000000000000000000",
+"0000010000000000010000000000000100000001111111211000000233333333333333333200000000000000000011110100",
+"0000000000000000000000000000000100000001100023212000000233333333232223333220000000000000000000000000",
+"0010000000000000000000000000000100000001221121222010001333333333333333323331000000000001000000000000",
+"1000000000000100000000000000000010000001220122320010000233333223322333332221000001000000100000000000",
+"0000000000000000000000100000000010000001312333200010000333333333333332100000000000000000001000000000",
+"0000000000000000000000100000000000000012213322000010000223332323332100000000000000010000000000000000",
+"0000000000100000000000000000000001000122223321012010000233333333220000000000000000000000000000000000",
+"0000000000000000000000000000001000000332323200022000000233322321000000000000000100000100000000000000",
+"0000000010000000000000000000001000012332332000232000000222333200000000000000000000000000000000000000",
+"0000000100000000000001000000001000022322220002322001000222321000000000000000000000000000000000000000",
+"0000000000000000000001000000010000233333200023320000000322210000000000000000000000100000000000000000",
+"0000001000000000000001000000000002332331000231000000010222000000000000000000000000001000100000000000",
+"0000010000000100000001000000000023333310002100000000010210000000000000000000000000000000000000000000",
+"0000000000000100000000000000000232222000000000000000000100000000000000000000000000000000000000000000",
+"0000000000000000000000100000002333210000000000000000000000000000000000000000000000000000000000000000",
+"0000000000000000000000100000023321000000000000000000000000000000000000000000000000000100000000000000",
+"0000000000010000000000100000232000000100000000000000000000000000000000000000000000000100000000000000",
+"0000000000000000000000000012210000000000000000000000000000000000000000000000000000000000000000000000",
+"0000000000100000000000000010000000000000000000000000000000000000000000000000000000000000000000000000",
+"0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+"0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+"0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
+];
+const RED=['#2a0906','#5a120c','#8f1c12','#c8291c','#ff5a4d','#ff9d94'];
+const GLY=['$','&','\u00A7','\u00F8','%'];
+function hash(x,y){let h=(x*374761393+y*668265263)>>>0;h=(h^(h>>13))*1274126177>>>0;return (h>>>8)/16777216;}
+
+const CW=9,CHh=14;
+const GCOLS=GIRL[0].length,GROWS=GIRL.length;   // 100 x 68
+const EYE={x:44,y:23,w:24,h:4};
+const cv=document.getElementById('girl');
+const ctx=cv.getContext('2d');
+const DPR=Math.min(2,window.devicePixelRatio||1);
+cv.width=GCOLS*CW*DPR;cv.height=GROWS*CHh*DPR;
+ctx.scale(DPR,DPR);
+
+let flash=0,gaze=0,last=0;
+
+// ---- bats fly across the whole viewport on a resolve ----
+const fx=document.getElementById('fx');
+const fctx=fx.getContext('2d');
+function sizeFx(){fx.width=window.innerWidth*DPR;fx.height=window.innerHeight*DPR;
+  fctx.setTransform(DPR,0,0,DPR,0,0);}
+sizeFx();window.addEventListener('resize',sizeFx);
+const fxBats=[];
+function spawnBat(label){
+  fxBats.push({
+    x:window.innerWidth*(0.60+Math.random()*0.18),
+    y:window.innerHeight*(0.18+Math.random()*0.52),
+    vx:-(70+Math.random()*60), vy:(-30+Math.random()*60),
+    ph:Math.random()*6, life:0, ttl:3.4+Math.random()*1.4, label:label||''
+  });
+}
+let cellsBuf=[];
+function put(c,r,ch,color,a){cellsBuf.push([c,r,ch,color,a===undefined?1:a]);}
+
+function tick(now){
+  requestAnimationFrame(tick);
+  const dt=last?Math.min(50,now-last):16;last=now;
+  cellsBuf.length=0;
+  flash=Math.max(0,flash-dt*0.0022);
+  gaze=0.5+0.5*Math.sin(now*0.0011);
+  ctx.clearRect(0,0,GCOLS*CW,GROWS*CHh);
+
+  // girl (breathing glyphs)
+  for(let y=0;y<GROWS;y++){const rowS=GIRL[y];
+    for(let x=0;x<GCOLS;x++){let lv=rowS.charCodeAt(x)-48;if(!lv)continue;
+      const breathe=0.5+0.5*Math.sin(now*0.0006+y*0.09);
+      const shimmer=hash(x,(y*7+((now/460)|0))%9973);
+      let b=lv+(breathe>0.72?1:0)+(shimmer>0.94?1:0)+(flash>0.25?1:0);
+      const inEye=(x>=EYE.x&&x<EYE.x+EYE.w&&y>=EYE.y&&y<EYE.y+EYE.h);
+      if(inEye)b+=(gaze>0.75||flash>0.2)?2:0;
+      b=Math.max(1,Math.min(5,b));
+      const g=GLY[(hash(x,y)*GLY.length)|0];
+      put(x,y,g,RED[b],0.92);}}
+
+  ctx.font='bold 13px "JetBrains Mono",monospace';ctx.textBaseline='top';
+  for(const cell of cellsBuf){const c=cell[0],r=cell[1],ch=cell[2],col=cell[3],al=cell[4];
+    if(!ch)continue;ctx.globalAlpha=al;ctx.fillStyle=col;ctx.fillText(ch,c*CW,r*CHh);}
+  ctx.globalAlpha=1;
+
+  // ---- bats overlay (full viewport) ----
+  fctx.clearRect(0,0,window.innerWidth,window.innerHeight);
+  fctx.textBaseline='top';
+  const dtS=dt/1000;
+  for(let i=fxBats.length-1;i>=0;i--){const B=fxBats[i];
+    B.life+=dtS;
+    if(B.life>B.ttl){fxBats.splice(i,1);continue;}
+    B.x+=B.vx*dtS;
+    B.y+=B.vy*dtS+Math.sin(now*0.004+B.ph)*0.6;
+    const t=B.life/B.ttl;
+    const fade=B.life<0.5?(B.life/0.5):(t>0.78?Math.max(0,(1-t)/0.22):1);
+    const fr=((now/110)|0)%2;const s=fr?'^v^':'^\u2014^';
+    fctx.globalAlpha=0.95*fade;fctx.fillStyle=RED[5];
+    fctx.font='18px "JetBrains Mono",monospace';fctx.fillText(s,B.x,B.y);
+    if(B.label){fctx.globalAlpha=0.5*fade;fctx.fillStyle=RED[3];
+      fctx.font='11px "JetBrains Mono",monospace';fctx.fillText(B.label,B.x-3,B.y+18);}
+  }
+  fctx.globalAlpha=1;
+}
+requestAnimationFrame(tick);
+
+/* ============================================================
+   DATA - resolve a query through the snapshot the repo produces
+   ============================================================ */
+let SNAP=null,SNAP_ERR=null;
+const resultEl=document.getElementById('result');
+
+function norm(s){return (s||'').toLowerCase().replace(/[^a-z0-9]/g,'');}
+
+fetch('data/snapshot.json',{cache:'no-store'})
+  .then(r=>{if(!r.ok)throw new Error('HTTP '+r.status);return r.json();})
+  .then(j=>{SNAP=j;})
+  .catch(e=>{SNAP_ERR=e.message;});
+
+function resolve(q){
+  if(!SNAP)return null;
+  const n=norm(q);
+  if(!n)return null;
+  let key=SNAP.search&&SNAP.search[n];
+  if(!key){
+    for(const c of SNAP.clusters){
+      for(const m of c.members){if(norm(m.symbol)===n){key=c.key;break;}}
+      if(!key&&norm(c.label)===n)key=c.key;
+      if(key)break;
+    }
+  }
+  if(!key)return null;
+  return SNAP.clusters.find(c=>c.key===key)||null;
+}
+
+/* ---------- formatting helpers ---------- */
+function fmtLag(sec,rank){
+  if(rank===1||!sec)return 'first';
+  const m=Math.floor(sec/60),s=sec%60;
+  return '+'+(m?m+'m ':'')+s+'s';
+}
+function shortAddr(a){return a?a.slice(0,6)+'\u2026'+a.slice(-4):'';}
+function topReason(m){
+  if(!m.reasons||!m.reasons.length)return '';
+  let best=m.reasons[0];
+  for(const r of m.reasons)if(Math.abs(r.points)>Math.abs(best.points))best=r;
+  return best.text;
+}
+function redFlag(m){
+  if(!m.flags)return '';
+  const f=m.flags.find(x=>x.level==='RED');
+  return f?f.text:'';
+}
+function esc(s){return (s+'').replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));}
+
+function fmtTaken(iso){
+  try{const d=new Date(iso);
+    return d.toISOString().slice(0,16).replace('T',' ')+'Z';
+  }catch(e){return iso;}
+}
+
+/* ---------- render ---------- */
+function renderCluster(cl,query){
+  const members=cl.members.slice().sort((a,b)=>a.rank-b.rank);
+  const rows=members.map(m=>{
+    const isOrig=m.verdict==='ORIGINAL';
+    const why=[fmtLag(m.lagSec,m.rank),topReason(m),redFlag(m)]
+      .filter(Boolean).join(' \u00b7 ');
+    return `<tr class="${isOrig?'orig':''}">
+      <td class="num">${m.rank}</td>
+      <td><span class="sym">${esc(m.symbol)}</span>
+          <div class="why">${esc(why)}</div></td>
+      <td class="v-${m.verdict}">${m.verdict}</td>
+      <td class="num">${m.score}</td>
+      <td class="risk-${m.risk}">${m.risk}</td>
+      <td class="num">${fmtLag(m.lagSec,m.rank)}</td>
+      <td class="addr">${shortAddr(m.token)}</td>
+    </tr>`;
+  }).join('');
+
+  const notes=(cl.notes||[]).map(n=>`<div class="cl-note">${esc(n)}</div>`).join('');
+  const gaps=(SNAP.gaps||[]).map(g=>`<li>${esc(g)}</li>`).join('');
+
+  resultEl.innerHTML=`
+    <div class="status"><span class="g">[+]</span> scanning launch cluster for: <span class="i">${esc(query.toUpperCase())}</span>
+<span class="g">[+]</span> ${members.length} launch${members.length>1?'es':''} found under this name</div>
+    <div class="cl-head"><span class="lbl">${esc(cl.label)}</span>
+      <span class="badge b-${cl.verdict}">${cl.verdict}</span></div>
+    ${notes}
+    <table>
+      <thead><tr><th>#</th><th>SYMBOL / WHY</th><th>VERDICT</th><th>SCORE</th><th>RISK</th><th>LAG</th><th>TOKEN</th></tr></thead>
+      <tbody>${rows}</tbody>
+    </table>
+    <div class="meta">snapshot \u00b7 ${esc(SNAP.source||'')} \u00b7 taken ${fmtTaken(SNAP.takenAt)}
+      \u00b7 <span class="gaps-toggle" id="gt">what this snapshot can't see</span>
+      <ul class="gaps" id="gaps">${gaps||'<li>none listed</li>'}</ul>
+    </div>`;
+  const gt=document.getElementById('gt'),gapsEl=document.getElementById('gaps');
+  if(gt)gt.onclick=()=>gapsEl.classList.toggle('open');
+}
+
+function notFound(query){
+  resultEl.innerHTML=`<div class="status"><span class="r">[!]</span> no cluster found for "<span class="i">${esc(query)}</span>" in this snapshot.
+This is demo data - try <span class="i">NOVA</span>, <span class="i">PEANUT</span>, <span class="i">PNUT</span> or <span class="i">KETTLE</span>.</div>`;
+}
+function loadErr(){
+  resultEl.innerHTML=`<div class="status"><span class="r">[!]</span> snapshot did not load (${esc(SNAP_ERR||'unknown')}).
+If you opened this file directly, serve it over http instead - fetch() is blocked on file://.</div>`;
+}
+
+/* ---------- run a query ---------- */
+let scanTimer=null;
+function run(query){
+  if(SNAP_ERR){loadErr();return;}
+  if(!SNAP){resultEl.innerHTML='<div class="status">loading snapshot\u2026</div>';
+    setTimeout(()=>run(query),120);return;}
+  const cl=resolve(query);
+  clearTimeout(scanTimer);
+  if(!cl){notFound(query);return;}
+  const n=cl.members.length;
+  flash=1;
+  const label=query.toUpperCase();
+  // one bat per token found, released one after another so the flight reads
+  for(let i=0;i<n;i++)setTimeout(()=>spawnBat(label),i*190);
+  resultEl.innerHTML=`<div class="status"><span class="g">[+]</span> scanning launch cluster for: <span class="i">${esc(label)}</span>
+<span class="g">[+]</span> ${n} launch${n>1?'es':''} found \u00b7 resolving birth order\u2026</div>`;
+  const delay=Math.min(3200,1600+n*190);
+  scanTimer=setTimeout(()=>renderCluster(cl,query),delay);
+}
+
+/* ---------- wiring ---------- */
+const qEl=document.getElementById('q');
+document.getElementById('go').onclick=()=>run(qEl.value.trim());
+qEl.addEventListener('keydown',e=>{if(e.key==='Enter')run(qEl.value.trim());});
+document.querySelectorAll('.hint b').forEach(b=>{
+  b.onclick=()=>{qEl.value=b.dataset.q;run(b.dataset.q);};
+});
+</script>
+</body>
+</html>
