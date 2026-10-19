@@ -3,6 +3,8 @@
   <i>the token that stole the name is not the token you meant to buy</i>
 </p>
 
+UPDATED VERSION IS IN PRIVATE REPO NOW DUE TO COPYCATS 
+
 <p align="center">
   <img alt="tests" src="https://img.shields.io/badge/tests-177%20passing-9AE66E?style=flat-square&labelColor=0C0F14">
   <img alt="node" src="https://img.shields.io/badge/node-%E2%89%A520-D9D9D9?style=flat-square&labelColor=0C0F14">
